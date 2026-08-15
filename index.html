@@ -71,6 +71,7 @@ html,body{height:100%;overflow:hidden;font-family:'Nunito',sans-serif;overscroll
 .modal-entry:active{transform:scale(0.98)}
 .modal-entry-color{width:14px;height:14px;border-radius:50%;flex-shrink:0}
 .modal-entry-label{flex:1;font-weight:600;font-size:13px;color:#333}
+.modal-entry-tag{font-size:9px;font-weight:700;padding:2px 6px;border-radius:6px;color:white;flex-shrink:0}
 .modal-entry-del{width:30px;height:30px;border:none;border-radius:50%;background:rgba(244,67,54,0.1);color:#f44336;font-size:16px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:background 0.2s;flex-shrink:0}
 .modal-entry-del:active{background:rgba(244,67,54,0.25)}
 .modal-add-row{display:flex;gap:8px}
@@ -194,8 +195,14 @@ var currentMonth=0,YEAR=2026,firstRender=true;
 var monthNames=['January','February','March','April','May','June','July','August','September','October','November','December'];
 var monthEmojis=[SN1,HT,TU,EG,CH,SU,ME,BE,L1,PU,L2,XM];
 
-// Safe colour map for default events
-var DEFAULT_COLORS={'b-shop':'#e91e63','b-swim':'#0288d1','b-clean':'#ef6c00','b-film':'#7b1fa2','b-work':'#2e7d32'};
+// Default event definitions with colours
+var DEFAULT_EVENTS={
+  'b-shop':{label:'Shopping',color:'#e91e63'},
+  'b-swim':{label:'Swimming',color:'#0288d1'},
+  'b-clean':{label:'Cleaning',color:'#ef6c00'},
+  'b-film':{label:'Film Night',color:'#7b1fa2'},
+  'b-work':{label:'Work',color:'#2e7d32'}
+};
 
 var COLORS=[
   {name:'Rose',bg:'linear-gradient(135deg,#e91e63,#f06292)',flat:'#e91e63'},
@@ -208,19 +215,36 @@ var COLORS=[
   {name:'Crimson',bg:'linear-gradient(135deg,#b71c1c,#ef5350)',flat:'#b71c1c'}
 ];
 var pickedColor=0;
+
+// Removed defaults: key="YYYY-M-D:cls" -> true
+var removedDefaults={};
+// Custom entries: key="YYYY-M-D" -> [{label,colorIdx}]
 var customEntries={};
-try{var sv=localStorage.getItem('emma-entries');if(sv)customEntries=JSON.parse(sv)}catch(err){}
-function saveEntries(){try{localStorage.setItem('emma-entries',JSON.stringify(customEntries))}catch(err){}}
+
+try{var sv=localStorage.getItem('emma-rd');if(sv)removedDefaults=JSON.parse(sv)}catch(err){}
+try{var sv2=localStorage.getItem('emma-entries');if(sv2)customEntries=JSON.parse(sv2)}catch(err){}
+function saveRemoved(){try{localStorage.setItem('emma-rd',JSON.stringify(removedDefaults))}catch(err){}}
+function saveCustom(){try{localStorage.setItem('emma-entries',JSON.stringify(customEntries))}catch(err){}}
+
 function entryKey(m,d){return YEAR+'-'+(m+1)+'-'+d}
+function removedKey(m,d,cls){return entryKey(m,d)+':'+cls}
+
+function isDefaultRemoved(month,day,cls){return removedDefaults[removedKey(month,day,cls)]===true}
 
 function getAllEvents(month,day){
-  var key=entryKey(month,day),out=[],d=new Date(YEAR,month,day),dow=d.getDay();
-  if(dow===1)out.push({label:'Shopping',cls:'b-shop',isDefault:true});
-  if(dow===2)out.push({label:'Swimming',cls:'b-swim',isDefault:true});
-  if(dow===3){out.push({label:'Swimming',cls:'b-swim',isDefault:true});out.push({label:'Cleaning',cls:'b-clean',isDefault:true})}
-  if(dow===4){var fs=new Date(YEAR,0,8).getTime(),df=Math.round((d.getTime()-fs)/86400000);if(df>=0&&(df/7)%2===0)out.push({label:'Film Night',cls:'b-film',isDefault:true})}
-  if(dow===5)out.push({label:'Work',cls:'b-work',isDefault:true});
-  var cust=customEntries[key];
+  var out=[],d=new Date(YEAR,month,day),dow=d.getDay();
+  if(dow===1&&!isDefaultRemoved(month,day,'b-shop'))out.push({label:'Shopping',cls:'b-shop',isDefault:true});
+  if(dow===2&&!isDefaultRemoved(month,day,'b-swim'))out.push({label:'Swimming',cls:'b-swim',isDefault:true});
+  if(dow===3){
+    if(!isDefaultRemoved(month,day,'b-swim'))out.push({label:'Swimming',cls:'b-swim',isDefault:true});
+    if(!isDefaultRemoved(month,day,'b-clean'))out.push({label:'Cleaning',cls:'b-clean',isDefault:true});
+  }
+  if(dow===4){
+    var fs=new Date(YEAR,0,8).getTime(),df=Math.round((d.getTime()-fs)/86400000);
+    if(df>=0&&(df/7)%2===0&&!isDefaultRemoved(month,day,'b-film'))out.push({label:'Film Night',cls:'b-film',isDefault:true});
+  }
+  if(dow===5&&!isDefaultRemoved(month,day,'b-work'))out.push({label:'Work',cls:'b-work',isDefault:true});
+  var cust=customEntries[entryKey(month,day)];
   if(cust)for(var i=0;i<cust.length;i++)out.push({label:cust[i].label,cls:'b-custom-'+cust[i].colorIdx,isDefault:false,colorIdx:cust[i].colorIdx});
   return out;
 }
@@ -228,7 +252,6 @@ function getAllEvents(month,day){
 function getTheme(month){if(month===3)return'easter';if(month===9)return'halloween';if(month===11)return'christmas';return getSeason(month)}
 function getSeason(m){if(m<=1)return'winter';if(m<=4)return'spring';if(m<=7)return'summer';return'autumn'}
 
-// Generate CSS for custom badge colours
 var cCSS=document.createElement('style');cCSS.id='cbcss';(function(){var s='';for(var i=0;i<COLORS.length;i++)s+='.b-custom-'+i+'{background:'+COLORS[i].bg+'}';cCSS.textContent=s})();document.head.appendChild(cCSS);
 
 function buildGridHTML(month){
@@ -272,7 +295,6 @@ function applyTheme(month){
   document.getElementById('headerSub').textContent=t.sub+' \u00B7 2026';
   document.getElementById('footerFlowers').textContent=t.flowers;
   document.getElementById('legend').innerHTML='<div class="legend-chip" style="background:'+t.legendBg+';border-color:'+t.legendBorder+'"><span class="legend-dot" style="background:linear-gradient(135deg,#e91e63,#f06292)">'+EC+'</span>Mon \u2014 Shop</div><div class="legend-chip" style="background:'+t.legendBg+';border-color:'+t.legendBorder+'"><span class="legend-dot" style="background:linear-gradient(135deg,#0288d1,#29b6f6)">'+ES+'</span>Tue+Wed \u2014 Swim</div><div class="legend-chip" style="background:'+t.legendBg+';border-color:'+t.legendBorder+'"><span class="legend-dot" style="background:linear-gradient(135deg,#ef6c00,#ffa726)">'+EB+'</span>Wed \u2014 Clean</div><div class="legend-chip" style="background:'+t.legendBg+';border-color:'+t.legendBorder+'"><span class="legend-dot" style="background:linear-gradient(135deg,#7b1fa2,#ba68c8)">'+EF+'</span>Alt Thu \u2014 Film</div><div class="legend-chip" style="background:'+t.legendBg+';border-color:'+t.legendBorder+'"><span class="legend-dot" style="background:linear-gradient(135deg,#2e7d32,#66bb6a)">'+EW+'</span>Fri \u2014 Work</div>';
-
   if(firstRender){
     document.getElementById('gridCenter').innerHTML=buildGridHTML(currentMonth);
     var prev=currentMonth>0?currentMonth-1:11,next=currentMonth<11?currentMonth+1:0;
@@ -300,6 +322,7 @@ document.addEventListener('keydown',function(ev){if(ev.key==='ArrowLeft')goToMon
 
 // ── Modal ──
 var modal=document.getElementById('modal'),modalDay=0,modalMonth=0;
+
 function openModal(month,day){
   modalMonth=month;modalDay=day;
   var d=new Date(YEAR,month,day),dn=['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
@@ -309,30 +332,43 @@ function openModal(month,day){
 }
 function closeModal(){modal.classList.remove('show')}
 
-function countDefaults(month,day){
-  var d=new Date(YEAR,month,day),dow=d.getDay(),c=0;
-  if(dow===1)c=1;if(dow===2)c=1;if(dow===3)c=2;
-  if(dow===4){var fs=new Date(YEAR,0,8).getTime(),df=Math.round((d.getTime()-fs)/86400000);if(df>=0&&(df/7)%2===0)c++}
-  if(dow===5)c=1;return c;
-}
-
 function renderModalList(){
   var evts=getAllEvents(modalMonth,modalDay),list=document.getElementById('modalList');
   if(!evts.length){list.innerHTML='<div style="text-align:center;padding:16px;color:#aaa;font-weight:600;font-size:13px">No entries for this day</div>';return}
-  var html='',defCount=countDefaults(modalMonth,modalDay);
+  var html='';
   for(var i=0;i<evts.length;i++){
-    var ev=evts[i],dotColor=ev.isDefault?(DEFAULT_COLORS[ev.cls]||'#999'):COLORS[ev.colorIdx].flat;
-    html+='<div class="modal-entry"><div class="modal-entry-color" style="background:'+dotColor+'"></div><div class="modal-entry-label">'+ev.label+'</div>';
-    if(!ev.isDefault)html+='<button class="modal-entry-del" data-cidx="'+(i-defCount)+'">\u2715</button>';
-    else html+='<div style="width:30px"></div>';
+    var ev=evts[i],dotColor,tagText='',tagBg;
+    if(ev.isDefault){
+      dotColor=DEFAULT_EVENTS[ev.cls].color;
+      tagText='routine';tagBg='rgba(0,0,0,0.08)';
+    } else {
+      dotColor=COLORS[ev.colorIdx].flat;
+      tagText='custom';tagBg=COLORS[ev.colorIdx].flat;
+    }
+    html+='<div class="modal-entry">';
+    html+='<div class="modal-entry-color" style="background:'+dotColor+'"></div>';
+    html+='<div class="modal-entry-label">'+ev.label+'</div>';
+    html+='<span class="modal-entry-tag" style="background:'+tagBg+';color:'+(ev.isDefault?'#666':'white')+'">'+tagText+'</span>';
+    html+='<button class="modal-entry-del" data-idx="'+i+'" data-cls="'+ev.cls+'" data-isdefault="'+(ev.isDefault?'1':'0')+'">\u2715</button>';
     html+='</div>';
   }
   list.innerHTML=html;
   var dels=list.querySelectorAll('.modal-entry-del');
   for(var j=0;j<dels.length;j++){
     dels[j].addEventListener('click',function(){
-      var ci=parseInt(this.getAttribute('data-cidx')),key=entryKey(modalMonth,modalDay),c=customEntries[key];
-      if(c&&ci>=0&&ci<c.length){c.splice(ci,1);if(!c.length)delete customEntries[key];saveEntries();renderModalList();refreshGrids()}
+      var isDef=this.getAttribute('data-isdefault')==='1';
+      if(isDef){
+        var cls=this.getAttribute('data-cls'),rk=removedKey(modalMonth,modalDay,cls);
+        removedDefaults[rk]=true;saveRemoved();
+      } else {
+        var ci=parseInt(this.getAttribute('data-idx')),key=entryKey(modalMonth,modalDay),c=customEntries[key];
+        // Calculate index into custom array by subtracting defaults count
+        var evts2=getAllEvents(modalMonth,modalDay),defCount=0;
+        for(var k=0;k<evts2.length;k++){if(evts2[k].isDefault)defCount++;else break;}
+        var customIdx=ci-defCount;
+        if(c&&customIdx>=0&&customIdx<c.length){c.splice(customIdx,1);if(!c.length)delete customEntries[key];saveCustom()}
+      }
+      renderModalList();refreshGrids();
     });
   }
 }
@@ -351,7 +387,7 @@ function addEntry(){
   var key=entryKey(modalMonth,modalDay);
   if(!customEntries[key])customEntries[key]=[];
   customEntries[key].push({label:label,colorIdx:pickedColor});
-  saveEntries();inp.value='';renderModalList();refreshGrids();
+  saveCustom();inp.value='';renderModalList();refreshGrids();
 }
 
 function refreshGrids(){
@@ -376,7 +412,7 @@ var deferredPrompt=null;
 window.addEventListener('beforeinstallprompt',function(ev){ev.preventDefault();deferredPrompt=ev;if(!localStorage.getItem('installDismissed'))setTimeout(function(){document.getElementById('installBanner').classList.add('show')},2500)});
 document.getElementById('installBtn').addEventListener('click',function(){if(deferredPrompt){deferredPrompt.prompt();deferredPrompt.userChoice.then(function(){document.getElementById('installBanner').classList.remove('show');deferredPrompt=null})}});
 document.getElementById('dismissBtn').addEventListener('click',function(){document.getElementById('installBanner').classList.remove('show');localStorage.setItem('installDismissed','true')});
-if('serviceWorker' in navigator){navigator.serviceWorker.register(URL.createObjectURL(new Blob(["const C='emma-cal-v10';self.addEventListener('install',function(e){e.waitUntil(caches.open(C).then(function(c){return c.addAll(['/'])}))});self.addEventListener('fetch',function(e){e.respondWith(caches.match(e.request).then(function(r){return r||fetch(e.request)}))});"],{type:'application/javascript'}))).catch(function(){})}
+if('serviceWorker' in navigator){navigator.serviceWorker.register(URL.createObjectURL(new Blob(["const C='emma-cal-v11';self.addEventListener('install',function(e){e.waitUntil(caches.open(C).then(function(c){return c.addAll(['/'])}))});self.addEventListener('fetch',function(e){e.respondWith(caches.match(e.request).then(function(r){return r||fetch(e.request)}))});"],{type:'application/javascript'}))).catch(function(){})}
 var manifest={name:"Emma's Calendar",short_name:"Emma's Cal",description:"Emma's routine calendar for 2026",start_url:'.',display:'standalone',background_color:'#fce4ec',theme_color:'#c2185b',orientation:'portrait',icons:[{src:'data:image/svg+xml,'+encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><rect width="512" height="512" rx="100" fill="#c2185b"/><text x="256" y="340" text-anchor="middle" font-size="240" fill="white">'+ECA+'</text></svg>'),sizes:'192x192',type:'image/svg+xml',purpose:'any maskable'}]};
 var mLink=document.createElement('link');mLink.rel='manifest';mLink.href=URL.createObjectURL(new Blob([JSON.stringify(manifest)],{type:'application/manifest+json'}));document.head.appendChild(mLink);
 
