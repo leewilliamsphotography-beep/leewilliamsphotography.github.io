@@ -2,536 +2,139 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-<meta name="theme-color" content="#c2185b">
-<meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<meta name="mobile-web-app-capable" content="yes">
-<meta name="application-name" content="Emma's Calendar">
-<meta name="apple-mobile-web-app-title" content="Emma's Calendar">
-<title>Emma's Calendar</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@500;600;700&family=Nunito:wght@600;700;800&display=swap" rel="stylesheet">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Updating</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
 <style>
-  *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
-  html,body{
-    height:100%;overflow:hidden;
-    font-family:'Nunito',sans-serif;
-    background:#fce4ec;color:#5d3a4a;
-    overscroll-behavior:none;
+  *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: #030303;
+    color: #ffffff;
+    font-family: 'Inter', sans-serif;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    overflow: hidden;
   }
 
-  /* ── App Shell ── */
-  .app{
-    display:flex;flex-direction:column;
-    height:100%;height:100dvh;
-    max-width:500px;margin:0 auto;
-    background:linear-gradient(180deg,#fff0f3 0%,#fce4ec 40%,#f8bbd0 100%);
-    position:relative;overflow:hidden;
+  .container {
+    text-align: center;
+    position: relative;
   }
 
-  /* ── Status bar safe area ── */
-  .safe-top{height:env(safe-area-inset-top,0px);flex-shrink:0;background:#c2185b}
-  .safe-bottom{height:env(safe-area-inset-bottom,0px);flex-shrink:0}
-
-  /* ── Header ── */
-  .app-header{
-    background:#c2185b;
-    padding:14px 16px 12px;
-    text-align:center;
-    flex-shrink:0;
-    position:relative;
-    overflow:hidden;
-  }
-  .app-header::after{
-    content:'';position:absolute;bottom:-20px;left:-20px;right:-20px;
-    height:40px;background:#c2185b;border-radius:50%;
-  }
-  .app-header h1{
-    font-family:'Quicksand',sans-serif;font-weight:700;
-    font-size:20px;color:white;position:relative;z-index:1;
-  }
-  .app-header .subtitle{
-    font-family:'Quicksand',sans-serif;font-weight:600;
-    font-size:13px;color:rgba(255,255,255,0.75);
-    margin-top:2px;position:relative;z-index:1;
+  .ring {
+    width: 64px;
+    height: 64px;
+    margin: 0 auto 40px;
+    border-radius: 50%;
+    border: 2px solid rgba(255,255,255,0.06);
+    border-top-color: #38BDF8;
+    animation: spin 1s linear infinite;
+    position: relative;
   }
 
-  /* ── Month Selector ── */
-  .month-nav{
-    display:flex;align-items:center;justify-content:space-between;
-    padding:10px 12px 6px;flex-shrink:0;
+  .ring::after {
+    content: '';
+    position: absolute;
+    inset: 6px;
+    border-radius: 50%;
+    border: 2px solid transparent;
+    border-top-color: #0EA5E9;
+    animation: spin 1.5s linear reverse infinite;
   }
-  .month-nav button{
-    width:40px;height:40px;border:none;border-radius:50%;
-    background:rgba(233,30,99,0.12);color:#c2185b;
-    font-size:20px;cursor:pointer;
-    display:flex;align-items:center;justify-content:center;
-    transition:background 0.2s;
-  }
-  .month-nav button:active{background:rgba(233,30,99,0.25)}
-  .month-nav .month-label{
-    font-family:'Quicksand',sans-serif;font-weight:700;
-    font-size:17px;color:#ad1457;
-    display:flex;align-items:center;gap:6px;
-  }
-  .month-nav .month-emoji{font-size:18px}
 
-  /* ── Legend ── */
-  .legend{
-    display:flex;justify-content:center;flex-wrap:wrap;
-    gap:6px;padding:4px 10px 8px;flex-shrink:0;
+  @keyframes spin {
+    to { transform: rotate(360deg); }
   }
-  .legend-chip{
-    display:flex;align-items:center;gap:4px;
-    background:rgba(255,255,255,0.7);
-    padding:3px 8px;border-radius:12px;
-    font-size:10px;font-weight:600;
-    border:1px solid rgba(244,143,177,0.3);
-  }
-  .legend-dot{
-    width:18px;height:18px;border-radius:50%;
-    display:flex;align-items:center;justify-content:center;
-    font-size:10px;color:white;flex-shrink:0;
-  }
-  .dot-shop{background:#e91e63}
-  .dot-swim{background:#0288d1}
-  .dot-clean{background:#ef6c00}
-  .dot-film{background:#7b1fa2}
-  .dot-work{background:#2e7d32}
 
-  /* ── Calendar Grid ── */
-  .cal-wrapper{
-    flex:1;overflow-y:auto;overflow-x:hidden;
-    padding:0 8px 8px;
-    -webkit-overflow-scrolling:touch;
+  h1 {
+    font-family: 'Inter', sans-serif;
+    font-style: normal;
+    font-weight: 500;
+    font-size: 2.25rem;
+    letter-spacing: -0.02em;
+    line-height: 1;
+    margin-bottom: 16px;
+    background: linear-gradient(180deg, #FFFFFF 0%, rgba(255,255,255,0.6) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
   }
-  .day-headers{
-    display:grid;grid-template-columns:repeat(7,1fr);
-    gap:3px;padding:0 2px;margin-bottom:3px;
-  }
-  .day-hdr{
-    text-align:center;font-family:'Quicksand',sans-serif;
-    font-weight:700;font-size:11px;color:#c2185b;
-    padding:5px 0;background:rgba(233,30,99,0.08);border-radius:6px;
-  }
-  .cal-grid{
-    display:grid;grid-template-columns:repeat(7,1fr);
-    gap:3px;
-  }
-  .cell{
-    border-radius:8px;padding:3px 4px;
-    border:1.5px solid #f8bbd0;
-    background:#fff0f3;
-    display:flex;flex-direction:column;
-    justify-content:flex-start;gap:1px;
-    min-height:52px;
-    transition:transform 0.15s;
-  }
-  .cell:active{transform:scale(0.96)}
-  .cell.empty{
-    background:rgba(252,228,236,0.3);border-color:transparent;
-    min-height:0;
-  }
-  .cell.sunday{background:#f8bbd0}
-  .cell .num{
-    font-weight:800;font-size:13px;color:#880e4f;line-height:1.1;
-  }
-  .cell .badge{
-    padding:1px 3px;border-radius:4px;
-    font-size:7px;font-weight:700;color:white;
-    text-align:center;line-height:1.5;
-    white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
-  }
-  .b-shop{background:#e91e63}
-  .b-swim{background:#0288d1}
-  .b-clean{background:#ef6c00}
-  .b-film{background:#7b1fa2}
-  .b-work{background:#2e7d32}
 
-  /* ── Footer ── */
-  .app-footer{
-    text-align:center;padding:8px 12px;
-    border-top:1.5px solid rgba(244,143,177,0.3);
-    flex-shrink:0;
+  p {
+    font-size: 0.875rem;
+    font-weight: 300;
+    color: rgba(255,255,255,0.5);
+    letter-spacing: 0.05em;
   }
-  .app-footer .flowers{font-size:12px;letter-spacing:2px;margin-bottom:2px}
-  .app-footer p{font-size:9px;color:#c2185b;opacity:0.6;font-weight:600}
 
-  /* ── Install Banner ── */
-  .install-banner{
-    display:none;
-    position:fixed;bottom:0;left:0;right:0;
-    background:white;
-    padding:14px 16px;
-    box-shadow:0 -2px 20px rgba(0,0,0,0.15);
-    z-index:100;
-    max-width:500px;margin:0 auto;
+  .dots span {
+    animation: dotPulse 1.4s ease-in-out infinite;
+    opacity: 0;
   }
-  .install-banner.show{display:flex;align-items:center;gap:12px}
-  .install-banner .install-icon{
-    width:42px;height:42px;border-radius:10px;
-    background:linear-gradient(135deg,#e91e63,#f06292);
-    display:flex;align-items:center;justify-content:center;
-    font-size:20px;flex-shrink:0;
-  }
-  .install-banner .install-text{flex:1}
-  .install-banner .install-text strong{
-    display:block;font-size:13px;color:#333;
-    font-family:'Quicksand',sans-serif;
-  }
-  .install-banner .install-text span{
-    font-size:11px;color:#888;
-  }
-  .install-banner .install-btn{
-    border:none;padding:8px 18px;border-radius:20px;
-    background:#e91e63;color:white;
-    font-family:'Quicksand',sans-serif;
-    font-weight:700;font-size:12px;cursor:pointer;
-    flex-shrink:0;
-  }
-  .install-banner .install-dismiss{
-    border:none;background:none;font-size:18px;
-    color:#bbb;cursor:pointer;padding:4px;
-  }
-  .install-spacer{height:70px}
+  .dots span:nth-child(1) { animation-delay: 0s; }
+  .dots span:nth-child(2) { animation-delay: 0.2s; }
+  .dots span:nth-child(3) { animation-delay: 0.4s; }
 
-  /* ── Splash ── */
-  .splash{
-    position:fixed;inset:0;z-index:200;
-    background:linear-gradient(180deg,#c2185b 0%,#e91e63 50%,#fce4ec 100%);
-    display:flex;flex-direction:column;
-    align-items:center;justify-content:center;
-    transition:opacity 0.5s,transform 0.5s;
+  @keyframes dotPulse {
+    0%, 60%, 100% { opacity: 0; }
+    30% { opacity: 1; }
   }
-  .splash.hide{opacity:0;transform:scale(1.1);pointer-events:none}
-  .splash h2{
-    font-family:'Quicksand',sans-serif;font-weight:700;
-    font-size:28px;color:white;margin-bottom:4px;
-  }
-  .splash p{
-    font-family:'Quicksand',sans-serif;font-weight:600;
-    font-size:14px;color:rgba(255,255,255,0.8);margin-bottom:24px;
-  }
-  .splash .splash-icon{
-    font-size:64px;margin-bottom:16px;
-    animation:bounce 1s ease infinite;
-  }
-  @keyframes bounce{
-    0%,100%{transform:translateY(0)}
-    50%{transform:translateY(-12px)}
-  }
-  .splash .loader{
-    width:40px;height:40px;
-    border:4px solid rgba(255,255,255,0.3);
-    border-top-color:white;border-radius:50%;
-    animation:spin 0.7s linear infinite;
-  }
-  @keyframes spin{to{transform:rotate(360deg)}}
 
-  /* ── Decorations ── */
-  .deco{
-    position:absolute;pointer-events:none;z-index:0;opacity:0.08;
+  .glow {
+    position: absolute;
+    top: -20px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 120px;
+    height: 120px;
+    background: radial-gradient(circle, rgba(56,189,248,0.12) 0%, transparent 70%);
+    pointer-events: none;
+    animation: breathe 3s ease-in-out infinite;
   }
-  .deco-sun{top:8px;right:12px;width:60px;height:60px}
-  .deco-flower1{bottom:50px;right:10px;width:45px;height:45px}
-  .deco-flower2{top:80px;left:8px;width:35px;height:35px;transform:rotate(30deg)}
-  .deco-leaf{bottom:60px;left:12px;width:40px;height:40px;transform:rotate(-20deg)}
 
-  /* ── Swipe hint ── */
-  .swipe-hint{
-    text-align:center;padding:4px;
-    font-size:10px;color:#c2185b;opacity:0.4;
-    font-weight:600;flex-shrink:0;
+  @keyframes breathe {
+    0%, 100% { opacity: 0.6; transform: translateX(-50%) scale(1); }
+    50% { opacity: 1; transform: translateX(-50%) scale(1.15); }
+  }
+
+  .progress-track {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 2px;
+    background: rgba(255,255,255,0.05);
+  }
+
+  .progress-bar {
+    height: 100%;
+    width: 30%;
+    background: linear-gradient(90deg, #0EA5E9, #38BDF8);
+    border-radius: 0 2px 2px 0;
+    animation: slide 2s ease-in-out infinite;
+  }
+
+  @keyframes slide {
+    0%   { transform: translateX(-100%); }
+    100% { transform: translateX(450%); }
   }
 </style>
 </head>
 <body>
 
-<!-- Splash Screen -->
-<div class="splash" id="splash">
-  <div class="splash-icon">📅</div>
-  <h2>Emma's Calendar</h2>
-  <p>2026</p>
-  <div class="loader"></div>
-</div>
-
-<!-- App -->
-<div class="app" id="app">
-  <div class="safe-top"></div>
-
-  <!-- Header -->
-  <div class="app-header">
-    <h1>Emma's Calendar</h1>
-    <div class="subtitle">2026</div>
+  <div class="container">
+    <div class="glow"></div>
+    <div class="ring"></div>
+    <h1>Website Updating</h1>
+    <p>We'll be right back<span class="dots"><span>.</span><span>.</span><span>.</span></span></p>
   </div>
 
-  <!-- Month Navigation -->
-  <div class="month-nav">
-    <button id="prevBtn" aria-label="Previous month">◀</button>
-    <div class="month-label" id="monthLabel"></div>
-    <button id="nextBtn" aria-label="Next month">▶</button>
+  <div class="progress-track">
+    <div class="progress-bar"></div>
   </div>
 
-  <!-- Legend -->
-  <div class="legend">
-    <div class="legend-chip"><span class="legend-dot dot-shop">🛒</span>Mon — Shop</div>
-    <div class="legend-chip"><span class="legend-dot dot-swim">🏊</span>Tue+Wed — Swim</div>
-    <div class="legend-chip"><span class="legend-dot dot-clean">🧹</span>Wed — Clean</div>
-    <div class="legend-chip"><span class="legend-dot dot-film">🎬</span>Alt Thu — Film</div>
-    <div class="legend-chip"><span class="legend-dot dot-work">💼</span>Fri — Work</div>
-  </div>
-
-  <!-- Calendar -->
-  <div class="cal-wrapper" id="calWrapper">
-    <div class="day-headers">
-      <div class="day-hdr">Mon</div><div class="day-hdr">Tue</div>
-      <div class="day-hdr">Wed</div><div class="day-hdr">Thu</div>
-      <div class="day-hdr">Fri</div><div class="day-hdr">Sat</div>
-      <div class="day-hdr">Sun</div>
-    </div>
-    <div class="cal-grid" id="calGrid"></div>
-    <div class="swipe-hint">← swipe to change month →</div>
-  </div>
-
-  <!-- Footer -->
-  <div class="app-footer">
-    <div class="flowers">🌺 ☀️ 🌻 🌷 🌺</div>
-    <p>Emma's Routine Calendar — Have a lovely day!</p>
-  </div>
-
-  <div class="safe-bottom"></div>
-
-  <!-- Decorations -->
-  <svg class="deco deco-sun" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
-    <circle cx="50" cy="50" r="22" fill="#ffb74d"/>
-    <line x1="50" y1="22" x2="50" y2="8" stroke="#ffb74d" stroke-width="5" stroke-linecap="round"/>
-    <line x1="50" y1="78" x2="50" y2="92" stroke="#ffb74d" stroke-width="5" stroke-linecap="round"/>
-    <line x1="22" y1="50" x2="8" y2="50" stroke="#ffb74d" stroke-width="5" stroke-linecap="round"/>
-    <line x1="78" y1="50" x2="92" y2="50" stroke="#ffb74d" stroke-width="5" stroke-linecap="round"/>
-    <line x1="30" y1="30" x2="20" y2="20" stroke="#ffb74d" stroke-width="5" stroke-linecap="round"/>
-    <line x1="70" y1="30" x2="80" y2="20" stroke="#ffb74d" stroke-width="5" stroke-linecap="round"/>
-    <line x1="30" y1="70" x2="20" y2="80" stroke="#ffb74d" stroke-width="5" stroke-linecap="round"/>
-    <line x1="70" y1="70" x2="80" y2="80" stroke="#ffb74d" stroke-width="5" stroke-linecap="round"/>
-  </svg>
-  <svg class="deco deco-flower1" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
-    <circle cx="50" cy="28" r="16" fill="#f48fb1"/><circle cx="28" cy="50" r="16" fill="#f48fb1"/>
-    <circle cx="72" cy="50" r="16" fill="#f48fb1"/><circle cx="35" cy="72" r="16" fill="#f48fb1"/>
-    <circle cx="65" cy="72" r="16" fill="#f48fb1"/><circle cx="50" cy="50" r="12" fill="#ffe082"/>
-  </svg>
-  <svg class="deco deco-flower2" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
-    <circle cx="50" cy="20" r="14" fill="#ffab91"/><circle cx="25" cy="45" r="14" fill="#ffab91"/>
-    <circle cx="75" cy="45" r="14" fill="#ffab91"/><circle cx="35" cy="75" r="14" fill="#ffab91"/>
-    <circle cx="65" cy="75" r="14" fill="#ffab91"/><circle cx="50" cy="48" r="10" fill="#fff9c4"/>
-  </svg>
-  <svg class="deco deco-leaf" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
-    <path d="M50 10 Q80 30 75 65 Q60 85 50 90 Q40 85 25 65 Q20 30 50 10Z" fill="#81c784"/>
-    <line x1="50" y1="20" x2="50" y2="80" stroke="#4caf50" stroke-width="2.5"/>
-    <line x1="50" y1="35" x2="35" y2="50" stroke="#4caf50" stroke-width="1.5"/>
-    <line x1="50" y1="50" x2="65" y2="62" stroke="#4caf50" stroke-width="1.5"/>
-  </svg>
-</div>
-
-<!-- Install Banner -->
-<div class="install-banner" id="installBanner">
-  <div class="install-icon">📅</div>
-  <div class="install-text">
-    <strong>Install Emma's Calendar</strong>
-    <span>Add to home screen for quick access</span>
-  </div>
-  <button class="install-btn" id="installBtn">Install</button>
-  <button class="install-dismiss" id="dismissBtn">✕</button>
-</div>
-
-<script>
-// ── App State ──
-let currentMonth = 0; // 0 = January
-const YEAR = 2026;
-const filmStart = new Date(YEAR, 0, 8).getTime();
-
-const monthNames = ['January','February','March','April','May','June',
-                     'July','August','September','October','November','December'];
-const monthEmojis = ['❄️','💖','🌷','🌻','🌺','☀️','🍉','🐚','🍂','🎃','🍂','🎄'];
-
-// ── Events ──
-function getEvents(month, day) {
-  const d = new Date(YEAR, month, day);
-  const dow = d.getDay();
-  const out = [];
-  if (dow === 1) out.push({ label: 'Shopping', cls: 'b-shop' });
-  if (dow === 2) out.push({ label: 'Swimming', cls: 'b-swim' });
-  if (dow === 3) {
-    out.push({ label: 'Swimming', cls: 'b-swim' });
-    out.push({ label: 'Cleaning', cls: 'b-clean' });
-  }
-  if (dow === 4) {
-    const diff = Math.round((d.getTime() - filmStart) / 864e5);
-    if (diff >= 0 && (diff / 7) % 2 === 0) {
-      out.push({ label: 'Film Night', cls: 'b-film' });
-    }
-  }
-  if (dow === 5) out.push({ label: 'Work', cls: 'b-work' });
-  return out;
-}
-
-// ── Render Month ──
-function renderMonth() {
-  const grid = document.getElementById('calGrid');
-  const label = document.getElementById('monthLabel');
-  label.innerHTML = `${monthEmojis[currentMonth]} ${monthNames[currentMonth]}`;
-
-  const daysInMonth = new Date(YEAR, currentMonth + 1, 0).getDate();
-  const startOffset = (new Date(YEAR, currentMonth, 1).getDay() + 6) % 7;
-
-  let html = '';
-  for (let i = 0; i < startOffset; i++) {
-    html += `<div class="cell empty"></div>`;
-  }
-  for (let day = 1; day <= daysInMonth; day++) {
-    const d = new Date(YEAR, currentMonth, day);
-    const dow = d.getDay();
-    const isSun = dow === 0;
-    const evts = getEvents(currentMonth, day);
-
-    html += `<div class="cell${isSun ? ' sunday' : ''}">`;
-    html += `<span class="num">${day}</span>`;
-    evts.forEach(e => {
-      html += `<span class="badge ${e.cls}">${e.label}</span>`;
-    });
-    html += `</div>`;
-  }
-  const rem = (startOffset + daysInMonth) % 7;
-  if (rem > 0) for (let i = 0; i < 7 - rem; i++) html += `<div class="cell empty"></div>`;
-
-  grid.innerHTML = html;
-
-  // Update button states
-  document.getElementById('prevBtn').style.opacity = currentMonth === 0 ? '0.3' : '1';
-  document.getElementById('nextBtn').style.opacity = currentMonth === 11 ? '0.3' : '1';
-}
-
-// ── Navigation ──
-function prevMonth() {
-  if (currentMonth > 0) {
-    currentMonth--;
-    renderMonth();
-    document.getElementById('calWrapper').scrollTop = 0;
-  }
-}
-function nextMonth() {
-  if (currentMonth < 11) {
-    currentMonth++;
-    renderMonth();
-    document.getElementById('calWrapper').scrollTop = 0;
-  }
-}
-
-document.getElementById('prevBtn').addEventListener('click', prevMonth);
-document.getElementById('nextBtn').addEventListener('click', nextMonth);
-
-// ── Swipe Navigation ──
-let touchStartX = 0;
-let touchStartY = 0;
-const wrapper = document.getElementById('calWrapper');
-
-wrapper.addEventListener('touchstart', e => {
-  touchStartX = e.touches[0].clientX;
-  touchStartY = e.touches[0].clientY;
-}, { passive: true });
-
-wrapper.addEventListener('touchend', e => {
-  const dx = e.changedTouches[0].clientX - touchStartX;
-  const dy = e.changedTouches[0].clientY - touchStartY;
-  if (Math.abs(dx) > 50 && Math.abs(dx) > Math.abs(dy) * 1.5) {
-    if (dx < 0) nextMonth();
-    else prevMonth();
-  }
-}, { passive: true });
-
-// ── Keyboard support ──
-document.addEventListener('keydown', e => {
-  if (e.key === 'ArrowLeft') prevMonth();
-  if (e.key === 'ArrowRight') nextMonth();
-});
-
-// ── PWA Install ──
-let deferredPrompt = null;
-
-window.addEventListener('beforeinstallprompt', e => {
-  e.preventDefault();
-  deferredPrompt = e;
-  const banner = document.getElementById('installBanner');
-  if (!localStorage.getItem('installDismissed')) {
-    setTimeout(() => banner.classList.add('show'), 2000);
-  }
-});
-
-document.getElementById('installBtn').addEventListener('click', async () => {
-  if (deferredPrompt) {
-    deferredPrompt.prompt();
-    const result = await deferredPrompt.userChoice;
-    if (result.outcome === 'accepted') {
-      document.getElementById('installBanner').classList.remove('show');
-    }
-    deferredPrompt = null;
-  }
-});
-
-document.getElementById('dismissBtn').addEventListener('click', () => {
-  document.getElementById('installBanner').classList.remove('show');
-  localStorage.setItem('installDismissed', 'true');
-});
-
-// ── Service Worker Registration ──
-if ('serviceWorker' in navigator) {
-  const swCode = `
-    const CACHE = 'emma-calendar-v1';
-    self.addEventListener('install', e => {
-      e.waitUntil(caches.open(CACHE).then(c => c.addAll(['/'])));
-    });
-    self.addEventListener('fetch', e => {
-      e.respondWith(caches.match(e.request).then(r => r || fetch(e.request)));
-    });
-  `;
-  const blob = new Blob([swCode], { type: 'application/javascript' });
-  const swUrl = URL.createObjectURL(blob);
-  navigator.serviceWorker.register(swUrl).catch(() => {});
-}
-
-// ── Web App Manifest ──
-const manifest = {
-  name: "Emma's Calendar",
-  short_name: "Emma's Cal",
-  description: "Emma's routine calendar for 2026",
-  start_url: '.',
-  display: 'standalone',
-  background_color: '#fce4ec',
-  theme_color: '#c2185b',
-  orientation: 'portrait',
-  icons: [{
-    src: 'data:image/svg+xml,' + encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 192 192"><rect width="192" height="192" rx="40" fill="#c2185b"/><text x="96" y="130" text-anchor="middle" font-size="100">📅</text></svg>'),
-    sizes: '192x192',
-    type: 'image/svg+xml',
-    purpose: 'any maskable'
-  }]
-};
-const manifestBlob = new Blob([JSON.stringify(manifest)], { type: 'application/manifest+json' });
-const manifestUrl = URL.createObjectURL(manifestBlob);
-const link = document.createElement('link');
-link.rel = 'manifest';
-link.href = manifestUrl;
-document.head.appendChild(link);
-
-// ── Splash & Init ──
-window.addEventListener('load', () => {
-  renderMonth();
-  setTimeout(() => {
-    document.getElementById('splash').classList.add('hide');
-    setTimeout(() => {
-      document.getElementById('splash').remove();
-    }, 500);
-  }, 1200);
-});
-</script>
 </body>
 </html>
