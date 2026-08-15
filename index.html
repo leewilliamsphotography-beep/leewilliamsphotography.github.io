@@ -15,39 +15,30 @@
 <style>
   *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
   html,body{height:100%;overflow:hidden;font-family:'Nunito',sans-serif;overscroll-behavior:none}
-
   .app{display:flex;flex-direction:column;height:100%;height:100dvh;max-width:500px;margin:0 auto;position:relative;overflow:hidden}
-
   .bg-anim{position:absolute;inset:0;z-index:0;background-size:400% 400%;animation:gradShift 12s ease infinite}
   @keyframes gradShift{0%{background-position:0% 50%}25%{background-position:100% 0%}50%{background-position:100% 100%}75%{background-position:0% 100%}100%{background-position:0% 50%}}
-
   .blob{position:absolute;border-radius:50%;filter:blur(60px);opacity:0.35;animation:blobFloat 8s ease-in-out infinite;pointer-events:none;z-index:0}
   .blob:nth-child(2){animation-delay:-3s;animation-duration:10s}
   .blob:nth-child(3){animation-delay:-6s;animation-duration:7s}
   @keyframes blobFloat{0%,100%{transform:translate(0,0) scale(1)}25%{transform:translate(30px,-40px) scale(1.1)}50%{transform:translate(-20px,30px) scale(0.9)}75%{transform:translate(40px,20px) scale(1.05)}}
-
   .safe-top{height:env(safe-area-inset-top,0px);flex-shrink:0;transition:background 0.6s ease;position:relative;z-index:1}
   .safe-bottom{height:env(safe-area-inset-bottom,0px);flex-shrink:0;position:relative;z-index:1}
-
   .app-header{padding:14px 16px 14px;text-align:center;flex-shrink:0;position:relative;overflow:hidden;z-index:1;transition:background 0.6s ease}
   .app-header::after{content:'';position:absolute;bottom:-20px;left:-20px;right:-20px;height:40px;border-radius:50%;transition:background 0.6s ease}
   .app-header h1{font-family:'Quicksand',sans-serif;font-weight:700;font-size:22px;color:white;position:relative;z-index:1;text-shadow:0 1px 4px rgba(0,0,0,0.2)}
   .app-header .subtitle{font-family:'Quicksand',sans-serif;font-weight:600;font-size:13px;opacity:0.8;margin-top:2px;position:relative;z-index:1;color:white;transition:color 0.6s ease}
-
   .month-nav{display:flex;align-items:center;justify-content:space-between;padding:10px 12px 6px;flex-shrink:0;position:relative;z-index:1}
   .month-nav button{width:42px;height:42px;border:none;border-radius:50%;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:20px;transition:background 0.3s,transform 0.15s,color 0.6s,box-shadow 0.3s;box-shadow:0 2px 8px rgba(0,0,0,0.1)}
   .month-nav button:active{transform:scale(0.9)}
   .month-nav .month-label{font-family:'Quicksand',sans-serif;font-weight:700;font-size:17px;display:flex;align-items:center;gap:6px;transition:color 0.6s ease}
   .month-nav .month-emoji{font-size:20px}
-
   .legend{display:flex;justify-content:center;flex-wrap:wrap;gap:5px;padding:4px 8px 8px;flex-shrink:0;position:relative;z-index:1}
   .legend-chip{display:flex;align-items:center;gap:3px;background:rgba(255,255,255,0.8);padding:3px 7px;border-radius:12px;font-size:9.5px;font-weight:600;border:1px solid rgba(255,255,255,0.5);transition:background 0.6s,border-color 0.6s,box-shadow 0.3s;box-shadow:0 1px 4px rgba(0,0,0,0.06)}
   .legend-dot{width:16px;height:16px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:9px;color:white;flex-shrink:0}
-
   .cal-slide-track{display:flex;width:300%;transition:transform 0.35s cubic-bezier(0.4,0,0.2,1)}
   .cal-slide-track.no-anim{transition:none}
   .cal-slide-panel{width:33.333%;flex-shrink:0;padding:0 8px 8px}
-
   .cal-wrapper{flex:1;overflow-y:auto;overflow-x:hidden;-webkit-overflow-scrolling:touch;position:relative;z-index:1}
   .day-headers{display:grid;grid-template-columns:repeat(7,1fr);gap:3px;padding:0 10px;margin-bottom:3px}
   .day-hdr{text-align:center;font-family:'Quicksand',sans-serif;font-weight:700;font-size:11px;padding:5px 0;border-radius:8px;transition:background 0.6s,color 0.6s}
@@ -63,20 +54,16 @@
   .b-clean{background:linear-gradient(135deg,#ef6c00,#ffa726)}
   .b-film{background:linear-gradient(135deg,#7b1fa2,#ba68c8)}
   .b-work{background:linear-gradient(135deg,#2e7d32,#66bb6a)}
-
   .cell:not(.empty)::before{content:'';position:absolute;top:-50%;left:-50%;width:200%;height:200%;background:linear-gradient(45deg,transparent 40%,rgba(255,255,255,0.12) 50%,transparent 60%);animation:cellShimmer 4s ease-in-out infinite;pointer-events:none}
   .cell.empty::before{display:none}
   @keyframes cellShimmer{0%,100%{transform:translateX(-100%) rotate(25deg)}50%{transform:translateX(100%) rotate(25deg)}}
-
   .app-footer{text-align:center;padding:8px 12px;border-top:1.5px solid rgba(255,255,255,0.3);flex-shrink:0;transition:border-color 0.6s;position:relative;z-index:1}
   .app-footer .flowers{font-size:14px;letter-spacing:3px;margin-bottom:2px;animation:flowerBob 3s ease-in-out infinite}
   @keyframes flowerBob{0%,100%{transform:translateY(0)}50%{transform:translateY(-3px)}}
   .app-footer p{font-size:9px;opacity:0.6;font-weight:600;transition:color 0.6s}
-
   .deco-layer{position:absolute;inset:0;pointer-events:none;z-index:0;overflow:hidden}
   .deco-layer svg{width:100%;height:100%;display:block}
   .swipe-hint{text-align:center;padding:4px;font-size:10px;opacity:0.3;font-weight:600;flex-shrink:0;transition:color 0.6s}
-
   .install-banner{display:none;position:fixed;bottom:0;left:0;right:0;background:white;padding:14px 16px;box-shadow:0 -2px 20px rgba(0,0,0,0.15);z-index:100;max-width:500px;margin:0 auto}
   .install-banner.show{display:flex;align-items:center;gap:12px}
   .install-banner .install-icon{width:42px;height:42px;border-radius:10px;background:linear-gradient(135deg,#e91e63,#f06292);display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0}
@@ -85,14 +72,11 @@
   .install-banner .install-text span{font-size:11px;color:#888}
   .install-banner .install-btn{border:none;padding:8px 18px;border-radius:20px;background:#e91e63;color:white;font-family:'Quicksand',sans-serif;font-weight:700;font-size:12px;cursor:pointer;flex-shrink:0}
   .install-banner .install-dismiss{border:none;background:none;font-size:18px;color:#bbb;cursor:pointer;padding:4px}
-
-  /* Animated character keyframes */
   @keyframes charHop{0%,100%{transform:translateY(0)}50%{transform:translateY(-8px)}}
   @keyframes charWaddle{0%,100%{transform:translateX(0) rotate(0deg)}25%{transform:translateX(5px) rotate(3deg)}75%{transform:translateX(-5px) rotate(-3deg)}}
   @keyframes charFloat{0%,100%{transform:translateY(0) scale(1)}50%{transform:translateY(-6px) scale(1.05)}}
   @keyframes charSway{0%,100%{transform:rotate(-5deg)}50%{transform:rotate(5deg)}}
   @keyframes charBounce{0%,100%{transform:translateY(0) scaleY(1)}30%{transform:translateY(-12px) scaleY(0.9)}50%{transform:translateY(0) scaleY(1.1) scaleX(0.95)}70%{transform:translateY(-5px) scaleY(1)}}
-
   @media(prefers-reduced-motion:reduce){
     .cal-slide-track{transition:none}.bg-anim{animation:none}.blob{animation:none}
     .cell:not(.empty)::before{animation:none;display:none}
@@ -119,6 +103,7 @@
   </div>
   <div class="legend" id="legend"></div>
   <div class="cal-wrapper" id="calWrapper">
+    <div class="day-headers" id="dayHeaders"></div>
     <div class="cal-slide-track no-anim" id="slideTrack">
       <div class="cal-slide-panel"><div class="cal-grid" id="gridLeft"></div></div>
       <div class="cal-slide-panel"><div class="cal-grid" id="gridCenter"></div></div>
@@ -147,11 +132,10 @@ var SN1=e(0x2744),SN2=e(0x26C4),SN3=e(0x1F328);
 var TU=e(0x1F337),SF=e(0x1F33B),CH=e(0x1F338),BF=e(0x1F98B);
 var SU=e(0x2600),HI=e(0x1F33A),ME=e(0x1F349),BE=e(0x1F3D6);
 var L1=e(0x1F342),L2=e(0x1F341),NU=e(0x1F330),PU=e(0x1F383),XM=e(0x1F384),HT=e(0x1F496);
-var EG=e(0x1F95A),EK=e(0x1F420),EBN=e(0x1F380),EBL=e(0x1F308),EFL=e(0x1F33C),EBY=e(0x1F33B);
-var GH=e(0x1F47B),SK=e(0x1F378),BT=e(0x1F383),WN=e(0x1F43A),SP=e(0x1F47E),CT=e(0x1F479),CN=e(0x1F5FF),MU=e(0x1F9B8);
-var SD=e(0x1F384),TR=e(0x1F385),NO=e(0x1F386),RD=e(0x1F381),SNM=e(0x2744),GL=e(0x1F315),SL=e(0x1F36C),ST=e(0x1F381),DF=e(0x1F9EC);
+var EG=e(0x1F95A),EK=e(0x1F420),EBN=e(0x1F380),EBL=e(0x1F308),EFL=e(0x1F33C);
+var GH=e(0x1F47B),SK=e(0x1F378),BT=e(0x1F383),WN=e(0x1F43A),SP=e(0x1F47E),CT=e(0x1F479),MU=e(0x1F9B8);
+var SD=e(0x1F384),TR=e(0x1F385),NO=e(0x1F386),RD=e(0x1F381),SL=e(0x1F36C);
 
-// ── Decoration Helpers ──
 function snowflake(cx,cy,size,op){var s='<g opacity="'+op+'" stroke="#64b5f6" stroke-width="'+Math.max(1,size/8)+'" stroke-linecap="round">';for(var a=0;a<360;a+=60){var r=a*Math.PI/180,ex=cx+size*Math.cos(r),ey=cy+size*Math.sin(r);s+='<line x1="'+cx+'" y1="'+cy+'" x2="'+ex+'" y2="'+ey+'"/>';var b=size*0.55,bx=cx+b*Math.cos(r),by=cy+b*Math.sin(r);s+='<line x1="'+bx+'" y1="'+by+'" x2="'+(bx+size*0.3*Math.cos(r+0.7))+'" y2="'+(by+size*0.3*Math.sin(r+0.7))+'"/>';s+='<line x1="'+bx+'" y1="'+by+'" x2="'+(bx+size*0.3*Math.cos(r-0.7))+'" y2="'+(by+size*0.3*Math.sin(r-0.7))+'"/>'}return s+'</g>'}
 function bareTree(x,y,sc,op,col){var c=col||'#5d4037',h=130*sc,w=70*sc;var s='<g opacity="'+op+'" stroke="'+c+'" stroke-linecap="round" fill="none">';s+='<line x1="'+x+'" y1="'+y+'" x2="'+x+'" y2="'+(y-h)+'" stroke-width="'+(4*sc)+'"/>';s+='<line x1="'+x+'" y1="'+(y-h)+'" x2="'+(x-w*0.4)+'" y2="'+(y-h-w*0.9)+'" stroke-width="'+(2.5*sc)+'"/>';s+='<line x1="'+x+'" y1="'+(y-h)+'" x2="'+(x+w*0.4)+'" y2="'+(y-h-w*0.7)+'" stroke-width="'+(2*sc)+'"/>';s+='<line x1="'+x+'" y1="'+(y-h*0.6)+'" x2="'+(x-w*0.35)+'" y2="'+(y-h*0.85)+'" stroke-width="'+(1.8*sc)+'"/>';s+='<line x1="'+x+'" y1="'+(y-h*0.7)+'" x2="'+(x+w*0.3)+'" y2="'+(y-h*0.9)+'" stroke-width="'+(1.5*sc)+'"/>';return s+'</g>'}
 function decFlower(cx,cy,r,c1,c2,op){var s='<g opacity="'+op+'">';for(var a=0;a<360;a+=72){s+='<ellipse cx="'+cx+'" cy="'+(cy-r*0.8)+'" rx="'+r+'" ry="'+(r*0.5)+'" transform="rotate('+a+' '+cx+' '+(cy-r*0.8)+')" fill="'+c1+'"/>'}s+='<circle cx="'+cx+'" cy="'+cy+'" r="'+(r*0.4)+'" fill="'+c2+'"/>';return s+'</g>'}
@@ -162,295 +146,40 @@ function decSun(cx,cy,r,op){var s='<g opacity="'+op+'"><circle cx="'+cx+'" cy="'
 function wave(yPos,op){return '<path d="M0 '+yPos+' Q125 '+(yPos-15)+' 250 '+yPos+' Q375 '+(yPos+15)+' 500 '+yPos+'" fill="none" stroke="rgba(255,183,77,0.5)" stroke-width="2.5" opacity="'+op+'"/>'}
 function palmTree(x,y,sc,op){var h=80*sc,tw=4*sc,top=y-h;var s='<g opacity="'+op+'"><rect x="'+(x-tw/2)+'" y="'+top+'" width="'+tw+'" height="'+h+'" rx="2" fill="#8d6e63"/>';var fronds=[[-35,-15,'#43a047'],[35,-15,'#388e3c'],[-50,5,'#2e7d32'],[50,5,'#1b5e20'],[-15,-25,'#66bb6a']];for(var i=0;i<fronds.length;i++){var f=fronds[i],ex=x+f[0]*sc,ey=top+f[1]*sc,cpx=x+f[0]*sc*1.2,cpy=top+f[1]*sc*2.5;s+='<path d="M'+x+' '+top+' Q'+cpx+' '+cpy+' '+ex+' '+ey+'" fill="'+f[2]+'" opacity="0.85"/>'}s+='<circle cx="'+(x-5)+'" cy="'+(top+5)+'" r="4" fill="#795548"/><circle cx="'+(x+6)+'" cy="'+(top+3)+'" r="3.5" fill="#6d4c41"/>';return s+'</g>'}
 function acorn(cx,cy,op){return '<g opacity="'+op+'" transform="translate('+cx+','+cy+')"><ellipse cy="6" rx="10" ry="9" fill="#8d6e63"/><ellipse cy="0" rx="9" ry="7" fill="#a1887f"/><rect x="-4" y="-10" width="8" height="12" rx="4" fill="#558b2f"/><path d="M4 -8 Q12 -14 8 -6" fill="none" stroke="#558b2f" stroke-width="2" stroke-linecap="round"/></g>'}
+function animChar(cx,cy,anim,dur,delay,scale,op,emoji){return '<text x="'+cx+'" y="'+cy+'" font-size="'+(28*scale)+'" text-anchor="middle" dominant-baseline="central" opacity="'+op+'" style="animation:'+anim+' '+dur+'s ease-in-out '+delay+'s infinite">'+emoji+'</text>'}
+function easterEgg(cx,cy,r,c1,c2,op){return '<g opacity="'+op+'" transform="translate('+cx+','+cy+')"><ellipse rx="'+r+'" ry="'+(r*1.3)+'" fill="'+c1+'"/><path d="M0 '+(-r*1.3)+' Q'+(r*0.3)+' '+(-r*1.6)+' 0 '+(-r*1.5)+' Q'+(-r*0.3)+' '+(-r*1.6)+' 0 '+(-r*1.3)+'Z" fill="'+c1+'"/><ellipse cy="'+(-r*0.5)+'" rx="'+(r*0.6)+'" ry="'+(r*0.15)+'" fill="'+c2+'" opacity="0.7"/><ellipse cy="'+(r*0.2)+'" rx="'+(r*0.7)+'" ry="'+(r*0.15)+'" fill="'+c2+'" opacity="0.7"/><ellipse cy="'+(r*0.8)+'" rx="'+(r*0.5)+'" ry="'+(r*0.12)+'" fill="'+c2+'" opacity="0.7"/></g>'}
+function xmasTree(cx,cy,h,op){var w=h*0.8;return '<g opacity="'+op+'" transform="translate('+cx+','+cy+')"><rect x="-5" y="0" width="10" height="'+(h*0.2)+'" rx="2" fill="#5d4037"/><polygon points="0,'+(-h)+' '+(-w*0.2)+','+(-h*0.4)+' '+(w*0.2)+','+(-h*0.4)+'" fill="#2e7d32"/><polygon points="0,'+(-h*0.85)+' '+(-w*0.35)+','+(-h*0.25)+' '+(w*0.35)+','+(-h*0.25)+'" fill="#388e3c"/><polygon points="0,'+(-h*0.65)+' '+(-w*0.5)+','+(-h*0.05)+' '+(w*0.5)+','+(-h*0.05)+'" fill="#43a047"/><circle cx="0" cy="'+(-h*0.9)+'" r="5" fill="#ffd54f"/><circle cx="'+(-w*0.12)+'" cy="'+(-h*0.55)+'" r="3" fill="#e91e63"/><circle cx="'+(w*0.15)+'" cy="'+(-h*0.35)+'" r="3" fill="#29b6f6"/><circle cx="'+(-w*0.08)+'" cy="'+(-h*0.15)+'" r="3" fill="#ff9800"/><circle cx="'+(w*0.2)+'" cy="'+(-h*0.7)+'" r="3" fill="#ab47bc"/><circle cx="0" cy="'+(-h*0.45)+'" r="3" fill="#e91e63"/></g>'}
+function pumpkin(cx,cy,r,op){return '<g opacity="'+op+'" transform="translate('+cx+','+cy+')"><ellipse rx="'+r+'" ry="'+(r*0.85)+'" fill="#e65100"/><ellipse cx="'+(-r*0.35)+'" rx="'+(r*0.55)+'" ry="'+(r*0.75)+'" fill="#ef6c00"/><ellipse cx="'+(r*0.35)+'" rx="'+(r*0.55)+'" ry="'+(r*0.75)+'" fill="#ef6c00"/><rect x="-3" y="'+(-r*0.85-10)+'" width="6" height="12" rx="3" fill="#33691e"/><path d="M3 '+(-r*0.85-4)+' Q12 '+(-r*0.85-14)+' 8 '+(-r*0.85-2)+'" fill="none" stroke="#33691e" stroke-width="2"/><polygon points="0,'+(-r*0.35)+' '+(-r*0.2)+','+(r*0.05)+' 0,'+(-r*0.05)+'" fill="#ffd54f" opacity="0.9"/><polygon points="0,'+(-r*0.35)+' '+(r*0.2)+','+(r*0.05)+' 0,'+(-r*0.05)+'" fill="#ffb74d" opacity="0.9"/><ellipse cx="'+(-r*0.3)+'" cy="'+(-r*0.2)+'" rx="4" ry="5" fill="#ffd54f" opacity="0.9"/><ellipse cx="'+(r*0.3)+'" cy="'+(-r*0.2)+'" rx="4" ry="5" fill="#ffd54f" opacity="0.9"/></g>'}
+function bat(cx,cy,sc,op){return '<g opacity="'+op+'" transform="translate('+cx+','+cy+') scale('+sc+')"><ellipse cx="0" cy="0" rx="5" ry="7" fill="#1a1a2e"/><path d="M-5 -3 Q-25 -20 -30 -5 Q-25 0 -15 5 Q-10 2 -5 0" fill="#1a1a2e"/><path d="M5 -3 Q25 -20 30 -5 Q25 0 15 5 Q10 2 5 0" fill="#1a1a2e"/><circle cx="-2" cy="-2" r="1.5" fill="#ff5722"/><circle cx="2" cy="-2" r="1.5" fill="#ff5722"/></g>'}
+function candyCane(cx,cy,h,op){return '<g opacity="'+op+'" transform="translate('+cx+','+cy+')"><path d="M0 '+h+' Q0 0 '+(h*0.3)+' '+(-h*0.1)+' Q'+(h*0.5)+' '+(-h*0.3)+' '+(h*0.3)+' '+(-h*0.4)+'" fill="none" stroke="#e53935" stroke-width="8" stroke-linecap="round"/><path d="M0 '+h+' L0 0" fill="none" stroke="white" stroke-width="8" stroke-linecap="round" stroke-dasharray="8 8" opacity="0.7"/></g>'}
+function stocking(cx,cy,sc,op){return '<g opacity="'+op+'" transform="translate('+cx+','+cy+') scale('+sc+')"><path d="M0 0 L0 40 Q0 55 -15 55 L-25 55 Q-30 55 -28 48 L-18 30 Q-10 18 0 0Z" fill="#e53935"/><path d="M0 0 Q10 -5 12 0 L12 12 Q10 15 0 12Z" fill="#e53935"/><rect x="-2" y="-5" width="16" height="10" rx="3" fill="#43a047"/><circle cx="-12" cy="40" r="4" fill="#ffd54f"/><circle cx="-8" cy="48" r="3" fill="#29b6f6"/><circle cx="-18" cy="44" r="3" fill="#ab47bc"/></g>'}
 
-// Animated SVG character — text-based emoji with animation style
-function animChar(cx,cy,anim,dur,delay,scale,op,emoji){
-  return '<text x="'+cx+'" y="'+cy+'" font-size="'+(28*scale)+'" text-anchor="middle" dominant-baseline="central" opacity="'+op+'" style="animation:'+anim+' '+dur+'s ease-in-out '+delay+'s infinite">'+emoji+'</text>';
-}
-
-// Easter egg shape
-function easterEgg(cx,cy,r,c1,c2,op){
-  return '<g opacity="'+op+'" transform="translate('+cx+','+cy+')">' +
-    '<ellipse rx="'+r+'" ry="'+(r*1.3)+'" fill="'+c1+'"/>' +
-    '<ellipse rx="'+r+'" ry="'+(r*1.3)+'" fill="url(#eggStripe)"/>' +
-    '<path d="M0 '+(-r*1.3)+' Q'+(r*0.3)+' '+(-r*1.6)+' 0 '+(-r*1.5)+' Q'+(-r*0.3)+' '+(-r*1.6)+' 0 '+(-r*1.3)+'Z" fill="'+c1+'"/>' +
-    '<ellipse cy="'+(-r*0.5)+'" rx="'+(r*0.6)+'" ry="'+(r*0.15)+'" fill="'+c2+'" opacity="0.7"/>' +
-    '<ellipse cy="'+(r*0.2)+'" rx="'+(r*0.7)+'" ry="'+(r*0.15)+'" fill="'+c2+'" opacity="0.7"/>' +
-    '<ellipse cy="'+(r*0.8)+'" rx="'+(r*0.5)+'" ry="'+(r*0.12)+'" fill="'+c2+'" opacity="0.7"/>' +
-    '</g>';
-}
-
-// Christmas tree
-function xmasTree(cx,cy,h,op){
-  var w=h*0.8;
-  return '<g opacity="'+op+'" transform="translate('+cx+','+cy+')">' +
-    '<rect x="-5" y="0" width="10" height="'+(h*0.2)+'" rx="2" fill="#5d4037"/>' +
-    '<polygon points="0,'+(-h)+' '+(-w*0.2)+','+(-h*0.4)+' '+(w*0.2)+','+(-h*0.4)+'" fill="#2e7d32"/>' +
-    '<polygon points="0,'+(-h*0.85)+' '+(-w*0.35)+','+(-h*0.25)+' '+(w*0.35)+','+(-h*0.25)+'" fill="#388e3c"/>' +
-    '<polygon points="0,'+(-h*0.65)+' '+(-w*0.5)+','+(-h*0.05)+' '+(w*0.5)+','+(-h*0.05)+'" fill="#43a047"/>' +
-    '<circle cx="0" cy="'+(-h*0.9)+'" r="5" fill="#ffd54f"/>' +
-    '<circle cx="'+(-w*0.12)+'" cy="'+(-h*0.55)+'" r="3" fill="#e91e63"/>' +
-    '<circle cx="'+(w*0.15)+'" cy="'+(-h*0.35)+'" r="3" fill="#29b6f6"/>' +
-    '<circle cx="'+(-w*0.08)+'" cy="'+(-h*0.15)+'" r="3" fill="#ff9800"/>' +
-    '<circle cx="'+(w*0.2)+'" cy="'+(-h*0.7)+'" r="3" fill="#ab47bc"/>' +
-    '<circle cx="0" cy="'+(-h*0.45)+'" r="3" fill="#e91e63"/>' +
-    '</g>';
-}
-
-// Halloween pumpkin
-function pumpkin(cx,cy,r,op){
-  return '<g opacity="'+op+'" transform="translate('+cx+','+cy+')">' +
-    '<ellipse rx="'+r+'" ry="'+(r*0.85)+'" fill="#e65100"/>' +
-    '<ellipse cx="'+(-r*0.35)+'" rx="'+(r*0.55)+'" ry="'+(r*0.75)+'" fill="#ef6c00"/>' +
-    '<ellipse cx="'+(r*0.35)+'" rx="'+(r*0.55)+'" ry="'+(r*0.75)+'" fill="#ef6c00"/>' +
-    '<rect x="-3" y="'+(-r*0.85-10)+'" width="6" height="12" rx="3" fill="#33691e"/>' +
-    '<path d="M3 '+(-r*0.85-4)+' Q12 '+(-r*0.85-14)+' 8 '+(-r*0.85-2)+'" fill="none" stroke="#33691e" stroke-width="2"/>' +
-    '<polygon points="0,'+(-r*0.35)+' '+(-r*0.2)+','+(r*0.05)+' 0,'+(-r*0.05)+'" fill="#ffd54f" opacity="0.9"/>' +
-    '<polygon points="0,'+(-r*0.35)+' '+(r*0.2)+','+(r*0.05)+' 0,'+(-r*0.05)+'" fill="#ffb74d" opacity="0.9"/>' +
-    '<ellipse cx="'+(-r*0.3)+'" cy="'+(-r*0.2)+'" rx="4" ry="5" fill="#ffd54f" opacity="0.9"/>' +
-    '<ellipse cx="'+(r*0.3)+'" cy="'+(-r*0.2)+'" rx="4" ry="5" fill="#ffd54f" opacity="0.9"/>' +
-    '</g>';
-}
-
-// Bat silhouette
-function bat(cx,cy,sc,op){
-  var s='<g opacity="'+op+'" transform="translate('+cx+','+cy+') scale('+sc+')">' +
-    '<ellipse cx="0" cy="0" rx="5" ry="7" fill="#1a1a2e"/>' +
-    '<path d="M-5 -3 Q-25 -20 -30 -5 Q-25 0 -15 5 Q-10 2 -5 0" fill="#1a1a2e"/>' +
-    '<path d="M5 -3 Q25 -20 30 -5 Q25 0 15 5 Q10 2 5 0" fill="#1a1a2e"/>' +
-    '<circle cx="-2" cy="-2" r="1.5" fill="#ff5722"/>' +
-    '<circle cx="2" cy="-2" r="1.5" fill="#ff5722"/>' +
-    '</g>';
-  return s;
-}
-
-// Candy cane
-function candyCane(cx,cy,h,op){
-  return '<g opacity="'+op+'" transform="translate('+cx+','+cy+')">' +
-    '<path d="M0 '+h+' Q0 0 '+(h*0.3)+' '+(-h*0.1)+' Q'+(h*0.5)+' '+(-h*0.3)+' '+(h*0.3)+' '+(-h*0.4)+'" fill="none" stroke="#e53935" stroke-width="8" stroke-linecap="round"/>' +
-    '<path d="M0 '+h+' L0 0" fill="none" stroke="white" stroke-width="8" stroke-linecap="round" stroke-dasharray="8 8" opacity="0.7"/>' +
-    '</g>';
-}
-
-// Stocking
-function stocking(cx,cy,sc,op){
-  return '<g opacity="'+op+'" transform="translate('+cx+','+cy+') scale('+sc+')">' +
-    '<path d="M0 0 L0 40 Q0 55 -15 55 L-25 55 Q-30 55 -28 48 L-18 30 Q-10 18 0 0Z" fill="#e53935"/>' +
-    '<path d="M0 0 Q10 -5 12 0 L12 12 Q10 15 0 12Z" fill="#e53935"/>' +
-    '<rect x="-2" y="-5" width="16" height="10" rx="3" fill="#43a047"/>' +
-    '<circle cx="-12" cy="40" r="4" fill="#ffd54f"/>' +
-    '<circle cx="-8" cy="48" r="3" fill="#29b6f6"/>' +
-    '<circle cx="-18" cy="44" r="3" fill="#ab47bc"/>' +
-    '</g>';
-}
-
-// ── Season Themes ──
 var SEASONS={
-  winter:{
-    bgAnim:'linear-gradient(135deg,#e3f2fd 0%,#bbdefb 25%,#90caf9 50%,#e1f5fe 75%,#b3e5fc 100%)',
-    header:'#1565c0',headerSub:'#e3f2fd',safeTop:'#0d47a1',headerAfter:'#1976d2',
-    dayHdrBg:'rgba(21,101,192,0.12)',dayHdrColor:'#1565c0',
-    cellBg:'#eef2ff',cellBorder:'#c5cae9',sundayBg:'#bbdefb',numColor:'#0d47a1',
-    legendBg:'rgba(255,255,255,0.8)',legendBorder:'rgba(144,202,249,0.5)',
-    footerBorder:'rgba(144,202,249,0.4)',footerColor:'#1565c0',hintColor:'#1565c0',
-    btnColor:'#0d47a1',btnBg:'rgba(21,101,192,0.18)',blobs:['#90caf9','#64b5f6','#bbdefb'],
-    sub:'Winter',flowers:SN1+' '+SN2+' '+SN3+' '+SN1+' '+SN2,
-    deco:'<circle cx="450" cy="-30" r="220" fill="#e3f2fd" opacity="0.5"/><circle cx="50" cy="1230" r="250" fill="#bbdefb" opacity="0.3"/>'+snowflake(400,100,40,0.12)+snowflake(460,280,50,0.09)+snowflake(75,450,35,0.1)+snowflake(440,600,45,0.08)+snowflake(150,750,30,0.09)+snowflake(375,900,38,0.07)+snowflake(250,180,25,0.06)+bareTree(460,1200,0.7,0.1)+bareTree(60,1200,0.55,0.08)+snowflake(475,380,18,0.06)+snowflake(100,650,28,0.07)
-  },
-  spring:{
-    bgAnim:'linear-gradient(135deg,#e8f5e9 0%,#c8e6c9 20%,#dcedc8 40%,#f1f8e9 60%,#a5d6a7 80%,#c8e6c9 100%)',
-    header:'#2e7d32',headerSub:'#e8f5e9',safeTop:'#1b5e20',headerAfter:'#388e3c',
-    dayHdrBg:'rgba(46,125,50,0.12)',dayHdrColor:'#2e7d32',
-    cellBg:'#f4fbf4',cellBorder:'#a5d6a7',sundayBg:'#c8e6c9',numColor:'#1b5e20',
-    legendBg:'rgba(255,255,255,0.8)',legendBorder:'rgba(129,199,132,0.5)',
-    footerBorder:'rgba(129,199,132,0.4)',footerColor:'#2e7d32',hintColor:'#2e7d32',
-    btnColor:'#1b5e20',btnBg:'rgba(46,125,50,0.18)',blobs:['#a5d6a7','#81c784','#c8e6c9'],
-    sub:'Spring',flowers:TU+' '+SF+' '+CH+' '+BF+' '+TU,
-    deco:'<circle cx="450" cy="-30" r="220" fill="#c8e6c9" opacity="0.4"/><circle cx="50" cy="1230" r="250" fill="#a5d6a7" opacity="0.25"/>'+decFlower(425,80,35,'#f48fb1','#e91e63',0.18)+decFlower(75,150,28,'#ffab91','#ff7043',0.14)+decFlower(450,350,22,'#ce93d8','#9c27b0',0.12)+decFlower(50,500,30,'#f48fb1','#e91e63',0.1)+butterfly(400,200,0.14)+butterfly(75,420,0.12)+butterfly(450,650,0.1)+leaf(100,900,30,'#66bb6a',20,0.12)+leaf(400,1000,25,'#43a047',-30,0.1)
-  },
-  summer:{
-    bgAnim:'linear-gradient(135deg,#fff8e1 0%,#ffecb3 20%,#ffe0b2 40%,#fff3e0 60%,#ffcc80 80%,#fff8e1 100%)',
-    header:'#e65100',headerSub:'#fff3e0',safeTop:'#bf360c',headerAfter:'#f57c00',
-    dayHdrBg:'rgba(230,81,0,0.12)',dayHdrColor:'#e65100',
-    cellBg:'#fffdf5',cellBorder:'#ffcc80',sundayBg:'#ffe0b2',numColor:'#bf360c',
-    legendBg:'rgba(255,255,255,0.8)',legendBorder:'rgba(255,183,77,0.5)',
-    footerBorder:'rgba(255,183,77,0.4)',footerColor:'#e65100',hintColor:'#e65100',
-    btnColor:'#bf360c',btnBg:'rgba(230,81,0,0.18)',blobs:['#ffcc80','#ffb74d','#ffe0b2'],
-    sub:'Summer',flowers:SU+' '+HI+' '+ME+' '+BE+' '+SF,
-    deco:'<circle cx="450" cy="-30" r="220" fill="#fff8e1" opacity="0.5"/><circle cx="50" cy="1230" r="250" fill="#ffe0b2" opacity="0.3"/>'+decSun(425,70,40,0.18)+decSun(60,130,28,0.14)+wave(580,0.1)+wave(930,0.08)+palmTree(460,1200,0.8,0.12)
-  },
-  autumn:{
-    bgAnim:'linear-gradient(135deg,#faf3e6 0%,#ffe0b2 20%,#e8d0b0 40%,#d7a97a 60%,#ffccbc 80%,#faf3e6 100%)',
-    header:'#bf360c',headerSub:'#faf3e6',safeTop:'#8d6e63',headerAfter:'#d84315',
-    dayHdrBg:'rgba(191,54,12,0.12)',dayHdrColor:'#bf360c',
-    cellBg:'#fdf6ee',cellBorder:'#d7ccc8',sundayBg:'#ffccbc',numColor:'#4e342e',
-    legendBg:'rgba(255,255,255,0.8)',legendBorder:'rgba(188,170,164,0.5)',
-    footerBorder:'rgba(188,170,164,0.4)',footerColor:'#5d4037',hintColor:'#5d4037',
-    btnColor:'#4e342e',btnBg:'rgba(191,54,12,0.18)',blobs:['#ffccbc','#d7a97a','#ffe0b2'],
-    sub:'Autumn',flowers:L1+' '+L2+' '+NU+' '+L1+' '+L2,
-    deco:'<circle cx="450" cy="-30" r="220" fill="#e8d0b0" opacity="0.4"/><circle cx="50" cy="1230" r="250" fill="#d7a97a" opacity="0.25"/>'+fallingLeaf(400,100,30,'#d84315',-40,0.14)+fallingLeaf(75,200,25,'#e65100',-25,0.12)+fallingLeaf(450,320,20,'#c62828',-55,0.1)+fallingLeaf(50,450,28,'#d84315',-35,0.09)+fallingLeaf(425,580,22,'#e65100',-50,0.08)+bareTree(460,1200,0.8,0.1,'#6d4c41')+bareTree(50,1200,0.6,0.08,'#5d4037')+acorn(425,960,0.1)
-  },
-
-  // ── Easter (April only) ──
-  easter:{
-    bgAnim:'linear-gradient(135deg,#fce4ec 0%,#f8bbd0 15%,#e1bee7 30%,#f3e5f5 45%,#e8f5e9 60%,#fff9c4 75%,#fce4ec 90%,#f8bbd0 100%)',
-    header:'#ad1457',headerSub:'#fce4ec',safeTop:'#880e4f',headerAfter:'#c2185b',
-    dayHdrBg:'rgba(173,20,87,0.12)',dayHdrColor:'#ad1457',
-    cellBg:'#fef6fb',cellBorder:'#f8bbd0',sundayBg:'#f8bbd0',numColor:'#880e4f',
-    legendBg:'rgba(255,255,255,0.85)',legendBorder:'rgba(248,187,208,0.5)',
-    footerBorder:'rgba(248,187,208,0.4)',footerColor:'#ad1457',hintColor:'#ad1457',
-    btnColor:'#880e4f',btnBg:'rgba(173,20,87,0.18)',blobs:['#f8bbd0','#ce93d8','#fff9c4'],
-    sub:'Happy Easter!',flowers:EG+' '+EBN+' '+EBL+' '+EFL+' '+EG,
-    deco:'<circle cx="450" cy="-30" r="220" fill="#fce4ec" opacity="0.5"/><circle cx="50" cy="1230" r="250" fill="#f8bbd0" opacity="0.3"/><circle cx="-25" cy="-25" r="180" fill="#e1bee7" opacity="0.2"/>'+
-      easterEgg(60,100,18,'#e91e63','#fff',0.2)+
-      easterEgg(440,160,15,'#7b1fa2','#fff',0.18)+
-      easterEgg(80,300,20,'#0288d1','#fff',0.16)+
-      easterEgg(420,380,14,'#43a047','#fff',0.18)+
-      easterEgg(50,520,16,'#ff9800','#fff',0.15)+
-      easterEgg(450,600,18,'#e91e63','#fff',0.14)+
-      easterEgg(100,750,13,'#7b1fa2','#fff',0.12)+
-      easterEgg(400,850,15,'#0288d1','#fff',0.11)+
-      easterEgg(70,950,17,'#43a047','#fff',0.1)+
-      easterEgg(430,1050,14,'#ff9800','#fff',0.09)+
-      decFlower(250,80,22,'#f48fb1','#e91e63',0.15)+
-      decFlower(150,200,18,'#ce93d8','#9c27b0',0.12)+
-      decFlower(350,250,20,'#ffab91','#ff7043',0.1)+
-      decFlower(100,400,16,'#f48fb1','#e91e63',0.1)+
-      decFlower(400,500,14,'#ce93d8','#9c27b0',0.08)+
-      // Animated characters
-      animChar(80,180,'charHop',1.5,0,1.1,0.2,EG)+
-      animChar(420,280,'charWaddle',2,0.3,1,0.18,EK)+
-      animChar(60,450,'charHop',1.8,0.6,0.9,0.16,EBN)+
-      animChar(440,550,'charFloat',2.2,0.2,1.2,0.15,EBL)+
-      animChar(90,700,'charWaddle',1.6,0.8,1,0.14,EG)+
-      animChar(410,800,'charHop',2,0.5,0.95,0.12,EK)+
-      animChar(70,920,'charFloat',1.7,0.1,1.1,0.11,EBN)+
-      animChar(430,1000,'charHop',2.1,0.7,0.9,0.1,EG)+
-      animChar(120,1100,'charWaddle',1.9,0.4,1,0.09,EK)
-  },
-
-  // ── Halloween (October only) ──
-  halloween:{
-    bgAnim:'linear-gradient(135deg,#1a1a2e 0%,#16213e 20%,#2d1b3d 40%,#1a1a2e 60%,#3d1f3d 80%,#16213e 100%)',
-    header:'#ff6f00',headerSub:'#1a1a2e',safeTop:'#e65100',headerAfter:'#ff8f00',
-    dayHdrBg:'rgba(255,111,0,0.15)',dayHdrColor:'#ffab00',
-    cellBg:'#2a2240',cellBorder:'#4a3f6b',sundayBg:'#3d2f5e',numColor:'#ffcc02',
-    legendBg:'rgba(45,35,65,0.85)',legendBorder:'rgba(100,80,140,0.5)',
-    footerBorder:'rgba(100,80,140,0.4)',footerColor:'#ffab00',hintColor:'#ffab00',
-    btnColor:'#ffcc02',btnBg:'rgba(255,111,0,0.2)',blobs:['#6a1b9a','#ff6f00','#1a237e'],
-    sub:'Happy Halloween!',flowers:PU+' '+GH+' '+SK+' '+WN+' '+BT,
-    deco:'<circle cx="450" cy="-30" r="220" fill="#2d1b3d" opacity="0.5"/><circle cx="50" cy="1230" r="250" fill="#16213e" opacity="0.3"/>'+
-      // Moon
-      '<circle cx="400" cy="80" r="35" fill="#ffd54f" opacity="0.25"/>'+
-      '<circle cx="412" cy="72" r="30" fill="#1a1a2e" opacity="0.3"/>'+
-      // Pumpkins
-      pumpkin(80,130,22,0.25)+
-      pumpkin(420,200,18,0.22)+
-      pumpkin(60,380,25,0.2)+
-      pumpkin(440,500,20,0.18)+
-      pumpkin(90,680,16,0.16)+
-      pumpkin(410,820,22,0.14)+
-      // Bats
-      bat(380,120,0.8,0.2)+
-      bat(120,250,0.7,0.18)+
-      bat(400,400,0.9,0.16)+
-      bat(100,550,0.6,0.14)+
-      bat(420,700,0.75,0.12)+
-      bat(80,850,0.65,0.1)+
-      // Tombstones
-      '<g opacity="0.12"><rect x="200" y="1100" width="30" height="50" rx="5" fill="#555"/><rect x="260" y="1090" width="25" height="60" rx="5" fill="#555"/><rect x="230" y="1110" width="20" height="40" rx="4" fill="#555"/><text x="215" y="1135" font-size="8" fill="#888" text-anchor="middle">RIP</text></g>'+
-      // Animated characters
-      animChar(70,200,'charSway',2,0,1.2,0.25,GH)+
-      animChar(430,320,'charHop',1.5,0.4,1.1,0.22,WN)+
-      animChar(60,480,'charWaddle',1.8,0.8,1,0.2,SK)+
-      animChar(440,620,'charBounce',2.2,0.2,1.3,0.18,MU)+
-      animChar(80,780,'charSway',1.6,0.6,1.1,0.16,GH)+
-      animChar(420,900,'charHop',2,1,1,0.14,WN)+
-      animChar(70,1020,'charFloat',1.7,0.3,1.2,0.12,SP)+
-      animChar(440,1100,'charWaddle',1.9,0.5,1,0.1,CT)+
-      animChar(200,150,'charHop',2.5,0.7,0.8,0.08,BT)
-  },
-
-  // ── Christmas (December only) ──
-  christmas:{
-    bgAnim:'linear-gradient(135deg,#0d47a1 0%,#1565c0 15%,#1b5e20 30%,#0d47a1 45%,#b71c1c 60%,#1565c0 75%,#1b5e20 90%,#0d47a1 100%)',
-    header:'#b71c1c',headerSub:'#fce4ec',safeTop:'#880e4f',headerAfter:'#c62828',
-    dayHdrBg:'rgba(183,28,28,0.15)',dayHdrColor:'#ff5252',
-    cellBg:'#1a2744',cellBorder:'#2e4470',sundayBg:'#2a1a3e',numColor:'#ffd54f',
-    legendBg:'rgba(26,39,68,0.85)',legendBorder:'rgba(46,68,112,0.5)',
-    footerBorder:'rgba(46,68,112,0.4)',footerColor:'#ffd54f',hintColor:'#ffd54f',
-    btnColor:'#ffd54f',btnBg:'rgba(183,28,28,0.2)',blobs:['#c62828','#1565c0','#2e7d32'],
-    sub:'Merry Christmas!',flowers:SD+' '+TR+' '+NO+' '+RD+' '+SD,
-    deco:'<circle cx="450" cy="-30" r="220" fill="#0d47a1" opacity="0.4"/><circle cx="50" cy="1230" r="250" fill="#1b5e20" opacity="0.3"/>'+
-      snowflake(120,80,30,0.08)+snowflake(350,150,25,0.06)+snowflake(80,300,20,0.07)+snowflake(420,450,28,0.05)+snowflake(150,600,22,0.06)+snowflake(380,750,18,0.05)+snowflake(100,900,25,0.04)+snowflake(400,1050,20,0.04)+
-      // Christmas trees
-      xmasTree(400,200,80,0.2)+
-      xmasTree(80,450,60,0.18)+
-      xmasTree(430,700,70,0.15)+
-      xmasTree(60,950,55,0.12)+
-      // Candy canes
-      candyCane(180,300,60,0.15)+
-      candyCane(350,550,50,0.12)+
-      candyCane(150,800,55,0.1)+
-      // Stockings
-      stocking(320,180,1,0.15)+
-      stocking(120,430,0.9,0.12)+
-      stocking(370,680,1.1,0.1)+
-      // Presents
-      '<g opacity="0.15" transform="translate(200,1100)"><rect x="-15" y="-15" width="30" height="30" rx="3" fill="#e53935"/><rect x="-2" y="-15" width="4" height="30" fill="#ffd54f"/><rect x="-15" y="-2" width="30" height="4" fill="#ffd54f"/></g>'+
-      '<g opacity="0.12" transform="translate(280,1120)"><rect x="-12" y="-12" width="24" height="24" rx="3" fill="#1565c0"/><rect x="-2" y="-12" width="4" height="24" fill="#fff"/><rect x="-12" y="-2" width="24" height="4" fill="#fff"/></g>'+
-      '<g opacity="0.1" transform="translate(160,1140)"><rect x="-10" y="-10" width="20" height="20" rx="3" fill="#2e7d32"/><rect x="-1.5" y="-10" width="3" height="20" fill="#ffd54f"/><rect x="-10" y="-1.5" width="20" height="3" fill="#ffd54f"/></g>'+
-      // Animated characters
-      animChar(70,150,'charWaddle',2,0,1.2,0.3,TR)+
-      animChar(440,280,'charHop',1.5,0.5,1,0.25,NO)+
-      animChar(60,400,'charFloat',1.8,0.2,1.1,0.22,RD)+
-      animChar(430,530,'charBounce',2.2,0.8,1.3,0.2,SD)+
-      animChar(80,680,'charWaddle',1.6,0.4,1,0.18,TR)+
-      animChar(420,820,'charHop',2,0.6,1.1,0.16,NO)+
-      animChar(70,960,'charFloat',1.7,1,1.2,0.14,RD)+
-      animChar(440,1080,'charBounce',1.9,0.3,1,0.12,SD)+
-      animChar(200,200,'charHop',2.5,0.7,0.85,0.1,TR)+
-      animChar(300,900,'charWaddle',2.3,0.9,0.9,0.09,NO)
-  }
+  winter:{bgAnim:'linear-gradient(135deg,#e3f2fd 0%,#bbdefb 25%,#90caf9 50%,#e1f5fe 75%,#b3e5fc 100%)',header:'#1565c0',headerSub:'#e3f2fd',safeTop:'#0d47a1',headerAfter:'#1976d2',dayHdrBg:'rgba(21,101,192,0.12)',dayHdrColor:'#1565c0',cellBg:'#eef2ff',cellBorder:'#c5cae9',sundayBg:'#bbdefb',numColor:'#0d47a1',legendBg:'rgba(255,255,255,0.8)',legendBorder:'rgba(144,202,249,0.5)',footerBorder:'rgba(144,202,249,0.4)',footerColor:'#1565c0',hintColor:'#1565c0',btnColor:'#0d47a1',btnBg:'rgba(21,101,192,0.18)',blobs:['#90caf9','#64b5f6','#bbdefb'],sub:'Winter',flowers:SN1+' '+SN2+' '+SN3+' '+SN1+' '+SN2,deco:'<circle cx="450" cy="-30" r="220" fill="#e3f2fd" opacity="0.5"/><circle cx="50" cy="1230" r="250" fill="#bbdefb" opacity="0.3"/>'+snowflake(400,100,40,0.12)+snowflake(460,280,50,0.09)+snowflake(75,450,35,0.1)+snowflake(440,600,45,0.08)+snowflake(150,750,30,0.09)+snowflake(375,900,38,0.07)+snowflake(250,180,25,0.06)+bareTree(460,1200,0.7,0.1)+bareTree(60,1200,0.55,0.08)+snowflake(475,380,18,0.06)+snowflake(100,650,28,0.07)},
+  spring:{bgAnim:'linear-gradient(135deg,#e8f5e9 0%,#c8e6c9 20%,#dcedc8 40%,#f1f8e9 60%,#a5d6a7 80%,#c8e6c9 100%)',header:'#2e7d32',headerSub:'#e8f5e9',safeTop:'#1b5e20',headerAfter:'#388e3c',dayHdrBg:'rgba(46,125,50,0.12)',dayHdrColor:'#2e7d32',cellBg:'#f4fbf4',cellBorder:'#a5d6a7',sundayBg:'#c8e6c9',numColor:'#1b5e20',legendBg:'rgba(255,255,255,0.8)',legendBorder:'rgba(129,199,132,0.5)',footerBorder:'rgba(129,199,132,0.4)',footerColor:'#2e7d32',hintColor:'#2e7d32',btnColor:'#1b5e20',btnBg:'rgba(46,125,50,0.18)',blobs:['#a5d6a7','#81c784','#c8e6c9'],sub:'Spring',flowers:TU+' '+SF+' '+CH+' '+BF+' '+TU,deco:'<circle cx="450" cy="-30" r="220" fill="#c8e6c9" opacity="0.4"/><circle cx="50" cy="1230" r="250" fill="#a5d6a7" opacity="0.25"/>'+decFlower(425,80,35,'#f48fb1','#e91e63',0.18)+decFlower(75,150,28,'#ffab91','#ff7043',0.14)+decFlower(450,350,22,'#ce93d8','#9c27b0',0.12)+decFlower(50,500,30,'#f48fb1','#e91e63',0.1)+butterfly(400,200,0.14)+butterfly(75,420,0.12)+butterfly(450,650,0.1)+leaf(100,900,30,'#66bb6a',20,0.12)+leaf(400,1000,25,'#43a047',-30,0.1)},
+  summer:{bgAnim:'linear-gradient(135deg,#fff8e1 0%,#ffecb3 20%,#ffe0b2 40%,#fff3e0 60%,#ffcc80 80%,#fff8e1 100%)',header:'#e65100',headerSub:'#fff3e0',safeTop:'#bf360c',headerAfter:'#f57c00',dayHdrBg:'rgba(230,81,0,0.12)',dayHdrColor:'#e65100',cellBg:'#fffdf5',cellBorder:'#ffcc80',sundayBg:'#ffe0b2',numColor:'#bf360c',legendBg:'rgba(255,255,255,0.8)',legendBorder:'rgba(255,183,77,0.5)',footerBorder:'rgba(255,183,77,0.4)',footerColor:'#e65100',hintColor:'#e65100',btnColor:'#bf360c',btnBg:'rgba(230,81,0,0.18)',blobs:['#ffcc80','#ffb74d','#ffe0b2'],sub:'Summer',flowers:SU+' '+HI+' '+ME+' '+BE+' '+SF,deco:'<circle cx="450" cy="-30" r="220" fill="#fff8e1" opacity="0.5"/><circle cx="50" cy="1230" r="250" fill="#ffe0b2" opacity="0.3"/>'+decSun(425,70,40,0.18)+decSun(60,130,28,0.14)+wave(580,0.1)+wave(930,0.08)+palmTree(460,1200,0.8,0.12)},
+  autumn:{bgAnim:'linear-gradient(135deg,#faf3e6 0%,#ffe0b2 20%,#e8d0b0 40%,#d7a97a 60%,#ffccbc 80%,#faf3e6 100%)',header:'#bf360c',headerSub:'#faf3e6',safeTop:'#8d6e63',headerAfter:'#d84315',dayHdrBg:'rgba(191,54,12,0.12)',dayHdrColor:'#bf360c',cellBg:'#fdf6ee',cellBorder:'#d7ccc8',sundayBg:'#ffccbc',numColor:'#4e342e',legendBg:'rgba(255,255,255,0.8)',legendBorder:'rgba(188,170,164,0.5)',footerBorder:'rgba(188,170,164,0.4)',footerColor:'#5d4037',hintColor:'#5d4037',btnColor:'#4e342e',btnBg:'rgba(191,54,12,0.18)',blobs:['#ffccbc','#d7a97a','#ffe0b2'],sub:'Autumn',flowers:L1+' '+L2+' '+NU+' '+L1+' '+L2,deco:'<circle cx="450" cy="-30" r="220" fill="#e8d0b0" opacity="0.4"/><circle cx="50" cy="1230" r="250" fill="#d7a97a" opacity="0.25"/>'+fallingLeaf(400,100,30,'#d84315',-40,0.14)+fallingLeaf(75,200,25,'#e65100',-25,0.12)+fallingLeaf(450,320,20,'#c62828',-55,0.1)+fallingLeaf(50,450,28,'#d84315',-35,0.09)+fallingLeaf(425,580,22,'#e65100',-50,0.08)+bareTree(460,1200,0.8,0.1,'#6d4c41')+bareTree(50,1200,0.6,0.08,'#5d4037')+acorn(425,960,0.1)},
+  easter:{bgAnim:'linear-gradient(135deg,#fce4ec 0%,#f8bbd0 15%,#e1bee7 30%,#f3e5f5 45%,#e8f5e9 60%,#fff9c4 75%,#fce4ec 90%,#f8bbd0 100%)',header:'#ad1457',headerSub:'#fce4ec',safeTop:'#880e4f',headerAfter:'#c2185b',dayHdrBg:'rgba(173,20,87,0.12)',dayHdrColor:'#ad1457',cellBg:'#fef6fb',cellBorder:'#f8bbd0',sundayBg:'#f8bbd0',numColor:'#880e4f',legendBg:'rgba(255,255,255,0.85)',legendBorder:'rgba(248,187,208,0.5)',footerBorder:'rgba(248,187,208,0.4)',footerColor:'#ad1457',hintColor:'#ad1457',btnColor:'#880e4f',btnBg:'rgba(173,20,87,0.18)',blobs:['#f8bbd0','#ce93d8','#fff9c4'],sub:'Happy Easter!',flowers:EG+' '+EBN+' '+EBL+' '+EFL+' '+EG,deco:'<circle cx="450" cy="-30" r="220" fill="#fce4ec" opacity="0.5"/><circle cx="50" cy="1230" r="250" fill="#f8bbd0" opacity="0.3"/><circle cx="-25" cy="-25" r="180" fill="#e1bee7" opacity="0.2"/>'+easterEgg(60,100,18,'#e91e63','#fff',0.2)+easterEgg(440,160,15,'#7b1fa2','#fff',0.18)+easterEgg(80,300,20,'#0288d1','#fff',0.16)+easterEgg(420,380,14,'#43a047','#fff',0.18)+easterEgg(50,520,16,'#ff9800','#fff',0.15)+easterEgg(450,600,18,'#e91e63','#fff',0.14)+easterEgg(100,750,13,'#7b1fa2','#fff',0.12)+easterEgg(400,850,15,'#0288d1','#fff',0.11)+easterEgg(70,950,17,'#43a047','#fff',0.1)+easterEgg(430,1050,14,'#ff9800','#fff',0.09)+decFlower(250,80,22,'#f48fb1','#e91e63',0.15)+decFlower(150,200,18,'#ce93d8','#9c27b0',0.12)+decFlower(350,250,20,'#ffab91','#ff7043',0.1)+decFlower(100,400,16,'#f48fb1','#e91e63',0.1)+decFlower(400,500,14,'#ce93d8','#9c27b0',0.08)+animChar(80,180,'charHop',1.5,0,1.1,0.2,EG)+animChar(420,280,'charWaddle',2,0.3,1,0.18,EK)+animChar(60,450,'charHop',1.8,0.6,0.9,0.16,EBN)+animChar(440,550,'charFloat',2.2,0.2,1.2,0.15,EBL)+animChar(90,700,'charWaddle',1.6,0.8,1,0.14,EG)+animChar(410,800,'charHop',2,0.5,0.95,0.12,EK)+animChar(70,920,'charFloat',1.7,0.1,1.1,0.11,EBN)+animChar(430,1000,'charHop',2.1,0.7,0.9,0.1,EG)+animChar(120,1100,'charWaddle',1.9,0.4,1,0.09,EK)},
+  halloween:{bgAnim:'linear-gradient(135deg,#1a1a2e 0%,#16213e 20%,#2d1b3d 40%,#1a1a2e 60%,#3d1f3d 80%,#16213e 100%)',header:'#ff6f00',headerSub:'#1a1a2e',safeTop:'#e65100',headerAfter:'#ff8f00',dayHdrBg:'rgba(255,111,0,0.15)',dayHdrColor:'#ffab00',cellBg:'#2a2240',cellBorder:'#4a3f6b',sundayBg:'#3d2f5e',numColor:'#ffcc02',legendBg:'rgba(45,35,65,0.85)',legendBorder:'rgba(100,80,140,0.5)',footerBorder:'rgba(100,80,140,0.4)',footerColor:'#ffab00',hintColor:'#ffab00',btnColor:'#ffcc02',btnBg:'rgba(255,111,0,0.2)',blobs:['#6a1b9a','#ff6f00','#1a237e'],sub:'Happy Halloween!',flowers:PU+' '+GH+' '+SK+' '+WN+' '+BT,deco:'<circle cx="450" cy="-30" r="220" fill="#2d1b3d" opacity="0.5"/><circle cx="50" cy="1230" r="250" fill="#16213e" opacity="0.3"/><circle cx="400" cy="80" r="35" fill="#ffd54f" opacity="0.25"/><circle cx="412" cy="72" r="30" fill="#1a1a2e" opacity="0.3"/>'+pumpkin(80,130,22,0.25)+pumpkin(420,200,18,0.22)+pumpkin(60,380,25,0.2)+pumpkin(440,500,20,0.18)+pumpkin(90,680,16,0.16)+pumpkin(410,820,22,0.14)+bat(380,120,0.8,0.2)+bat(120,250,0.7,0.18)+bat(400,400,0.9,0.16)+bat(100,550,0.6,0.14)+bat(420,700,0.75,0.12)+bat(80,850,0.65,0.1)+'<g opacity="0.12"><rect x="200" y="1100" width="30" height="50" rx="5" fill="#555"/><rect x="260" y="1090" width="25" height="60" rx="5" fill="#555"/><rect x="230" y="1110" width="20" height="40" rx="4" fill="#555"/><text x="215" y="1135" font-size="8" fill="#888" text-anchor="middle">RIP</text></g>'+animChar(70,200,'charSway',2,0,1.2,0.25,GH)+animChar(430,320,'charHop',1.5,0.4,1.1,0.22,WN)+animChar(60,480,'charWaddle',1.8,0.8,1,0.2,SK)+animChar(440,620,'charBounce',2.2,0.2,1.3,0.18,MU)+animChar(80,780,'charSway',1.6,0.6,1.1,0.16,GH)+animChar(420,900,'charHop',2,1,1,0.14,WN)+animChar(70,1020,'charFloat',1.7,0.3,1.2,0.12,SP)+animChar(440,1100,'charWaddle',1.9,0.5,1,0.1,CT)+animChar(200,150,'charHop',2.5,0.7,0.8,0.08,BT)},
+  christmas:{bgAnim:'linear-gradient(135deg,#0d47a1 0%,#1565c0 15%,#1b5e20 30%,#0d47a1 45%,#b71c1c 60%,#1565c0 75%,#1b5e20 90%,#0d47a1 100%)',header:'#b71c1c',headerSub:'#fce4ec',safeTop:'#880e4f',headerAfter:'#c62828',dayHdrBg:'rgba(183,28,28,0.15)',dayHdrColor:'#ff5252',cellBg:'#1a2744',cellBorder:'#2e4470',sundayBg:'#2a1a3e',numColor:'#ffd54f',legendBg:'rgba(26,39,68,0.85)',legendBorder:'rgba(46,68,112,0.5)',footerBorder:'rgba(46,68,112,0.4)',footerColor:'#ffd54f',hintColor:'#ffd54f',btnColor:'#ffd54f',btnBg:'rgba(183,28,28,0.2)',blobs:['#c62828','#1565c0','#2e7d32'],sub:'Merry Christmas!',flowers:SD+' '+TR+' '+NO+' '+RD+' '+SD,deco:'<circle cx="450" cy="-30" r="220" fill="#0d47a1" opacity="0.4"/><circle cx="50" cy="1230" r="250" fill="#1b5e20" opacity="0.3"/>'+snowflake(120,80,30,0.08)+snowflake(350,150,25,0.06)+snowflake(80,300,20,0.07)+snowflake(420,450,28,0.05)+snowflake(150,600,22,0.06)+snowflake(380,750,18,0.05)+snowflake(100,900,25,0.04)+snowflake(400,1050,20,0.04)+xmasTree(400,200,80,0.2)+xmasTree(80,450,60,0.18)+xmasTree(430,700,70,0.15)+xmasTree(60,950,55,0.12)+candyCane(180,300,60,0.15)+candyCane(350,550,50,0.12)+candyCane(150,800,55,0.1)+stocking(320,180,1,0.15)+stocking(120,430,0.9,0.12)+stocking(370,680,1.1,0.1)+'<g opacity="0.15" transform="translate(200,1100)"><rect x="-15" y="-15" width="30" height="30" rx="3" fill="#e53935"/><rect x="-2" y="-15" width="4" height="30" fill="#ffd54f"/><rect x="-15" y="-2" width="30" height="4" fill="#ffd54f"/></g><g opacity="0.12" transform="translate(280,1120)"><rect x="-12" y="-12" width="24" height="24" rx="3" fill="#1565c0"/><rect x="-2" y="-12" width="4" height="24" fill="#fff"/><rect x="-12" y="-2" width="24" height="4" fill="#fff"/></g><g opacity="0.1" transform="translate(160,1140)"><rect x="-10" y="-10" width="20" height="20" rx="3" fill="#2e7d32"/><rect x="-1.5" y="-10" width="3" height="20" fill="#ffd54f"/><rect x="-10" y="-1.5" width="20" height="3" fill="#ffd54f"/></g>'+animChar(70,150,'charWaddle',2,0,1.2,0.3,TR)+animChar(440,280,'charHop',1.5,0.5,1,0.25,NO)+animChar(60,400,'charFloat',1.8,0.2,1.1,0.22,RD)+animChar(430,530,'charBounce',2.2,0.8,1.3,0.2,SD)+animChar(80,680,'charWaddle',1.6,0.4,1,0.18,TR)+animChar(420,820,'charHop',2,0.6,1.1,0.16,NO)+animChar(70,960,'charFloat',1.7,1,1.2,0.14,RD)+animChar(440,1080,'charBounce',1.9,0.3,1,0.12,SD)+animChar(200,200,'charHop',2.5,0.7,0.85,0.1,TR)+animChar(300,900,'charWaddle',2.3,0.9,0.9,0.09,NO)}
 };
 
 var currentMonth=0,YEAR=2026,filmStart=new Date(YEAR,0,8).getTime();
 var monthNames=['January','February','March','April','May','June','July','August','September','October','November','December'];
 var monthEmojis=[SN1,HT,TU,EG,CH,SU,ME,BE,L1,PU,L2,XM];
+var firstRender=true;
 
-function getTheme(month){
-  if(month===3)return'easter';
-  if(month===9)return'halloween';
-  if(month===11)return'christmas';
-  return getSeason(month);
-}
+function getTheme(month){if(month===3)return'easter';if(month===9)return'halloween';if(month===11)return'christmas';return getSeason(month)}
 function getSeason(m){if(m<=1)return'winter';if(m<=4)return'spring';if(m<=7)return'summer';return'autumn'}
 
-function getEvents(month,day){
-  var d=new Date(YEAR,month,day),dow=d.getDay(),out=[];
-  if(dow===1)out.push({label:'Shopping',cls:'b-shop'});
-  if(dow===2)out.push({label:'Swimming',cls:'b-swim'});
-  if(dow===3){out.push({label:'Swimming',cls:'b-swim'});out.push({label:'Cleaning',cls:'b-clean'})}
-  if(dow===4){var diff=Math.round((d.getTime()-filmStart)/86400000);if(diff>=0&&(diff/7)%2===0)out.push({label:'Film Night',cls:'b-film'})}
-  if(dow===5)out.push({label:'Work',cls:'b-work'});
-  return out}
+function getEvents(month,day){var d=new Date(YEAR,month,day),dow=d.getDay(),out=[];if(dow===1)out.push({label:'Shopping',cls:'b-shop'});if(dow===2)out.push({label:'Swimming',cls:'b-swim'});if(dow===3){out.push({label:'Swimming',cls:'b-swim'});out.push({label:'Cleaning',cls:'b-clean'})}if(dow===4){var diff=Math.round((d.getTime()-filmStart)/86400000);if(diff>=0&&(diff/7)%2===0)out.push({label:'Film Night',cls:'b-film'})}if(dow===5)out.push({label:'Work',cls:'b-work'});return out}
 
-function buildGridHTML(month){
-  var t=SEASONS[getTheme(month)],daysInMonth=new Date(YEAR,month+1,0).getDate(),startOffset=(new Date(YEAR,month,1).getDay()+6)%7,html='',i,day,dow,isSun,evts,bg,border,j;
-  for(i=0;i<startOffset;i++)html+='<div class="cell empty"></div>';
-  for(day=1;day<=daysInMonth;day++){
-    dow=new Date(YEAR,month,day).getDay();isSun=dow===0;evts=getEvents(month,day);
-    bg=isSun?t.sundayBg:t.cellBorder;border=isSun?t.sundayBg:t.cellBorder;
-    html+='<div class="cell'+(isSun?' sunday':'')+'" style="background:'+bg+';border-color:'+border+'">';
-    html+='<span class="num" style="color:'+t.numColor+'">'+day+'</span>';
-    for(j=0;j<evts.length;j++)html+='<span class="badge '+evts[j].cls+'">'+evts[j].label+'</span>';
-    html+='</div>'}
-  var rem=(startOffset+daysInMonth)%7;if(rem>0)for(i=0;i<7-rem;i++)html+='<div class="cell empty"></div>';
-  return html}
+function buildGridHTML(month){var t=SEASONS[getTheme(month)],daysInMonth=new Date(YEAR,month+1,0).getDate(),startOffset=(new Date(YEAR,month,1).getDay()+6)%7,html='',i,day,dow,isSun,evts,bg,border,j;for(i=0;i<startOffset;i++)html+='<div class="cell empty"></div>';for(day=1;day<=daysInMonth;day++){dow=new Date(YEAR,month,day).getDay();isSun=dow===0;evts=getEvents(month,day);bg=isSun?t.sundayBg:t.cellBorder;border=isSun?t.sundayBg:t.cellBorder;html+='<div class="cell'+(isSun?' sunday':'')+'" style="background:'+bg+';border-color:'+border+'"><span class="num" style="color:'+t.numColor+'">'+day+'</span>';for(j=0;j<evts.length;j++)html+='<span class="badge '+evts[j].cls+'">'+evts[j].label+'</span>';html+='</div>'}var rem=(startOffset+daysInMonth)%7;if(rem>0)for(i=0;i<7-rem;i++)html+='<div class="cell empty"></div>';return html}
 
 function applyTheme(month){
   var t=SEASONS[getTheme(month)];
-  var bgEl=document.getElementById('bgAnim');bgEl.style.background=t.bgAnim;bgEl.style.backgroundSize='400% 400%';
+  document.getElementById('bgAnim').style.background=t.bgAnim;
+  document.getElementById('bgAnim').style.backgroundSize='400% 400%';
   var b1=document.getElementById('blob1'),b2=document.getElementById('blob2'),b3=document.getElementById('blob3');
   b1.style.background=t.blobs[0];b1.style.width='180px';b1.style.height='180px';b1.style.top='10%';b1.style.left='-30px';
   b2.style.background=t.blobs[1];b2.style.width='140px';b2.style.height='140px';b2.style.top='50%';b2.style.right='-20px';
@@ -476,23 +205,54 @@ function applyTheme(month){
   document.getElementById('footerFlowers').textContent=t.flowers;
   var legend=document.getElementById('legend');
   legend.innerHTML='<div class="legend-chip" style="background:'+t.legendBg+';border-color:'+t.legendBorder+'"><span class="legend-dot" style="background:linear-gradient(135deg,#e91e63,#f06292)">'+EC+'</span>Mon \u2014 Shop</div><div class="legend-chip" style="background:'+t.legendBg+';border-color:'+t.legendBorder+'"><span class="legend-dot" style="background:linear-gradient(135deg,#0288d1,#29b6f6)">'+ES+'</span>Tue+Wed \u2014 Swim</div><div class="legend-chip" style="background:'+t.legendBg+';border-color:'+t.legendBorder+'"><span class="legend-dot" style="background:linear-gradient(135deg,#ef6c00,#ffa726)">'+EB+'</span>Wed \u2014 Clean</div><div class="legend-chip" style="background:'+t.legendBg+';border-color:'+t.legendBorder+'"><span class="legend-dot" style="background:linear-gradient(135deg,#7b1fa2,#ba68c8)">'+EF+'</span>Alt Thu \u2014 Film</div><div class="legend-chip" style="background:'+t.legendBg+';border-color:'+t.legendBorder+'"><span class="legend-dot" style="background:linear-gradient(135deg,#2e7d32,#66bb6a)">'+EW+'</span>Fri \u2014 Work</div>';
+
+  // FIRST RENDER: put grid directly in center, skip track positioning
+  if(firstRender){
+    document.getElementById('gridCenter').innerHTML=buildGridHTML(currentMonth);
+    // Populate left/right too (won't be seen yet)
+    var prev=currentMonth>0?currentMonth-1:11,next=currentMonth<11?currentMonth+1:0;
+    document.getElementById('gridLeft').innerHTML=buildGridHTML(prev);
+    document.getElementById('gridRight').innerHTML=buildGridHTML(next);
+    // Now position track with animation disabled
+    var track=document.getElementById('slideTrack');
+    track.classList.add('no-anim');
+    track.style.transform='translateX(-33.333%)';
+    // Remove no-anim after a frame so subsequent navigations animate
+    requestAnimationFrame(function(){
+      requestAnimationFrame(function(){
+        track.classList.remove('no-anim');
+        firstRender=false;
+      });
+    });
+    return;
+  }
+
+  // SUBSEQUENT RENDERS: normal track-based slide
   var prev=currentMonth>0?currentMonth-1:11,next=currentMonth<11?currentMonth+1:0;
   document.getElementById('gridLeft').innerHTML=buildGridHTML(prev);
   document.getElementById('gridCenter').innerHTML=buildGridHTML(currentMonth);
   document.getElementById('gridRight').innerHTML=buildGridHTML(next);
-  var track=document.getElementById('slideTrack');track.classList.add('no-anim');track.style.transform='translateX(-33.333%)';void track.offsetWidth;track.classList.remove('no-anim')}
+  var track=document.getElementById('slideTrack');
+  track.classList.add('no-anim');
+  track.style.transform='translateX(-33.333%)';
+  void track.offsetWidth;
+  track.classList.remove('no-anim');
+}
 
 function goToMonth(dir){
+  if(firstRender)return;
   var newMonth=currentMonth+dir;if(newMonth<0||newMonth>11)return;
-  var track=document.getElementById('slideTrack');track.style.transform=dir<0?'translateX(0%)':'translateX(-66.666%)';
-  setTimeout(function(){currentMonth=newMonth;applyTheme(currentMonth);document.getElementById('calWrapper').scrollTop=0},360)}
+  var track=document.getElementById('slideTrack');
+  track.style.transform=dir<0?'translateX(0%)':'translateX(-66.666%)';
+  setTimeout(function(){currentMonth=newMonth;applyTheme(currentMonth);document.getElementById('calWrapper').scrollTop=0},360);
+}
 
 document.getElementById('prevBtn').addEventListener('click',function(){goToMonth(-1)});
 document.getElementById('nextBtn').addEventListener('click',function(){goToMonth(1)});
 
 var touchX=0,touchY=0,swiping=false,calWrapper=document.getElementById('calWrapper');
-calWrapper.addEventListener('touchstart',function(ev){if(swiping)return;touchX=ev.touches[0].clientX;touchY=ev.touches[0].clientY},{passive:true});
-calWrapper.addEventListener('touchend',function(ev){if(swiping)return;var dx=ev.changedTouches[0].clientX-touchX,dy=ev.changedTouches[0].clientY-touchY;if(Math.abs(dx)>50&&Math.abs(dx)>Math.abs(dy)*1.5){swiping=true;if(dx<0)goToMonth(1);else goToMonth(-1);setTimeout(function(){swiping=false},750)}},{passive:true});
+calWrapper.addEventListener('touchstart',function(ev){if(swiping||firstRender)return;touchX=ev.touches[0].clientX;touchY=ev.touches[0].clientY},{passive:true});
+calWrapper.addEventListener('touchend',function(ev){if(swiping||firstRender)return;var dx=ev.changedTouches[0].clientX-touchX,dy=ev.changedTouches[0].clientY-touchY;if(Math.abs(dx)>50&&Math.abs(dx)>Math.abs(dy)*1.5){swiping=true;if(dx<0)goToMonth(1);else goToMonth(-1);setTimeout(function(){swiping=false},750)}},{passive:true});
 document.addEventListener('keydown',function(ev){if(ev.key==='ArrowLeft')goToMonth(-1);if(ev.key==='ArrowRight')goToMonth(1)});
 
 var deferredPrompt=null;
@@ -500,7 +260,7 @@ window.addEventListener('beforeinstallprompt',function(ev){ev.preventDefault();d
 document.getElementById('installBtn').addEventListener('click',function(){if(deferredPrompt){deferredPrompt.prompt();deferredPrompt.userChoice.then(function(){document.getElementById('installBanner').classList.remove('show');deferredPrompt=null})}});
 document.getElementById('dismissBtn').addEventListener('click',function(){document.getElementById('installBanner').classList.remove('show');localStorage.setItem('installDismissed','true')});
 
-if('serviceWorker' in navigator){navigator.serviceWorker.register(URL.createObjectURL(new Blob(["const C='emma-cal-v7';self.addEventListener('install',function(e){e.waitUntil(caches.open(C).then(function(c){return c.addAll(['/'])}))});self.addEventListener('fetch',function(e){e.respondWith(caches.match(e.request).then(function(r){return r||fetch(e.request)}))});"],{type:'application/javascript'}))).catch(function(){})}
+if('serviceWorker' in navigator){navigator.serviceWorker.register(URL.createObjectURL(new Blob(["const C='emma-cal-v8';self.addEventListener('install',function(e){e.waitUntil(caches.open(C).then(function(c){return c.addAll(['/'])}))});self.addEventListener('fetch',function(e){e.respondWith(caches.match(e.request).then(function(r){return r||fetch(e.request)}))});"],{type:'application/javascript'}))).catch(function(){})}
 
 var manifest={name:"Emma's Calendar",short_name:"Emma's Cal",description:"Emma's routine calendar for 2026",start_url:'.',display:'standalone',background_color:'#fce4ec',theme_color:'#c2185b',orientation:'portrait',icons:[{src:'data:image/svg+xml,'+encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><rect width="512" height="512" rx="100" fill="#c2185b"/><text x="256" y="340" text-anchor="middle" font-size="240" fill="white">'+ECA+'</text></svg>'),sizes:'192x192',type:'image/svg+xml',purpose:'any maskable'}]};
 var mLink=document.createElement('link');mLink.rel='manifest';mLink.href=URL.createObjectURL(new Blob([JSON.stringify(manifest)],{type:'application/manifest+json'}));document.head.appendChild(mLink);
