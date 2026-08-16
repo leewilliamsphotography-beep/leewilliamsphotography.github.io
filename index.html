@@ -14,8 +14,57 @@
 <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-database-compat.js"></script>
 <style>
+:root {
+  --accent: #c2185b;
+  --accent-dark: #a0174c;
+  --accent-rgb: 194, 24, 91;
+}
+
 *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
-html,body{height:100%;overflow:hidden;font-family:'Nunito',sans-serif;overscroll-behavior:none;-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale}
+html,body{height:100%;overflow:hidden;font-family:'Nunito',sans-serif;overscroll-behavior:none;-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;perspective: 2000px;}
+
+/* Opening Calendar Cover */
+#calendarCover {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  background: var(--accent);
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transform-origin: top center;
+  animation: openUp 1.2s cubic-bezier(.4,0,.2,1) forwards;
+  animation-delay: 0.6s;
+  box-shadow: 0 -10px 30px rgba(0,0,0,0.3);
+  will-change: transform, opacity;
+}
+@keyframes openUp {
+  0% { transform: rotateX(0deg); opacity: 1; visibility: visible; }
+  99% { opacity: 1; }
+  100% { transform: rotateX(-170deg); opacity: 0; visibility: hidden; pointer-events: none; }
+}
+.cover-binding {
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 16px;
+  background: repeating-linear-gradient(90deg, #333 0, #333 8px, #555 8px, #555 16px);
+  box-shadow: 0 4px 6px rgba(0,0,0,0.4);
+  z-index: 2;
+}
+.cover-inner {
+  text-align: center;
+  padding: 40px 60px;
+  background: rgba(255,255,255,0.1);
+  border-radius: 24px;
+  border: 1px solid rgba(255,255,255,0.2);
+  box-shadow: 0 20px 40px rgba(0,0,0,0.2);
+  backdrop-filter: blur(8px);
+}
+.cover-inner h1 { font-family: 'Quicksand', sans-serif; font-size: 42px; font-weight: 700; margin: 0; line-height: 1.1; text-shadow: 0 2px 4px rgba(0,0,0,0.2); }
+.cover-inner h2 { font-family: 'Quicksand', sans-serif; font-size: 32px; font-weight: 600; margin: 0; opacity: 0.9; text-shadow: 0 2px 4px rgba(0,0,0,0.2); }
+.cover-year { margin-top: 20px; font-size: 20px; font-weight: 700; opacity: 0.8; letter-spacing: 2px; }
+@media (prefers-reduced-motion: reduce) { #calendarCover { display: none !important; } }
 
 .app{
   display:flex;flex-direction:column;height:100%;height:100dvh;max-width:100%;position:relative;overflow:hidden;
@@ -42,7 +91,7 @@ html,body{height:100%;overflow:hidden;font-family:'Nunito',sans-serif;overscroll
 .nav button:active{transform:scale(.9);background:rgba(255,255,255,0.4)}
 .nav button[disabled]{opacity:.25;pointer-events:none}
 .nav button:focus-visible, .mab:focus-visible, .mcl:focus-visible, .mcb:focus-visible, .mi:focus-visible, .j-btn:focus-visible, .me-item:focus-visible, .c:focus-visible, .rep-item:focus-visible {
-  outline: 3px solid #c2185b;
+  outline: 3px solid var(--accent);
   outline-offset: 2px;
 }
 
@@ -158,7 +207,7 @@ html,body{height:100%;overflow:hidden;font-family:'Nunito',sans-serif;overscroll
 .met{font-size:10px;font-weight:700;padding:5px 12px;border-radius:6px;color:#fff;flex-shrink:0;letter-spacing:.3px;text-transform:uppercase}
 
 .mi{width:100%;height:54px;border:2px solid #e0e0e0;border-radius:14px;padding:0 16px;font-family:'Nunito',sans-serif;font-weight:600;font-size:16px;outline:none;transition:border-color .2s;background:#f9f9f9;color:#333;margin-bottom:16px; color-scheme: light;}
-.mi:focus{border-color:#c2185b;background:#fff}
+.mi:focus{border-color:var(--accent);background:#fff}
 .mi:disabled{background:#eee;color:#999;}
 
 .mar{display:flex;align-items:center;justify-content:space-between;width:100%;gap:12px;margin-bottom:24px}
@@ -166,8 +215,8 @@ html,body{height:100%;overflow:hidden;font-family:'Nunito',sans-serif;overscroll
 .mcb{width:40px;height:40px;border-radius:50%;border:3px solid transparent;cursor:pointer;transition:transform .12s,border-color .15s;box-shadow:0 1px 2px rgba(0,0,0,.1)}
 .mcb:active{transform:scale(.9)}
 .mcb.pk{border-color:#333}
-.mab{height:54px;padding:0 30px;border:none;border-radius:14px;background:#c2185b;color:#fff;font-family:'Quicksand',sans-serif;font-weight:700;font-size:16px;cursor:pointer;white-space:nowrap;transition:transform .12s, background .2s;box-shadow:0 4px 12px rgba(194,24,91,0.3); flex-shrink:0;}
-.mab:active{transform:scale(.95);background:#a0174c}
+.mab{height:54px;padding:0 30px;border:none;border-radius:14px;background:var(--accent);color:#fff;font-family:'Quicksand',sans-serif;font-weight:700;font-size:16px;cursor:pointer;white-space:nowrap;transition:transform .12s, background .2s;box-shadow:0 4px 12px rgba(var(--accent-rgb), 0.3); flex-shrink:0;}
+.mab:active{transform:scale(.95);background:var(--accent-dark)}
 .mab.gray { background: #555; box-shadow: 0 2px 6px rgba(0,0,0,0.2); }
 .mab.red { background: #d32f2f; box-shadow: 0 2px 6px rgba(211,47,47,0.3); }
 .mcl{width:100%;height:54px;border:none;border-radius:14px;background:#f5f5f5;color:#666;font-family:'Quicksand',sans-serif;font-weight:700;font-size:16px;cursor:pointer;transition:background .15s; margin-top:12px;}
@@ -178,7 +227,7 @@ html,body{height:100%;overflow:hidden;font-family:'Nunito',sans-serif;overscroll
 
 .rep-select { position: relative; margin-bottom: 24px; }
 .rep-current { padding: 16px; border-radius: 14px; border: 2px solid #e0e0e0; background: #f9f9f9; font-family: 'Nunito', sans-serif; font-weight: 600; font-size: 16px; color: #333; cursor: pointer; display: flex; justify-content: space-between; align-items: center; transition: border-color .2s; position: relative; z-index: 11; }
-.rep-current:active { border-color: #c2185b; background: #fff; }
+.rep-current:active { border-color: var(--accent); background: #fff; }
 .rep-dropdown { position: absolute; top: 100%; left: 0; right: 0; background: #fff; border-radius: 14px; box-shadow: 0 4px 20px rgba(0,0,0,0.15); margin-top: 5px; z-index: 20; display: none; max-height: 250px; overflow-y: auto; opacity: 0; transform: translateY(-10px); transition: opacity .2s, transform .2s; }
 .rep-dropdown.show { display: block; opacity: 1; transform: translateY(0); }
 .rep-item { padding: 16px; font-size: 16px; cursor: pointer; border-bottom: 1px solid #f0f0f0; color: #333; font-weight: 600; display:flex; align-items:center; gap:12px; }
@@ -189,10 +238,10 @@ html,body{height:100%;overflow:hidden;font-family:'Nunito',sans-serif;overscroll
 .rep-row label { font-family: 'Nunito', sans-serif; font-weight: 700; font-size: 16px; color: #333; margin-bottom: 12px; display: block; }
 .rep-input-group { display: flex; align-items: center; gap: 12px; }
 .rep-input-group input, .rep-input-group select { flex: 1; height: 48px; border: 2px solid #ddd; border-radius: 12px; padding: 0 12px; font-family: 'Nunito', sans-serif; font-weight: 600; font-size: 16px; outline: none; background: #f9f9f9; color: #333; }
-.rep-input-group input:focus, .rep-input-group select:focus { border-color: #c2185b; background: #fff; }
+.rep-input-group input:focus, .rep-input-group select:focus { border-color: var(--accent); background: #fff; }
 .days-selector { display: flex; gap: 8px; justify-content: space-between; }
 .days-selector button { width: 44px; height: 44px; border-radius: 50%; border: 2px solid #ddd; background: #fff; cursor: pointer; font-family: 'Quicksand', sans-serif; font-weight: 700; font-size: 16px; color: #333; transition: all .15s; }
-.days-selector button.active { background: #c2185b; color: #fff; border-color: #c2185b; transform: scale(1.05); }
+.days-selector button.active { background: var(--accent); color: #fff; border-color: var(--accent); transform: scale(1.05); }
 .ends-options { display: flex; flex-direction: column; gap: 12px; }
 .ends-options label { display: flex; align-items: center; gap: 8px; font-weight: 600; font-size: 16px; margin-bottom: 0; }
 .ends-options input[type="date"], .ends-options input[type="number"] { height: 40px; border: 2px solid #ddd; border-radius: 10px; padding: 0 8px; margin-left: auto; width: 120px; outline: none; background: #f9f9f9; font-size: 14px; }
@@ -215,7 +264,7 @@ html,body{height:100%;overflow:hidden;font-family:'Nunito',sans-serif;overscroll
 }
 .j-y-btn:active {
   transform:scale(0.88);
-  background:rgba(194,24,91,0.15);
+  background:rgba(var(--accent-rgb),0.15);
 }
 .j-btn{
   padding:16px 0;border-radius:12px;
@@ -226,13 +275,13 @@ html,body{height:100%;overflow:hidden;font-family:'Nunito',sans-serif;overscroll
 }
 .j-btn:active{
   transform:scale(0.9);
-  background:rgba(194,24,91,0.15);
-  box-shadow:0 0 0 3px rgba(194,24,91,0.1);
+  background:rgba(var(--accent-rgb),0.15);
+  box-shadow:0 0 0 3px rgba(var(--accent-rgb),0.1);
 }
 .j-btn.active{
-  background:rgba(194,24,91,0.85);color:#fff;
-  border-color:rgba(194,24,91,0.9);
-  box-shadow:0 4px 12px rgba(194,24,91,0.3);
+  background:rgba(var(--accent-rgb),0.85);color:#fff;
+  border-color:rgba(var(--accent-rgb),0.9);
+  box-shadow:0 4px 12px rgba(var(--accent-rgb),0.3);
 }
 
 .dl-summary{font-family:'Quicksand',sans-serif;font-weight:700;font-size:14px;padding:4px 0 16px;opacity:.8;letter-spacing:1px;text-transform:uppercase;color:#111}
@@ -272,7 +321,7 @@ html,body{height:100%;overflow:hidden;font-family:'Nunito',sans-serif;overscroll
 .app.dark .mel-label { color: #e2e8f0; }
 .app.dark .mel-label .time-badge { color: #94a3b8; background: #3b4759; }
 .app.dark .mi { background: #2d3a4f; border-color: #3b4759; color: #e2e8f0; color-scheme: dark; }
-.app.dark .mi:focus { border-color: #c2185b; background: #1e293b; }
+.app.dark .mi:focus { border-color: var(--accent); background: #1e293b; }
 .app.dark .mcl { background: #334155; color: #e2e8f0; }
 .app.dark .rep-current { background: #2d3a4f; border-color: #3b4759; color: #e2e8f0; }
 .app.dark .rep-dropdown { background: #2d3a4f; box-shadow: 0 4px 20px rgba(0,0,0,0.4); }
@@ -299,6 +348,16 @@ html,body{height:100%;overflow:hidden;font-family:'Nunito',sans-serif;overscroll
 </style>
 </head>
 <body>
+
+<!-- Opening Calendar Cover -->
+<div id="calendarCover">
+  <div class="cover-binding"></div>
+  <div class="cover-inner">
+    <h1>Emma's</h1>
+    <h2>Calendar</h2>
+    <div class="cover-year" id="coverYear">2026</div>
+  </div>
+</div>
 
 <!-- Main App -->
 <div class="app" id="app">
@@ -446,6 +505,14 @@ html,body{height:100%;overflow:hidden;font-family:'Nunito',sans-serif;overscroll
     
     <div class="m-divider"></div>
     
+    <div class="mt" style="font-size: 18px; margin-bottom: 16px;">App Color Theme</div>
+    <div class="rep-select" id="accentSelect" style="margin-bottom: 16px;">
+      <div class="rep-current" id="accentCurrent">Pink &#9662;</div>
+      <div class="rep-dropdown" id="accentDropdown"></div>
+    </div>
+    
+    <div class="m-divider"></div>
+    
     <div class="mt" style="font-size: 18px; margin-bottom: 16px;">Local Backup & Restore</div>
     <button class="backup-btn exp-btn" id="expData">Export Local Data</button>
     <button class="backup-btn imp-btn" id="impData">Import Local Data</button>
@@ -455,7 +522,7 @@ html,body{height:100%;overflow:hidden;font-family:'Nunito',sans-serif;overscroll
     <div style="text-align:center; padding: 20px 0; font-family:'Nunito',sans-serif; border-top:1px solid #eee; margin-top:12px;">
       <div style="font-size:18px; font-weight:800; color:#333;">Emma's Calendar</div>
       <div style="font-size:14px; color:#888; margin-top:8px;">Designed &amp; Developed by</div>
-      <div style="font-family:'Quicksand',sans-serif; font-size:24px; font-weight:700; color:#c2185b; margin-top:4px;">Lee Williams</div>
+      <div style="font-family:'Quicksand',sans-serif; font-size:24px; font-weight:700; color:var(--accent); margin-top:4px;">Lee Williams</div>
     </div>
     <button class="mcl" id="cMCL">Close</button>
   </div>
@@ -522,6 +589,39 @@ try {
   db = firebase.database();
 } catch(e) { console.warn("Firebase not configured. Running locally."); }
 
+// --- ACCENT COLORS ---
+var accents = {
+  pink: { name: 'Pink', c: '#c2185b', d: '#a0174c', rgb: '194, 24, 91' },
+  blue: { name: 'Blue', c: '#1565c0', d: '#0d47a1', rgb: '21, 101, 192' },
+  green: { name: 'Green', c: '#2e7d32', d: '#1b5e20', rgb: '46, 125, 50' },
+  purple: { name: 'Purple', c: '#7b1fa2', d: '#4a148c', rgb: '123, 31, 162' },
+  orange: { name: 'Orange', c: '#e65100', d: '#bf360c', rgb: '230, 81, 0' },
+  red: { name: 'Red', c: '#c62828', d: '#b71c1c', rgb: '198, 40, 40' },
+  teal: { name: 'Teal', c: '#00897b', d: '#00695c', rgb: '0, 137, 123' },
+  cyan: { name: 'Cyan', c: '#0288d1', d: '#01579b', rgb: '2, 136, 209' },
+  indigo: { name: 'Indigo', c: '#3949ab', d: '#1a237e', rgb: '57, 73, 171' },
+  brown: { name: 'Brown', c: '#5d4037', d: '#3e2723', rgb: '93, 64, 55' },
+  blueGrey: { name: 'Blue Grey', c: '#546e7a', d: '#37474f', rgb: '84, 110, 122' }
+};
+var currentAccent = 'pink';
+try { currentAccent = localStorage.getItem('emma-accent') || 'pink'; } catch(e) {}
+
+function applyAccent() {
+  var a = accents[currentAccent] || accents.pink;
+  document.documentElement.style.setProperty('--accent', a.c);
+  document.documentElement.style.setProperty('--accent-dark', a.d);
+  document.documentElement.style.setProperty('--accent-rgb', a.rgb);
+  var meta = document.querySelector('meta[name="theme-color"]');
+  if (meta) meta.setAttribute('content', a.c);
+  
+  // Update dropdown label if it exists
+  var accCurr = document.getElementById('accentCurrent');
+  if (accCurr) {
+    accCurr.innerHTML = '<span style="display:flex; align-items:center; gap:12px;"><span style="width:24px; height:24px; border-radius:50%; background:'+a.c+'; display:inline-block; box-shadow:0 1px 2px rgba(0,0,0,.2);"></span>'+a.name+'</span> &#9662;';
+  }
+}
+applyAccent(); // Apply immediately before render
+
 var TH={
   winter:{ba:'linear-gradient(135deg,#e3f2fd 0%,#bbdefb 25%,#90caf9 50%,#e1f5fe 75%,#b3e5fc 100%)',hd:'#1565c0',hs:'#e3f2fd',st:'#0d47a1',
           baDark:'linear-gradient(135deg,#1a202c 0%,#2d3748 50%,#1a202c 100%)',hdDark:'#1a202c',hsDark:'#94a3b8',stDark:'#0f172a',s:'Winter'},
@@ -544,6 +644,9 @@ var cM=_now.getMonth(), YR=_now.getFullYear(), fr=false;
 var todayM=cM,todayD=_now.getDate();
 var minYr = _now.getFullYear(), maxYr = 2030;
 var jumpYear = YR;
+
+// Set Cover Year
+document.getElementById('coverYear').textContent = YR;
 
 var mN=['January','February','March','April','May','June','July','August','September','October','November','December'];
 var dayN=['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
@@ -782,7 +885,7 @@ var $app,$bgA,$safeTop,$hdr,$hSub,$mLbl,$ftH,$pB,$nB,$gC,$cw,$colorWash,$gridWra
 var $quickViewScroll;
 
 function bGH(m){
-  var t=TH[gT(m)],dim=new Date(YR,m+1,0).getDate(),off=(new Date(YR,m,1).getDay()+6)%7,parts=[],i,d,ev,bd,j;
+  var t=TH[gT(m)], a=accents[currentAccent], dim=new Date(YR,m+1,0).getDate(), off=(new Date(YR,m,1).getDay()+6)%7, parts=[], i,d,ev,bd,j;
   for(i=0;i<off;i++)parts.push('<div class="c e"></div>');
   for(d=1;d<=dim;d++){
     var isSun=(new Date(YR,m,d).getDay()===0);
@@ -799,7 +902,7 @@ function bGH(m){
     
     var style='border:1px solid '+bd;
     if(isToday) {
-      style += ';border:2px solid '+(darkMode ? t.hsDark : t.hd)+'; box-shadow:0 4px 12px rgba(0,0,0,0.15);';
+      style += ';border:2px solid '+(darkMode ? t.hsDark : a.c)+'; box-shadow:0 4px 12px rgba(0,0,0,0.15);';
     }
     
     var cell='<div class="'+cls+'" style="'+style+'" data-d="'+d+'" data-m="'+m+'"><span class="n">'+d+'</span>';
@@ -847,16 +950,17 @@ function buildQuickViewContent(){
 
 function applyTheme(m){
   var t=TH[gT(m)];
+  var a = accents[currentAccent];
   if (darkMode) {
-    $bgA.style.background=t.baDark;
-    $safeTop.style.background=t.stDark;
-    $hdr.style.background=t.hdDark;
-    $hSub.style.color=t.hsDark;
+    $bgA.style.background = 'linear-gradient(135deg, rgba('+a.rgb+',0.08) 0%, #0f172a 50%, rgba('+a.rgb+',0.12) 100%)';
+    $safeTop.style.background = '#0f172a'; 
+    $hdr.style.background = '#1e293b'; 
+    $hSub.style.color = t.hsDark;
   } else {
-    $bgA.style.background=t.ba;
-    $safeTop.style.background=t.st;
-    $hdr.style.background=t.hd;
-    $hSub.style.color=t.hs;
+    $bgA.style.background = 'linear-gradient(135deg, rgba('+a.rgb+',0.05) 0%, rgba('+a.rgb+',0.15) 50%, rgba('+a.rgb+',0.05) 100%)';
+    $safeTop.style.background = a.d;
+    $hdr.style.background = a.c;
+    $hSub.style.color = '#ffffff';
   }
   $pB.style.opacity=(YR===minYr&&cM===0)?'.25':'1';$pB.disabled=(YR===minYr&&cM===0);
   $nB.style.opacity=(YR===maxYr&&cM===11)?'.25':'1';$nB.disabled=(YR===maxYr&&cM===11);
@@ -876,9 +980,11 @@ function gM(dir){
     nm=0;YR++;
   }
   fr=true;
-  var newTheme=TH[gT(nm)];
+  var a=accents[currentAccent];
   var washX=dir>0?'78%':'22%';
-  $colorWash.style.background='radial-gradient(ellipse at '+washX+' 50%, '+(darkMode ? newTheme.hsDark : newTheme.hd)+' 0%, '+(darkMode ? newTheme.hsDark : newTheme.hd)+'44 25%, transparent 68%)';
+  var washColor = darkMode ? 'rgba('+a.rgb+', 0.3)' : 'rgba('+a.rgb+', 0.35)';
+  var washColorFade = darkMode ? 'rgba('+a.rgb+', 0.08)' : 'rgba('+a.rgb+', 0.1)';
+  $colorWash.style.background='radial-gradient(ellipse at '+washX+' 50%, '+washColor+' 0%, '+washColorFade+' 25%, transparent 68%)';
   $colorWash.style.transformOrigin=dir>0?'right center':'left center';
   $gC.classList.add('blend-out');
   $colorWash.classList.add('active');
@@ -906,6 +1012,14 @@ function initRefs(){
   $cw=document.getElementById('cw');
   $colorWash=document.getElementById('colorWash');$gridWrap=document.getElementById('gridWrap');
   $quickViewScroll = document.getElementById('quickViewScroll');
+  
+  // Remove cover after animation finishes
+  var cover = document.getElementById('calendarCover');
+  if (cover) {
+    cover.addEventListener('animationend', function() {
+      cover.style.display = 'none';
+    });
+  }
 }
 
 function renderJumpMenu(){
@@ -1011,6 +1125,32 @@ function initEvents(){
     applyTheme(cM);
     rG();
   });
+
+  // --- ACCENT COLOR DROPDOWN ---
+  var accentDropdown = document.getElementById('accentDropdown');
+  if (accentDropdown) {
+    var accentHtml = '';
+    Object.keys(accents).forEach(function(key) {
+      var a = accents[key];
+      accentHtml += '<div class="rep-item" data-accent="'+key+'" style="display:flex; align-items:center; gap:12px;">'+
+                    '<span style="width:24px; height:24px; border-radius:50%; background:'+a.c+'; display:inline-block; box-shadow:0 1px 2px rgba(0,0,0,.2);"></span>'+
+                    a.name+'</div>';
+    });
+    accentDropdown.innerHTML = accentHtml;
+    
+    setupDropdown('accentCurrent', 'accentDropdown');
+
+    accentDropdown.querySelectorAll('.rep-item').forEach(function(item) {
+      item.addEventListener('click', function() {
+        var key = this.getAttribute('data-accent');
+        currentAccent = key;
+        try { localStorage.setItem('emma-accent', key); } catch(e) {}
+        applyAccent();
+        applyTheme(cM);
+        closeAllDropdowns();
+      });
+    });
+  }
 
   // Admin Login Listeners
   updateAdminUI();
@@ -1145,6 +1285,7 @@ function initEvents(){
   });
   document.getElementById('cMo').addEventListener('click', function(ev){
     if(ev.target === this) this.classList.remove('sh');
+    if (!ev.target.closest('.rep-select')) closeAllDropdowns();
   });
   
   document.getElementById('quickViewBtn').addEventListener('click', function() {
@@ -1284,12 +1425,11 @@ function oM(m,d){
   
   editId = null;
   
-  // For a new entry, only show the form if user is admin
   var showForm = isAdmin;
   
   document.getElementById('mTitle').innerText = showForm ? "New Event" : "Events on this day";
   document.getElementById('mAB').innerText = "Save Event";
-  document.getElementById('editActions').style.display = 'none'; // Hide edit actions for new entries
+  document.getElementById('editActions').style.display = 'none';
   
   document.getElementById('mI').style.display = showForm ? 'block' : 'none';
   document.getElementById('timeSelect').style.display = showForm ? 'block' : 'none';
@@ -1297,7 +1437,6 @@ function oM(m,d){
   document.getElementById('repSelect').style.display = showForm ? 'block' : 'none';
   document.getElementById('mAB').style.display = showForm ? 'block' : 'none';
   
-  // Reset values
   document.getElementById('mI').value = '';
   document.getElementById('timeCurrent').innerHTML = 'All Day &#9662;';
   document.getElementById('timeCurrent').setAttribute('data-time', '99:99');
@@ -1319,11 +1458,9 @@ function oEdit(id) {
   document.getElementById('mTitle').innerText = "Edit Event";
   document.getElementById('mAB').innerText = "Update Event";
   
-  // Show edit actions. Delete is ONLY for admin. Cancel/Uncrosout is for everyone.
   document.getElementById('editActions').style.display = 'flex';
   document.getElementById('mDelBtn').style.display = isAdmin ? 'block' : 'none';
   
-  // Show all form fields for everyone when editing an existing event
   document.getElementById('mI').style.display = 'block';
   document.getElementById('timeSelect').style.display = 'block';
   document.getElementById('colorSelect').style.display = 'block';
@@ -1368,7 +1505,6 @@ function oEdit(id) {
 }
 
 function toggleCancelPlan() {
-  // Anyone can toggle cancel/uncrosout
   if(!editId) return;
   var ev = gA(mmD, mD).find(e => String(e.id) === String(editId));
   if(!ev) return;
@@ -1393,7 +1529,6 @@ function toggleCancelPlan() {
 }
 
 function deleteEntry() {
-  // Only admin can permanently delete
   if(!editId || !isAdmin) return;
   var ev = gA(mmD, mD).find(e => String(e.id) === String(editId));
   if(!ev) return;
@@ -1414,7 +1549,6 @@ function deleteEntry() {
 }
 
 function handleSave() {
-  // If no editId, it's a new entry. Only admin can add.
   if(!editId && !isAdmin) return; 
   if(editId) {
     updateEntry();
@@ -1424,7 +1558,6 @@ function handleSave() {
 }
 
 function updateEntry() {
-  // Anyone can update an existing entry (recolor, uncrosout, edit text)
   if(!editId) return;
   var ev = gA(mmD, mD).find(e => String(e.id) === String(editId));
   if(!ev) return;
@@ -1508,7 +1641,6 @@ function rML(){
 }
 
 function aE() {
-  // Only admin can add new events
   if(!isAdmin) return;
   var inp=document.getElementById('mI');
   var label=inp.value.trim();
