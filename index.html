@@ -29,7 +29,6 @@ html,body{height:100%;overflow:hidden;font-family:'Nunito',sans-serif;overscroll
 
 .nav{display:flex;align-items:center;justify-content:space-between;padding:8px 16px;flex-shrink:0;position:relative;z-index:1;gap:10px}
 
-/* Made the back and forward buttons transparent liquid glass */
 .nav button{
   width:44px;height:44px;border:none;border-radius:50%;cursor:pointer;
   display:flex;align-items:center;justify-content:center;font-size:18px;
@@ -86,7 +85,18 @@ html,body{height:100%;overflow:hidden;font-family:'Nunito',sans-serif;overscroll
 
 .ft{text-align:center;padding:8px;font-size:clamp(8px,2vw,10px);opacity:1;font-weight:700;flex-shrink:0;transition:color .65s ease;text-shadow: 0 1px 3px rgba(0,0,0,0.3);}
 
-.credit{position:absolute;top:env(safe-area-inset-top,0px);left:16px;margin-top:12px;font-family:'Quicksand',sans-serif;font-weight:600;font-size:clamp(9px,2.2vw,11px);opacity:.25;transition:color .65s ease;letter-spacing:.3px;z-index:2;pointer-events:none;color:#fff}
+.menu-btn{
+  position:absolute;top:env(safe-area-inset-top,0px);left:16px;margin-top:12px;
+  width:36px;height:36px;border:none;border-radius:50%;cursor:pointer;
+  display:flex;align-items:center;justify-content:center;
+  background:rgba(255,255,255,0.15); 
+  backdrop-filter:blur(10px) saturate(180%);-webkit-backdrop-filter:blur(10px) saturate(180%);
+  color:#fff;border:1px solid rgba(255,255,255,0.4);
+  box-shadow:0 2px 6px rgba(0,0,0,.1);
+  transition:transform .12s, background .2s;
+  z-index:2;
+}
+.menu-btn:active{transform:scale(.9);background:rgba(255,255,255,0.3)}
 
 .dl{position:absolute;inset:0;pointer-events:none;z-index:0;overflow:hidden}
 .dl svg{width:100%;height:100%;display:block}
@@ -121,7 +131,7 @@ html,body{height:100%;overflow:hidden;font-family:'Nunito',sans-serif;overscroll
 /* Full-screen backdrop that gently blurs the entire calendar behind it */
 .drawer-backdrop{
   position:fixed;inset:0;
-  background:rgba(255,255,255,0.01); /* Nearly transparent, just enough to trigger backdrop-filter reliably */
+  background:rgba(255,255,255,0.01); 
   z-index:49;opacity:0;pointer-events:none;
   transition:opacity .4s ease;
   backdrop-filter:blur(8px);
@@ -139,7 +149,6 @@ html,body{height:100%;overflow:hidden;font-family:'Nunito',sans-serif;overscroll
   border-top:1px solid rgba(255,255,255,0.6);
   border-left:1px solid rgba(255,255,255,0.4);
   border-right:1px solid rgba(255,255,255,0.4);
-  /* Softened shadow to remove the harsh black bar look */
   box-shadow:0 -4px 24px rgba(0,0,0,0.08), inset 0 1px 0 rgba(255,255,255,0.8);
   display:flex;flex-direction:column;
   transition:transform .4s cubic-bezier(.4,0,.2,1);
@@ -150,9 +159,7 @@ html,body{height:100%;overflow:hidden;font-family:'Nunito',sans-serif;overscroll
 .event-drawer:not(.closed){transform:translateY(0)}
 .event-drawer.dragging{transition:none!important}
 
-/* Increased height to 48px to make the touch target much larger and easier to swipe */
 .drawer-handle{height:48px;display:flex;align-items:center;justify-content:center;flex-shrink:0;cursor:grab;padding-top:12px;padding-bottom:env(safe-area-inset-bottom,0px);user-select:none;-webkit-user-select:none;position:relative;}
-/* Widened the visual bar to 60px to make it obvious where to swipe */
 .drawer-handle-bar {width:60px;height:5px;background:rgba(0,0,0,0.15);border-radius:3px;transition:width .2s ease, opacity .2s ease;}
 .drawer-handle:active .drawer-handle-bar {width:80px;opacity:0.8}
 .drawer-handle:active{cursor:grabbing}
@@ -249,7 +256,6 @@ html,body{height:100%;overflow:hidden;font-family:'Nunito',sans-serif;overscroll
   .c .n{font-size:10px}.c .b{font-size:5px;padding:1px 2px;line-height:1.2;border-radius:3px}
   .color-wash{inset:-12px;border-radius:12px}
   
-  /* Increased handle target size for small screens */
   .drawer-handle{height:44px;padding-top:10px}
   .drawer-handle-bar{width:40px;height:4px;top:10px}
   .event-drawer{transform:translateY(calc(100% - 44px));}
@@ -271,7 +277,6 @@ html,body{height:100%;overflow:hidden;font-family:'Nunito',sans-serif;overscroll
   .c .n{font-size:11px}.c .b{font-size:6px;padding:2px 3px;line-height:1.2;border-radius:4px}
   .color-wash{inset:-16px;border-radius:16px}
   
-  /* Increased handle target size for small screens */
   .event-drawer{transform:translateY(calc(100% - 44px));}
   .event-drawer.closed{transform:translateY(calc(100% - 44px));}
   .event-drawer:not(.closed) .drawer-body{max-height:70vh}
@@ -304,7 +309,15 @@ html,body{height:100%;overflow:hidden;font-family:'Nunito',sans-serif;overscroll
   <div class="blob" id="b2"></div>
   <div class="blob" id="b3"></div>
   <div class="safe-top" id="safeTop"></div>
-  <div class="credit" id="credit">Made by Lee Williams</div>
+  
+  <button class="menu-btn" id="menuBtn" aria-label="Menu">
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+      <line x1="3" y1="12" x2="21" y2="12"></line>
+      <line x1="3" y1="6" x2="21" y2="6"></line>
+      <line x1="3" y1="18" x2="21" y2="18"></line>
+    </svg>
+  </button>
+  
   <div class="dl"><svg xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice" viewBox="0 0 500 1200" id="dSvg"></svg></div>
   <div class="hdr" id="hdr"><h1>Emma's Calendar</h1><div class="sub" id="hSub">2026</div></div>
   <div class="nav">
@@ -322,6 +335,7 @@ html,body{height:100%;overflow:hidden;font-family:'Nunito',sans-serif;overscroll
   </div>
   <div class="safe-bottom"></div>
 </div>
+
 <div class="mo" id="mo">
   <div class="ms">
     <div class="mh"></div>
@@ -334,6 +348,19 @@ html,body{height:100%;overflow:hidden;font-family:'Nunito',sans-serif;overscroll
       <button class="mab" id="mAB">Add</button>
     </div>
     <button class="mcl" id="mCL">Close</button>
+  </div>
+</div>
+
+<div class="mo" id="cMo">
+  <div class="ms">
+    <div class="mh"></div>
+    <div class="mt">Credits</div>
+    <div style="text-align:center; padding: 20px 0; font-family:'Nunito',sans-serif;">
+      <div style="font-size:16px; font-weight:800; color:#333;">Emma's Calendar</div>
+      <div style="font-size:13px; color:#888; margin-top:8px;">Designed &amp; Developed by</div>
+      <div style="font-family:'Quicksand',sans-serif; font-size:22px; font-weight:700; color:#c2185b; margin-top:4px;">Lee Williams</div>
+    </div>
+    <button class="mcl" id="cMCL">Close</button>
   </div>
 </div>
 
@@ -436,7 +463,6 @@ var CL=[
 ];
 var pc=0;
 
-// Dynamically generate tag styles, ensuring dark text for Yellow tags for contrast
 var cSt=document.createElement('style');cSt.id='cs';
 (function(){
   var s='';
@@ -499,7 +525,7 @@ function gA(m,d){
 function gT(m){if(m===3)return'easter';if(m===9)return'halloween';if(m===11)return'christmas';return gS(m)}
 function gS(m){if(m<=1)return'winter';if(m<=4)return'spring';if(m<=7)return'summer';return'autumn'}
 
-var $app,$bgA,$safeTop,$b1,$b2,$b3,$hdr,$hSub,$mLbl,$ftH,$pB,$nB,$dhEls,$gC,$dSvg,$cw,$credit,$colorWash,$gridWrap;
+var $app,$bgA,$safeTop,$b1,$b2,$b3,$hdr,$hSub,$mLbl,$ftH,$pB,$nB,$dhEls,$gC,$dSvg,$cw,$colorWash,$gridWrap;
 var $evDrawer,$drawerBg,$drawerHandle,$drawerBody,$drawerScroll;
 
 function bGH(m){
@@ -510,7 +536,6 @@ function bGH(m){
     var isToday=(m===todayM&&d===todayD);
     ev=gA(m,d); 
     
-    // High contrast solid white cells
     bg = isSun ? 'rgba(0,0,0,0.03)' : '#ffffff'; 
     bd = 'rgba(0,0,0,0.05)';
     
@@ -544,7 +569,6 @@ function buildDrawerContent(){
     parts.push('</div><div class="dl-pills">');
     for(var j=0;j<ev.length;j++){
       var bg=ev[j].d===1?DE[ev[j].c].g:CL[ev[j].ci].g;
-      // Dynamic text color for pills in drawer list
       var isYellow = (ev[j].d===1 && ev[j].c==='b-wed2') || (ev[j].d===0 && ev[j].ci===2);
       var pTxtCol = isYellow ? '#333' : '#fff';
       var pSh = isYellow ? 'none' : '0 1px 1px rgba(0,0,0,0.2)';
@@ -591,11 +615,8 @@ function onDragMove(y){
   var maxH=Math.min(bodyH,window.innerHeight*0.85);
   var pct;
   if(drawerOpen){
-    // Drawer is open, dragging down (delta is negative)
     pct = 1 + (delta/maxH);
   } else {
-    // Drawer is closed, dragging up (delta is positive)
-    // Amplify slightly to make it feel more responsive on short swipes
     pct = (delta * 1.2) / maxH; 
   }
   if(pct<0)pct=0;
@@ -614,18 +635,16 @@ function onDragEnd(y){
   $drawerBg.style.pointerEvents='';
   
   if(!wasDrag){
-    // If it was just a tap, let the 'click' event handle the toggle to avoid double-firing
     return;
   } else {
-    var delta = dragY - y; // Positive when swiping up, negative when swiping down
-    var threshold = 40; // Fixed 40px threshold for universal reliability
+    var delta = dragY - y; 
+    var threshold = 40; 
     
     if (delta > threshold && !drawerOpen) {
-      openDrawer(); // Swiped up enough to open
+      openDrawer(); 
     } else if (delta < -threshold && drawerOpen) {
-      closeDrawer(); // Swiped down enough to close
+      closeDrawer(); 
     } else {
-      // Revert to previous state if threshold not met
       if (drawerOpen) openDrawer(); else closeDrawer();
     }
   }
@@ -639,10 +658,8 @@ function applyTheme(m){
   var tKey=t.s;
   if($b1._tk!==tKey){$b1._tk=tKey;$b1.style.background=t.bl[0];$b2.style.background=t.bl[1];$b3.style.background=t.bl[2]}
   $hdr.style.background=t.hd;$hSub.style.color=t.hs;
-  $credit.style.color=t.hs; 
   $ftH.style.color=t.hc; 
   
-  // Removed background override so CSS transparent glass takes effect
   $pB.style.opacity=cM===0?'.25':'1';$pB.disabled=cM===0;
   $nB.style.opacity=cM===11?'.25':'1';$nB.disabled=cM===11;
   
@@ -686,7 +703,7 @@ function initRefs(){
   $pB=document.getElementById('pB');$nB=document.getElementById('nB');
   $dhEls=document.querySelectorAll('.dht');
   $gC=document.getElementById('gC');
-  $dSvg=document.getElementById('dSvg');$cw=document.getElementById('cw');$credit=document.getElementById('credit');
+  $dSvg=document.getElementById('dSvg');$cw=document.getElementById('cw');
   $colorWash=document.getElementById('colorWash');$gridWrap=document.getElementById('gridWrap');
   $evDrawer=document.getElementById('evDrawer');$drawerBg=document.getElementById('drawerBg');
   $drawerHandle=document.getElementById('drawerHandle');$drawerBody=document.getElementById('drawerBody');
@@ -712,22 +729,30 @@ function initEvents(){
   document.getElementById('mCL').addEventListener('click',function(){document.getElementById('mo').classList.remove('sh')});
   document.getElementById('mo').addEventListener('click',function(ev){if(ev.target===this)this.classList.remove('sh')});
   
-  // Handle drawer handle click (to toggle on tap)
+  // Credits Menu Events
+  document.getElementById('menuBtn').addEventListener('click', function(){
+    document.getElementById('cMo').classList.add('sh');
+  });
+  document.getElementById('cMCL').addEventListener('click', function(){
+    document.getElementById('cMo').classList.remove('sh');
+  });
+  document.getElementById('cMo').addEventListener('click', function(ev){
+    if(ev.target === this) this.classList.remove('sh');
+  });
+
   $drawerHandle.addEventListener('click',function(e){
     if(wasDrag)return;
     toggleDrawer();
   });
   
-  // Unified touch start handler for reliable edge-swiping and handle dragging
   document.addEventListener('touchstart', function(ev) {
-    if (dragging) return; // Already dragging
-    if (fr) return; // Transitioning
+    if (dragging) return; 
+    if (fr) return; 
     
     var y = ev.touches[0].clientY;
     var target = ev.target;
     
     var isHandle = target.closest('#drawerHandle');
-    // Allow edge swipe if touching the bottom 60px of the screen when closed
     var isBottomEdge = (y > window.innerHeight - 60);
     
     if (isHandle || (!drawerOpen && isBottomEdge)) {
@@ -739,7 +764,6 @@ function initEvents(){
   document.addEventListener('touchmove',function(ev){if(dragging){ev.preventDefault();onDragMove(ev.touches[0].clientY)}},{passive:false});
   document.addEventListener('touchend',function(ev){if(dragging)onDragEnd(ev.changedTouches[0].clientY)});
   
-  // Mouse events for desktop testing
   $drawerHandle.addEventListener('mousedown',function(ev){onDragStart(ev.clientY)});
   document.addEventListener('mousemove',function(ev){if(dragging)onDragMove(ev.clientY)});
   document.addEventListener('mouseup',function(ev){if(dragging)onDragEnd(ev.clientY)});
