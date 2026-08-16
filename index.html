@@ -10,6 +10,9 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@500;600;700&family=Nunito:wght@600;700;800&display=swap" rel="stylesheet">
+<!-- Google API Scripts -->
+<script src="https://apis.google.com/js/api.js"></script>
+<script src="https://accounts.google.com/gsi/client"></script>
 <style>
 *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
 html,body{height:100%;overflow:hidden;font-family:'Nunito',sans-serif;overscroll-behavior:none;-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale}
@@ -43,12 +46,13 @@ html,body{height:100%;overflow:hidden;font-family:'Nunito',sans-serif;overscroll
 
 .nav .ml{
   font-family:'Quicksand',sans-serif;font-weight:700;font-size:clamp(15px,4vw,18px);
-  display:flex;align-items:center;gap:6px;transition:color .65s ease;
-  color:#333;background:rgba(255,255,255,0.9);padding:8px 18px;border-radius:30px;
-  backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);
-  box-shadow:0 2px 6px rgba(0,0,0,.1);border:1px solid rgba(255,255,255,0.6)
+  display:flex;align-items:center;justify-content:center;gap:6px;transition:color .65s ease, background .2s, transform .12s; cursor:pointer;
+  color:#fff;background:rgba(255,255,255,0.15);padding:10px 20px;border-radius:30px;
+  backdrop-filter:blur(10px) saturate(180%);-webkit-backdrop-filter:blur(10px) saturate(180%);
+  box-shadow:0 2px 6px rgba(0,0,0,.1);border:1px solid rgba(255,255,255,0.4);
+  text-shadow: 0 1px 3px rgba(0,0,0,.15);
 }
-.nav .me{font-size:clamp(18px,4.5vw,22px)}
+.nav .ml:active{transform:scale(.95);background:rgba(255,255,255,0.3)}
 
 .cw{flex:1;overflow-y:auto;overflow-x:hidden;-webkit-overflow-scrolling:touch;position:relative;z-index:1;overscroll-behavior:contain}
 .dh{display:grid;grid-template-columns:repeat(7,1fr);gap:4px;padding:0 8px;margin-bottom:8px}
@@ -128,6 +132,52 @@ html,body{height:100%;overflow:hidden;font-family:'Nunito',sans-serif;overscroll
 .mcl{width:100%;height:48px;border:none;border-radius:14px;background:#f5f5f5;color:#666;font-family:'Quicksand',sans-serif;font-weight:700;font-size:14px;cursor:pointer;margin-top:12px;transition:background .15s}
 .mcl:active{background:#e0e0e0}
 
+/* Jump Menu Glass & Animation Styles */
+#jumpMo .ms, #cMo .ms{
+  background:rgba(255,255,255,0.85);
+  backdrop-filter:blur(20px) saturate(180%);
+  -webkit-backdrop-filter:blur(20px) saturate(180%);
+  border-top:1px solid rgba(255,255,255,0.6);
+  border-left:1px solid rgba(255,255,255,0.4);
+  border-right:1px solid rgba(255,255,255,0.4);
+  box-shadow:0 -8px 40px rgba(0,0,0,0.1);
+}
+#jmpPrevY, #jmpNextY{
+  background:rgba(255,255,255,0.6);
+  border:1px solid rgba(255,255,255,0.7);
+  backdrop-filter:blur(4px);-webkit-backdrop-filter:blur(4px);
+  transition:transform 0.15s cubic-bezier(0.34,1.56,0.64,1), background 0.2s;
+}
+#jmpPrevY:active, #jmpNextY:active{
+  transform:scale(0.88);
+  background:rgba(194,24,91,0.15);
+}
+.j-btn{
+  padding:14px 0;border-radius:12px;
+  border:1px solid rgba(255,255,255,0.7);
+  background:rgba(255,255,255,0.6);
+  backdrop-filter:blur(4px);-webkit-backdrop-filter:blur(4px);
+  font-family:'Quicksand',sans-serif;font-weight:700;font-size:14px;color:#333;cursor:pointer;
+  transition:transform 0.15s cubic-bezier(0.34,1.56,0.64,1), background 0.2s, box-shadow 0.2s;
+}
+.j-btn:active{
+  transform:scale(0.9);
+  background:rgba(194,24,91,0.15);
+  box-shadow:0 0 0 3px rgba(194,24,91,0.1);
+}
+.j-btn.active{
+  background:rgba(194,24,91,0.85);color:#fff;
+  border-color:rgba(194,24,91,0.9);
+  box-shadow:0 4px 12px rgba(194,24,91,0.3);
+}
+
+.g-sync-btn{
+  width:100%; height:48px; border:1px solid rgba(66,133,244,0.3); border-radius:14px;
+  background:rgba(66,133,244,0.1); color:#4285F4; font-family:'Quicksand',sans-serif; font-weight:700; font-size:14px;
+  cursor:pointer; margin-bottom:12px; transition:transform .12s, background .15s;
+}
+.g-sync-btn:active{transform:scale(.95); background:rgba(66,133,244,0.2)}
+
 /* Full-screen backdrop that gently blurs the entire calendar behind it */
 .drawer-backdrop{
   position:fixed;inset:0;
@@ -202,7 +252,7 @@ html,body{height:100%;overflow:hidden;font-family:'Nunito',sans-serif;overscroll
   .c .b{font-size:clamp(9px,1.2vw,10.5px);padding:5px 8px;border-radius:6px}
   .dht{font-size:13px;padding:10px 0;border-radius:10px}
   .dh,.grid-wrap{gap:8px;padding-left:16px;padding-right:16px}
-  .nav button{width:48px;height:48px;font-size:20px}.nav .ml{font-size:20px}.nav .me{font-size:24px}
+  .nav button{width:48px;height:48px;font-size:20px}.nav .ml{font-size:20px;padding:12px 24px}.nav .me{font-size:24px}
   .ms{max-width:560px}
   .dl-circle{width:44px;height:44px;font-size:18px;border-radius:14px}
   .dl-date-text{font-size:18px}.dl-pill{font-size:14px;padding:8px 16px}
@@ -217,7 +267,7 @@ html,body{height:100%;overflow:hidden;font-family:'Nunito',sans-serif;overscroll
   .dht{font-size:14px;padding:12px 0}
   .dh,.grid-wrap{gap:10px;padding-left:20px;padding-right:20px}
   .nav{padding:12px 20px 8px}.nav button{width:52px;height:52px;font-size:22px}
-  .nav .ml{font-size:22px}
+  .nav .ml{font-size:22px}.nav .me{font-size:24px}
   .color-wash{inset:-40px;border-radius:40px}
   .mo{align-items:center}
   .ms{border-radius:28px;max-height:85vh;max-width:600px;padding:32px 32px calc(32px + env(safe-area-inset-bottom,0px))}
@@ -354,13 +404,28 @@ html,body{height:100%;overflow:hidden;font-family:'Nunito',sans-serif;overscroll
 <div class="mo" id="cMo">
   <div class="ms">
     <div class="mh"></div>
-    <div class="mt">Credits</div>
-    <div style="text-align:center; padding: 20px 0; font-family:'Nunito',sans-serif;">
+    <div class="mt">Menu &amp; Credits</div>
+    <button class="g-sync-btn" id="gSyncBtn">Sync Google Calendar</button>
+    <div style="text-align:center; padding: 20px 0; font-family:'Nunito',sans-serif; border-top:1px solid #eee; margin-top:12px;">
       <div style="font-size:16px; font-weight:800; color:#333;">Emma's Calendar</div>
       <div style="font-size:13px; color:#888; margin-top:8px;">Designed &amp; Developed by</div>
       <div style="font-family:'Quicksand',sans-serif; font-size:22px; font-weight:700; color:#c2185b; margin-top:4px;">Lee Williams</div>
     </div>
     <button class="mcl" id="cMCL">Close</button>
+  </div>
+</div>
+
+<div class="mo" id="jumpMo">
+  <div class="ms">
+    <div class="mh"></div>
+    <div class="mt">Jump to Date</div>
+    <div style="display:flex; align-items:center; justify-content:center; gap:16px; margin: 8px 0 24px;">
+      <button id="jmpPrevY" style="width:40px;height:40px;border-radius:50%;cursor:pointer;font-size:14px;color:#333;">&#9664;</button>
+      <div id="jmpYrLbl" style="font-family:'Quicksand',sans-serif; font-size:20px; font-weight:700; color:#111; min-width:60px; text-align:center;">2024</div>
+      <button id="jmpNextY" style="width:40px;height:40px;border-radius:50%;cursor:pointer;font-size:14px;color:#333;">&#9654;</button>
+    </div>
+    <div class="j-grid" id="jmpGrid" style="display:grid; grid-template-columns:repeat(3,1fr); gap:12px; margin-bottom:16px;"></div>
+    <button class="mcl" id="jmpClose">Close</button>
   </div>
 </div>
 
@@ -375,6 +440,17 @@ html,body{height:100%;overflow:hidden;font-family:'Nunito',sans-serif;overscroll
 </div>
 
 <script>
+// --- GOOGLE CALENDAR INTEGRATION CONFIG ---
+// Your provided Client ID
+var G_CLIENT_ID = '7107570209-1ggvbj9naagqu2fkt8rfbu68k5eqg4l8.apps.googleusercontent.com';
+// YOU MUST REPLACE THIS WITH YOUR API KEY
+var G_API_KEY = 'AIzaSyDYFJLjqeMN7Ci-84ovTy5vrlbP2NBcCsE'; 
+var G_DISCOVERY_DOC = 'https://www.googleapis.com/discovery/v1/apis/calendar/v3/rest';
+var G_SCOPES = 'https://www.googleapis.com/auth/calendar.readonly';
+var gEvents = {}; 
+var gTokenClient = null;
+var gInited = false;
+
 function E(c){return String.fromCodePoint(c)}
 var S1=E(0x2744),S2=E(0x26C4),S3=E(0x1F328),TU=E(0x1F337),SF=E(0x1F33B),CH=E(0x1F338),BF=E(0x2618),SU=E(0x2600),HI=E(0x1F33A),ME=E(0x1F349),BE=E(0x1F3D6);
 var L1=E(0x1F342),L2=E(0x1F341),NU=E(0x1F330),PU=E(0x1F383),XM=E(0x1F384),HT=E(0x1F496);
@@ -439,8 +515,11 @@ var TH={
 };
 
 var _now=new Date();
-var cM=_now.getMonth(),YR=2026,fr=false;
+var cM=_now.getMonth(), YR=_now.getFullYear(), fr=false;
 var todayM=cM,todayD=_now.getDate();
+var minYr = _now.getFullYear(), maxYr = 2030;
+var jumpYear = YR;
+
 var mN=['January','February','March','April','May','June','July','August','September','October','November','December'];
 var dayN=['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
 var mE=[S1,HT,TU,EG,CH,SU,ME,BE,L1,PU,L2,XM];
@@ -476,6 +555,8 @@ var cSt=document.createElement('style');cSt.id='cs';
     var sh2 = (txtCol2==='#fff') ? '0 1px 1px rgba(0,0,0,0.2)' : 'none';
     s+='.b-c-'+i+'{background:'+CL[i].g+'; color:'+txtCol2+'; text-shadow:'+sh2+'}';
   }
+  // Google Calendar Sync Tag Style
+  s += '.b-g-cal{background:linear-gradient(135deg,#4285F4,#4285F4); color:#fff; text-shadow:0 1px 1px rgba(0,0,0,0.2)}';
   cSt.textContent=s;
 })();
 document.head.appendChild(cSt);
@@ -519,6 +600,8 @@ function gA(m,d){
   }
   if(dw===5&&!iDR(m,d,'b-fri'))o.push({l:'Work',c:'b-fri',d:1});
   var cu=cE[eK(m,d)];if(cu)for(var i=0;i<cu.length;i++)o.push({l:cu[i].l,c:'b-c-'+cu[i].ci,d:0,ci:cu[i].ci});
+  // Append Google Calendar events
+  var gu=gEvents[eK(m,d)]; if(gu) for(var j=0;j<gu.length;j++)o.push(gu[j]);
   return o;
 }
 
@@ -533,7 +616,7 @@ function bGH(m){
   for(i=0;i<off;i++)parts.push('<div class="c e"></div>');
   for(d=1;d<=dim;d++){
     var isSun=(new Date(YR,m,d).getDay()===0);
-    var isToday=(m===todayM&&d===todayD);
+    var isToday=(YR===_now.getFullYear()&&m===todayM&&d===todayD);
     ev=gA(m,d); 
     
     bg = isSun ? 'rgba(0,0,0,0.03)' : '#ffffff'; 
@@ -568,7 +651,7 @@ function buildDrawerContent(){
     parts.push('<span class="dl-date-text">'+dayN[dw]+' '+d+' '+mN[cM]+'</span>');
     parts.push('</div><div class="dl-pills">');
     for(var j=0;j<ev.length;j++){
-      var bg=ev[j].d===1?DE[ev[j].c].g:CL[ev[j].ci].g;
+      var bg=ev[j].d===1?DE[ev[j].c].g:(ev[j].c==='b-g-cal'?'linear-gradient(135deg,#4285F4,#4285F4)':CL[ev[j].ci].g);
       var isYellow = (ev[j].d===1 && ev[j].c==='b-wed2') || (ev[j].d===0 && ev[j].ci===2);
       var pTxtCol = isYellow ? '#333' : '#fff';
       var pSh = isYellow ? 'none' : '0 1px 1px rgba(0,0,0,0.2)';
@@ -579,7 +662,7 @@ function buildDrawerContent(){
   if(!total){
     parts.push('<div class="dl-empty">No events this month</div>');
   }else{
-    parts.unshift('<div class="dl-summary">'+total+' event'+(total>1?'s':'')+' in '+mN[cM]+'</div>');
+    parts.unshift('<div class="dl-summary">'+total+' event'+(total>1?'s':'')+' in '+mN[cM]+' '+YR+'</div>');
   }
   $drawerScroll.innerHTML=parts.join('');
 }
@@ -660,17 +743,30 @@ function applyTheme(m){
   $hdr.style.background=t.hd;$hSub.style.color=t.hs;
   $ftH.style.color=t.hc; 
   
-  $pB.style.opacity=cM===0?'.25':'1';$pB.disabled=cM===0;
-  $nB.style.opacity=cM===11?'.25':'1';$nB.disabled=cM===11;
+  $pB.style.opacity=(YR===minYr&&cM===0)?'.25':'1';$pB.disabled=(YR===minYr&&cM===0);
+  $nB.style.opacity=(YR===maxYr&&cM===11)?'.25':'1';$nB.disabled=(YR===maxYr&&cM===11);
   
-  $mLbl.innerHTML='<span class="me">'+mE[cM]+'</span> '+mN[cM];
-  $hSub.textContent=t.s+' \u00B7 2026';
+  $mLbl.innerHTML = mN[cM] + ' ' + YR;
+  $hSub.textContent=t.s+' \u00B7 '+YR;
   $dSvg.innerHTML=t.d;
   $gC.innerHTML=bGH(cM);
+
+  // Fetch Google Events seamlessly every time the month changes if authenticated
+  if (gapi && gapi.client && gapi.client.getToken()) {
+    fetchGEvents();
+  }
 }
 
 function gM(dir){
-  if(fr)return;var nm=cM+dir;if(nm<0||nm>11)return;
+  if(fr)return;
+  var nm=cM+dir;
+  if(nm<0){
+    if(YR<=minYr)return;
+    nm=11;YR--;
+  } else if(nm>11){
+    if(YR>=maxYr)return;
+    nm=0;YR++;
+  }
   fr=true;
   var newTheme=TH[gT(nm)];
   var washX=dir>0?'78%':'22%';
@@ -710,6 +806,94 @@ function initRefs(){
   $drawerScroll=document.getElementById('drawerScroll');
 }
 
+function renderJumpMenu(){
+  document.getElementById('jmpYrLbl').textContent = jumpYear;
+  var grid = document.getElementById('jmpGrid');
+  var html = '';
+  for(var i=0; i<12; i++) {
+    var active = (jumpYear === YR && i === cM) ? ' active' : '';
+    html += '<button class="j-btn'+active+'" data-m="'+i+'">'+mN[i]+'</button>';
+  }
+  grid.innerHTML = html;
+  
+  document.getElementById('jmpPrevY').disabled = (jumpYear <= minYr);
+  document.getElementById('jmpPrevY').style.opacity = (jumpYear <= minYr) ? '0.3' : '1';
+  document.getElementById('jmpNextY').disabled = (jumpYear >= maxYr);
+  document.getElementById('jmpNextY').style.opacity = (jumpYear >= maxYr) ? '0.3' : '1';
+}
+
+// --- GOOGLE CALENDAR FUNCTIONS ---
+function gInit() {
+  if (G_API_KEY === 'YOUR_API_KEY_HERE') {
+    document.getElementById('gSyncBtn').textContent = 'Google API Key Missing';
+    document.getElementById('gSyncBtn').disabled = true;
+    document.getElementById('gSyncBtn').style.opacity = '0.5';
+    return;
+  }
+  gapi.load('client', initializeGapiClient);
+  gTokenClient = google.accounts.oauth2.initTokenClient({
+    client_id: G_CLIENT_ID,
+    scope: G_SCOPES,
+    callback: '' 
+  });
+}
+
+async function initializeGapiClient() {
+  await gapi.client.init({
+    apiKey: G_API_KEY,
+    discoveryDoc: G_DISCOVERY_DOC,
+  });
+  gInited = true;
+}
+
+function handleGAuth() {
+  if (!gInited || !gTokenClient) return;
+  gTokenClient.callback = async (resp) => {
+    if (resp.error !== undefined) throw resp;
+    document.getElementById('gSyncBtn').textContent = 'Google Sync Active ✓';
+    await fetchGEvents();
+  };
+  if (gapi.client.getToken() === null) {
+    gTokenClient.requestAccessToken({ prompt: 'consent' });
+  } else {
+    gTokenClient.requestAccessToken({ prompt: '' });
+  }
+}
+
+async function fetchGEvents() {
+  if (!gapi.client.getToken()) return;
+  let timeMin = new Date(YR, cM, 1).toISOString();
+  let timeMax = new Date(YR, cM + 1, 0, 23, 59, 59).toISOString();
+  
+  try {
+    const response = await gapi.client.calendar.events.list({
+      'calendarId': 'primary',
+      'timeMin': timeMin,
+      'timeMax': timeMax,
+      'showDeleted': false,
+      'singleEvents': true,
+      'maxResults': 250,
+      'orderBy': 'startTime'
+    });
+    const events = response.result.items;
+    gEvents = {}; 
+    for (let i = 0; i < events.length; i++) {
+      let e = events[i];
+      let dateStr = e.start.dateTime ? e.start.dateTime.split('T')[0] : e.start.date;
+      let parts = dateStr.split('-');
+      let y = parseInt(parts[0]), m = parseInt(parts[1])-1, d = parseInt(parts[2]);
+      let key = y + '-' + (m+1) + '-' + d;
+      if (!gEvents[key]) gEvents[key] = [];
+      gEvents[key].push({l: e.summary || 'Busy', c: 'b-g-cal', d: 0, ci: 4}); 
+    }
+    rG(); 
+    if(drawerOpen) buildDrawerContent();
+  } catch (err) {
+    console.error('Google Calendar API Error:', err);
+  }
+}
+
+
 function initEvents(){
   $pB.addEventListener('click',function(){gM(-1)});$nB.addEventListener('click',function(){gM(1)});
   var tX=0,tY=0,sw=false;
@@ -729,7 +913,7 @@ function initEvents(){
   document.getElementById('mCL').addEventListener('click',function(){document.getElementById('mo').classList.remove('sh')});
   document.getElementById('mo').addEventListener('click',function(ev){if(ev.target===this)this.classList.remove('sh')});
   
-  // Credits Menu Events
+  // Menu & Sync Events
   document.getElementById('menuBtn').addEventListener('click', function(){
     document.getElementById('cMo').classList.add('sh');
   });
@@ -737,6 +921,41 @@ function initEvents(){
     document.getElementById('cMo').classList.remove('sh');
   });
   document.getElementById('cMo').addEventListener('click', function(ev){
+    if(ev.target === this) this.classList.remove('sh');
+  });
+  document.getElementById('gSyncBtn').addEventListener('click', handleGAuth);
+
+  // Quick Jump Menu Events
+  document.getElementById('mLbl').addEventListener('click', function(){
+    jumpYear = YR;
+    renderJumpMenu();
+    document.getElementById('jumpMo').classList.add('sh');
+  });
+  document.getElementById('jmpPrevY').addEventListener('click', function(){
+    if(jumpYear > minYr){
+      jumpYear--;
+      renderJumpMenu();
+    }
+  });
+  document.getElementById('jmpNextY').addEventListener('click', function(){
+    if(jumpYear < maxYr){
+      jumpYear++;
+      renderJumpMenu();
+    }
+  });
+  document.getElementById('jmpGrid').addEventListener('click', function(ev){
+    var btn = ev.target.closest('.j-btn');
+    if(!btn) return;
+    var m = parseInt(btn.getAttribute('data-m'));
+    YR = jumpYear;
+    cM = m;
+    applyTheme(cM);
+    document.getElementById('jumpMo').classList.remove('sh');
+  });
+  document.getElementById('jmpClose').addEventListener('click', function(){
+    document.getElementById('jumpMo').classList.remove('sh');
+  });
+  document.getElementById('jumpMo').addEventListener('click', function(ev){
     if(ev.target === this) this.classList.remove('sh');
   });
 
@@ -790,6 +1009,7 @@ function rML(){
   for(var i=0;i<ev.length;i++){
     var e=ev[i],dc,tt,tbg;
     if(e.d===1){var info=DE[e.c];dc=info.g;tt=info.l;tbg=info.c}
+    else if(e.c==='b-g-cal'){dc='linear-gradient(135deg,#4285F4,#4285F4)';tt='google';tbg='#4285F4'}
     else{dc=CL[e.ci].g;tt='custom';tbg=CL[e.ci].f}
     
     var isYellow = (e.d===1 && e.c==='b-wed2') || (e.d===0 && e.ci===2);
@@ -834,6 +1054,7 @@ initEvents();
 window.onload = function() {
   applyTheme(cM); 
   buildDrawerContent();
+  gInit();
 };
 </script>
 </body>
