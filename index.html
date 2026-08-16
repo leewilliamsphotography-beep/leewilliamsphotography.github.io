@@ -178,7 +178,6 @@ html,body{height:100%;overflow:hidden;font-family:'Nunito',sans-serif;overscroll
   .event-drawer{max-width:480px;left:50%;transform:translateX(-50%) translateY(calc(100% - 48px - env(safe-area-inset-bottom,0px)))}
   .event-drawer.closed{transform:translateX(-50%) translateY(calc(100% - 48px - env(safe-area-inset-bottom,0px)))}
   .event-drawer:not(.closed){transform:translateX(-50%) translateY(0)}
-  /* Removed max-width from backdrop so the entire screen blurs */
 }
 @media(min-width:520px){
   .app{max-width:560px}.event-drawer{max-width:560px}
@@ -249,10 +248,12 @@ html,body{height:100%;overflow:hidden;font-family:'Nunito',sans-serif;overscroll
   .c{min-height:32px!important;padding:2px;gap:1px;border-radius:6px}
   .c .n{font-size:10px}.c .b{font-size:5px;padding:1px 2px;line-height:1.2;border-radius:3px}
   .color-wash{inset:-12px;border-radius:12px}
-  .drawer-handle{height:36px;padding-top:6px}
-  .drawer-handle-bar{width:40px;height:4px;top:6px}
-  .event-drawer{transform:translateY(calc(100% - 36px));}
-  .event-drawer.closed{transform:translateY(calc(100% - 36px));}
+  
+  /* Increased handle target size for small screens */
+  .drawer-handle{height:44px;padding-top:10px}
+  .drawer-handle-bar{width:40px;height:4px;top:10px}
+  .event-drawer{transform:translateY(calc(100% - 44px));}
+  .event-drawer.closed{transform:translateY(calc(100% - 44px));}
   .event-drawer:not(.closed) .drawer-body{max-height:65vh}
   .drawer-scroll{padding:4px 12px 12px}
   .dl-circle{width:24px;height:24px;font-size:11px;border-radius:6px}
@@ -269,10 +270,12 @@ html,body{height:100%;overflow:hidden;font-family:'Nunito',sans-serif;overscroll
   .c{min-height:42px!important;padding:4px;gap:2px;border-radius:8px}
   .c .n{font-size:11px}.c .b{font-size:6px;padding:2px 3px;line-height:1.2;border-radius:4px}
   .color-wash{inset:-16px;border-radius:16px}
-  .event-drawer{transform:translateY(calc(100% - 40px));}
-  .event-drawer.closed{transform:translateY(calc(100% - 40px));}
+  
+  /* Increased handle target size for small screens */
+  .event-drawer{transform:translateY(calc(100% - 44px));}
+  .event-drawer.closed{transform:translateY(calc(100% - 44px));}
   .event-drawer:not(.closed) .drawer-body{max-height:70vh}
-  .drawer-handle{height:40px}
+  .drawer-handle{height:44px;padding-top:8px}
   .drawer-scroll{padding:8px 16px 16px}
   .dl-circle{width:28px;height:28px;font-size:12px;border-radius:8px}
   .dl-date-text{font-size:13px}.dl-pills{padding-left:38px}
@@ -588,12 +591,16 @@ function onDragMove(y){
   var maxH=Math.min(bodyH,window.innerHeight*0.85);
   var pct;
   if(drawerOpen){
-    pct=1+(delta/maxH);
-    if(pct<0)pct=0;if(pct>1)pct=1;
-  }else{
-    pct=delta/maxH;
-    if(pct<0)pct=0;if(pct>1)pct=1;
+    // Drawer is open, dragging down (delta is negative)
+    pct = 1 + (delta/maxH);
+  } else {
+    // Drawer is closed, dragging up (delta is positive)
+    // Amplify slightly to make it feel more responsive on short swipes
+    pct = (delta * 1.2) / maxH; 
   }
+  if(pct<0)pct=0;
+  if(pct>1)pct=1;
+  
   $drawerBody.style.maxHeight=(pct*maxH)+'px';
   $drawerBg.style.opacity=pct;
   $drawerBg.style.pointerEvents=pct>0.1?'auto':'none';
@@ -607,15 +614,20 @@ function onDragEnd(y){
   $drawerBg.style.pointerEvents='';
   
   if(!wasDrag){
-    toggleDrawer();
+    // If it was just a tap, let the 'click' event handle the toggle to avoid double-firing
+    return;
   } else {
-    var delta=dragY-y;
-    var bodyH=$drawerScroll.scrollHeight||300;
-    var maxH=Math.min(bodyH,window.innerHeight*0.85);
-    var pct=drawerOpen?(1+(delta/maxH)):(delta/maxH);
-    if(pct>0.35&&!drawerOpen){openDrawer()}
-    else if(pct<0.65&&drawerOpen){closeDrawer()}
-    else if(drawerOpen)openDrawer();else closeDrawer();
+    var delta = dragY - y; // Positive when swiping up, negative when swiping down
+    var threshold = 40; // Fixed 40px threshold for universal reliability
+    
+    if (delta > threshold && !drawerOpen) {
+      openDrawer(); // Swiped up enough to open
+    } else if (delta < -threshold && drawerOpen) {
+      closeDrawer(); // Swiped down enough to close
+    } else {
+      // Revert to previous state if threshold not met
+      if (drawerOpen) openDrawer(); else closeDrawer();
+    }
   }
   setTimeout(function(){wasDrag=false},150);
 }
@@ -700,19 +712,38 @@ function initEvents(){
   document.getElementById('mCL').addEventListener('click',function(){document.getElementById('mo').classList.remove('sh')});
   document.getElementById('mo').addEventListener('click',function(ev){if(ev.target===this)this.classList.remove('sh')});
   
-  // Handle drawer handle click (to toggle)
+  // Handle drawer handle click (to toggle on tap)
   $drawerHandle.addEventListener('click',function(e){
     if(wasDrag)return;
     toggleDrawer();
   });
   
+  // Unified touch start handler for reliable edge-swiping and handle dragging
+  document.addEventListener('touchstart', function(ev) {
+    if (dragging) return; // Already dragging
+    if (fr) return; // Transitioning
+    
+    var y = ev.touches[0].clientY;
+    var target = ev.target;
+    
+    var isHandle = target.closest('#drawerHandle');
+    // Allow edge swipe if touching the bottom 60px of the screen when closed
+    var isBottomEdge = (y > window.innerHeight - 60);
+    
+    if (isHandle || (!drawerOpen && isBottomEdge)) {
+      onDragStart(y);
+    }
+  }, {passive:true});
+  
   $drawerBg.addEventListener('click',closeDrawer);
-  $drawerHandle.addEventListener('touchstart',function(ev){onDragStart(ev.touches[0].clientY)},{passive:true});
   document.addEventListener('touchmove',function(ev){if(dragging){ev.preventDefault();onDragMove(ev.touches[0].clientY)}},{passive:false});
   document.addEventListener('touchend',function(ev){if(dragging)onDragEnd(ev.changedTouches[0].clientY)});
+  
+  // Mouse events for desktop testing
   $drawerHandle.addEventListener('mousedown',function(ev){onDragStart(ev.clientY)});
   document.addEventListener('mousemove',function(ev){if(dragging)onDragMove(ev.clientY)});
   document.addEventListener('mouseup',function(ev){if(dragging)onDragEnd(ev.clientY)});
+  
   $drawerScroll.addEventListener('click',function(ev){
     var grp=ev.target.closest('.dl-group');
     if(!grp)return;
@@ -774,7 +805,12 @@ document.getElementById('dh').innerHTML=
   '<div class="dht">Mon</div><div class="dht">Tue</div><div class="dht">Wed</div>'+
   '<div class="dht">Thu</div><div class="dht">Fri</div><div class="dht">Sat</div><div class="dht">Sun</div>';
 
-initRefs();initEvents();applyTheme(cM);buildDrawerContent();
+initRefs(); 
+initEvents(); 
+window.onload = function() {
+  applyTheme(cM); 
+  buildDrawerContent();
+};
 </script>
 </body>
 </html>
