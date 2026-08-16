@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -201,8 +202,9 @@ html,body{height:100%;overflow:hidden;font-family:'Nunito',sans-serif;overscroll
 .backup-btn:active { transform: scale(.95); }
 .exp-btn { background: #4caf50; }
 .imp-btn { background: #ff9800; }
+.logout-btn { background: #f44336; }
 
-#jumpMo .ms, #cMo .ms, #quickViewMo .ms{
+#jumpMo .ms, #cMo .ms, #quickViewMo .ms, #loginMo .ms{
   background:rgba(255,255,255,0.98);
   box-shadow:0 -8px 40px rgba(0,0,0,0.1);
 }
@@ -262,7 +264,7 @@ html,body{height:100%;overflow:hidden;font-family:'Nunito',sans-serif;overscroll
   box-shadow: 0 0 12px rgba(255, 255, 255, 0.6);
 }
 .app.dark .ms { background: #1e293b; box-shadow: 0 -8px 40px rgba(0,0,0,0.5); }
-.app.dark #jumpMo .ms, .app.dark #cMo .ms, .app.dark #quickViewMo .ms { background: rgba(30, 41, 59, 0.98); border-color: rgba(255,255,255,0.2); }
+.app.dark #jumpMo .ms, .app.dark #cMo .ms, .app.dark #quickViewMo .ms, .app.dark #loginMo .ms { background: rgba(30, 41, 59, 0.98); border-color: rgba(255,255,255,0.2); }
 .app.dark .mt { color: #f1f5f9; }
 .app.dark .md { color: #94a3b8; }
 .app.dark .m-divider { background: #334155; }
@@ -298,6 +300,8 @@ html,body{height:100%;overflow:hidden;font-family:'Nunito',sans-serif;overscroll
 </style>
 </head>
 <body>
+
+<!-- Main App -->
 <div class="app" id="app">
   <div class="bg-anim" id="bgA"></div>
   <div class="safe-top" id="safeTop"></div>
@@ -431,22 +435,47 @@ html,body{height:100%;overflow:hidden;font-family:'Nunito',sans-serif;overscroll
   </div>
 </div>
 
+<!-- Hamburger Menu -->
 <div class="mo" id="cMo">
   <div class="ms">
     <div class="mh"></div>
     <div class="mt">Menu & Settings</div>
     
-    <button class="backup-btn" id="toggleDarkModeBtn" style="background: #475569; margin-bottom: 16px;">Enable Dark Mode</button>
+    <div class="mt" style="font-size: 18px; margin-bottom: 16px;">Admin Access</div>
+    <button class="backup-btn" id="loginBtn" style="background: #475569; margin-bottom: 16px;">Admin Login</button>
+    <button class="backup-btn logout-btn" id="logoutBtn" style="margin-bottom: 16px; display: none;">Logout Admin</button>
+    
+    <div class="m-divider"></div>
     
     <div class="mt" style="font-size: 18px; margin-bottom: 16px;">Local Backup & Restore</div>
     <button class="backup-btn exp-btn" id="expData">Export Local Data</button>
     <button class="backup-btn imp-btn" id="impData">Import Local Data</button>
+    
+    <button class="backup-btn" id="toggleDarkModeBtn" style="background: #475569; margin-top: 16px;">Enable Dark Mode</button>
+    
     <div style="text-align:center; padding: 20px 0; font-family:'Nunito',sans-serif; border-top:1px solid #eee; margin-top:12px;">
       <div style="font-size:18px; font-weight:800; color:#333;">Emma's Calendar</div>
       <div style="font-size:14px; color:#888; margin-top:8px;">Designed &amp; Developed by</div>
       <div style="font-family:'Quicksand',sans-serif; font-size:24px; font-weight:700; color:#c2185b; margin-top:4px;">Lee Williams</div>
     </div>
     <button class="mcl" id="cMCL">Close</button>
+  </div>
+</div>
+
+<!-- Login Modal -->
+<div class="mo" id="loginMo">
+  <div class="ms" style="text-align:center;">
+    <div class="mh"></div>
+    <div class="mt">Admin Login</div>
+    <div class="md">Enter credentials to edit events.</div>
+    
+    <input class="mi" id="loginUser" type="text" placeholder="Username" style="margin-bottom: 12px; text-align: center;">
+    <input class="mi" id="loginPass" type="password" placeholder="Password" style="margin-bottom: 24px; text-align: center;">
+    
+    <button class="mab" id="loginSubmitBtn" style="width: 100%;">Login</button>
+    <div id="loginError" style="color: #f44336; margin-top: 12px; font-size: 14px; font-weight: 600; min-height: 20px;"></div>
+    
+    <button class="mcl" id="loginCloseBtn">Close</button>
   </div>
 </div>
 
@@ -507,6 +536,9 @@ var TH={
 
 var darkMode = false;
 try { darkMode = localStorage.getItem('emma-dm') === 'true'; } catch(e) {}
+
+var isAdmin = false;
+try { isAdmin = localStorage.getItem('emma-admin') === 'true'; } catch(e) {}
 
 var _now=new Date();
 var cM=_now.getMonth(), YR=_now.getFullYear(), fr=false;
@@ -590,7 +622,7 @@ function listenForCloudUpdates() {
       try{localStorage.setItem('emma-rd',JSON.stringify(rD));}catch(e){}
       try{localStorage.setItem('emma-rep',JSON.stringify(rE));}catch(e){}
     }
-    applyTheme(cM); // Refresh UI
+    applyTheme(cM); 
     isSyncing = false;
   }, (error) => {
     console.error('Firebase read failed:', error);
@@ -940,6 +972,11 @@ function setupDropdown(currentId, dropdownId) {
   });
 }
 
+function updateAdminUI() {
+  document.getElementById('loginBtn').style.display = isAdmin ? 'none' : 'block';
+  document.getElementById('logoutBtn').style.display = isAdmin ? 'block' : 'none';
+}
+
 function initEvents(){
   $pB.addEventListener('click',function(){gM(-1)});$nB.addEventListener('click',function(){gM(1)});
   var tX=0,tY=0,sw=false;
@@ -974,6 +1011,37 @@ function initEvents(){
     darkBtn.innerText = darkMode ? 'Enable Light Mode' : 'Enable Dark Mode';
     applyTheme(cM);
     rG();
+  });
+
+  // Admin Login Listeners
+  updateAdminUI();
+  document.getElementById('loginBtn').addEventListener('click', function(){
+    document.getElementById('cMo').classList.remove('sh');
+    document.getElementById('loginMo').classList.add('sh');
+  });
+  document.getElementById('loginCloseBtn').addEventListener('click', function(){
+    document.getElementById('loginMo').classList.remove('sh');
+  });
+  document.getElementById('loginSubmitBtn').addEventListener('click', function(){
+    var user = document.getElementById('loginUser').value;
+    var pass = document.getElementById('loginPass').value;
+    if (user === 'Leewilliams' && pass === 'Fortnite2029!!') {
+      isAdmin = true;
+      try { localStorage.setItem('emma-admin', 'true'); } catch(e) {}
+      document.getElementById('loginError').textContent = '';
+      document.getElementById('loginMo').classList.remove('sh');
+      updateAdminUI();
+      alert('Logged in successfully!');
+    } else {
+      document.getElementById('loginError').textContent = 'Invalid username or password.';
+    }
+  });
+  document.getElementById('logoutBtn').addEventListener('click', function(){
+    isAdmin = false;
+    try { localStorage.removeItem('emma-admin'); } catch(e) {}
+    updateAdminUI();
+    document.getElementById('cMo').classList.remove('sh');
+    alert('Logged out.');
   });
   
   var timeHtml = '<div class="rep-item" data-time="99:99">All Day</div>';
@@ -1216,25 +1284,27 @@ function oM(m,d){
   document.getElementById('repMonth').textContent = mN[m] + ' ' + d;
   
   editId = null;
-  document.getElementById('mTitle').innerText = "New Event";
+  document.getElementById('mTitle').innerText = isAdmin ? "New Event" : "Events on this day";
   document.getElementById('mAB').innerText = "Save Event";
   document.getElementById('editActions').style.display = 'none';
-  document.getElementById('mI').disabled = false;
+  
+  document.getElementById('mI').style.display = isAdmin ? 'block' : 'none';
+  document.getElementById('timeSelect').style.display = isAdmin ? 'block' : 'none';
+  document.getElementById('colorSelect').style.display = isAdmin ? 'block' : 'none';
+  document.getElementById('repSelect').style.display = isAdmin ? 'block' : 'none';
+  document.getElementById('mAB').style.display = isAdmin ? 'block' : 'none';
+  
   document.getElementById('mI').value = '';
-  document.getElementById('timeSelect').style.display = 'block';
   document.getElementById('timeCurrent').innerHTML = 'All Day &#9662;';
   document.getElementById('timeCurrent').setAttribute('data-time', '99:99');
-  document.getElementById('colorSelect').style.display = 'block';
   pc = 0;
   updateColorBtn();
-  document.getElementById('repSelect').style.display = 'block';
-  
   document.getElementById('repCurrent').innerHTML = 'Does not repeat &#9662;';
   document.getElementById('repCurrent').setAttribute('data-rep', 'none');
   closeAllDropdowns();
   
   rML();document.getElementById('mo').classList.add('sh');
-  setTimeout(function(){document.getElementById('mI').focus()},300);
+  setTimeout(function(){ if(isAdmin) document.getElementById('mI').focus() },300);
 }
 
 function oEdit(id) {
@@ -1242,21 +1312,23 @@ function oEdit(id) {
   if(!ev) return;
   
   editId = id;
-  document.getElementById('mTitle').innerText = "Edit Event";
+  document.getElementById('mTitle').innerText = isAdmin ? "Edit Event" : "Event Details";
   document.getElementById('mAB').innerText = "Update Event";
-  document.getElementById('editActions').style.display = 'flex';
+  document.getElementById('editActions').style.display = isAdmin ? 'flex' : 'none';
+  
+  document.getElementById('mI').style.display = isAdmin ? 'block' : 'none';
+  document.getElementById('timeSelect').style.display = isAdmin ? 'block' : 'none';
+  document.getElementById('colorSelect').style.display = isAdmin ? 'block' : 'none';
+  document.getElementById('repSelect').style.display = isAdmin ? 'block' : 'none';
+  document.getElementById('mAB').style.display = isAdmin ? 'block' : 'none';
   
   document.getElementById('mI').value = ev.l;
   var timeVal = (ev.t && ev.t !== "99:99") ? ev.t : '99:99';
   document.getElementById('timeCurrent').innerHTML = formatTime(timeVal) + ' &#9662;';
   document.getElementById('timeCurrent').setAttribute('data-time', timeVal);
   
-  document.getElementById('mI').disabled = false;
-  document.getElementById('timeSelect').style.display = 'block';
-  document.getElementById('colorSelect').style.display = 'block';
   pc = ev.ci;
   updateColorBtn();
-  document.getElementById('repSelect').style.display = 'block';
   
   if(ev.rep) {
     if(typeof ev.rep === 'object') {
@@ -1288,7 +1360,7 @@ function oEdit(id) {
 }
 
 function toggleCancelPlan() {
-  if(!editId) return;
+  if(!editId || !isAdmin) return;
   var ev = gA(mmD, mD).find(e => String(e.id) === String(editId));
   if(!ev) return;
   
@@ -1312,7 +1384,7 @@ function toggleCancelPlan() {
 }
 
 function deleteEntry() {
-  if(!editId) return;
+  if(!editId || !isAdmin) return;
   var ev = gA(mmD, mD).find(e => String(e.id) === String(editId));
   if(!ev) return;
   
@@ -1332,6 +1404,7 @@ function deleteEntry() {
 }
 
 function handleSave() {
+  if(!isAdmin) return;
   if(editId) {
     updateEntry();
   } else {
@@ -1340,7 +1413,7 @@ function handleSave() {
 }
 
 function updateEntry() {
-  if(!editId) return;
+  if(!editId || !isAdmin) return;
   var ev = gA(mmD, mD).find(e => String(e.id) === String(editId));
   if(!ev) return;
   
@@ -1423,6 +1496,7 @@ function rML(){
 }
 
 function aE(){
+  if(!isAdmin) return;
   var inp=document.getElementById('mI');
   var label=inp.value.trim();
   if(!label)return;
@@ -1466,7 +1540,7 @@ window.onload = function() {
     document.getElementById('app').classList.add('dark');
   }
   applyTheme(cM); 
-  listenForCloudUpdates(); // Connect to Firebase
+  listenForCloudUpdates();
 };
 </script>
 </body>
