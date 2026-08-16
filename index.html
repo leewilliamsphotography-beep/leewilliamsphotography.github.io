@@ -91,6 +91,7 @@ html,body{height:100%;overflow:hidden;font-family:'Nunito',sans-serif;overscroll
 
 .ft{display:none;}
 
+/* Top Left Menu Icon */
 .menu-btn{
   position:absolute;top:env(safe-area-inset-top,0px);left:16px;margin-top:12px;
   width:44px;height:44px;border:none;border-radius:50%;cursor:pointer;
@@ -103,6 +104,27 @@ html,body{height:100%;overflow:hidden;font-family:'Nunito',sans-serif;overscroll
   z-index:2;
 }
 .menu-btn:active{transform:scale(.9);background:rgba(255,255,255,0.4)}
+
+/* Top Right Quick View Icon */
+.quick-view-btn{
+  position:absolute;top:env(safe-area-inset-top,0px);right:16px;margin-top:12px;
+  width:44px;height:44px;border:none;border-radius:50%;cursor:pointer;
+  display:flex;align-items:center;justify-content:center;
+  background:rgba(255,255,255,0.2); 
+  backdrop-filter:blur(10px) saturate(180%);-webkit-backdrop-filter:blur(10px) saturate(180%);
+  color:#fff;border:1px solid rgba(255,255,255,0.5);
+  box-shadow:0 2px 6px rgba(0,0,0,.1);
+  transition:transform .12s, background .2s;
+  z-index:2;
+  animation: pulse-soft 2.5s infinite;
+}
+.quick-view-btn:active{transform:scale(.9);background:rgba(255,255,255,0.4); animation: none;}
+
+@keyframes pulse-soft {
+  0% { box-shadow: 0 0 0 0 rgba(255, 255, 255, 0.4); }
+  70% { box-shadow: 0 0 0 12px rgba(255, 255, 255, 0); }
+  100% { box-shadow: 0 0 0 0 rgba(255, 255, 255, 0); }
+}
 
 .dl{position:absolute;inset:0;pointer-events:none;z-index:0;overflow:hidden;opacity:0.08;} 
 .dl svg{width:100%;height:100%;display:block}
@@ -176,7 +198,7 @@ html,body{height:100%;overflow:hidden;font-family:'Nunito',sans-serif;overscroll
 .exp-btn { background: #4caf50; }
 .imp-btn { background: #ff9800; }
 
-#jumpMo .ms, #cMo .ms{
+#jumpMo .ms, #cMo .ms, #quickViewMo .ms{
   background:rgba(255,255,255,0.95);
   backdrop-filter:blur(20px) saturate(180%);
   -webkit-backdrop-filter:blur(20px) saturate(180%);
@@ -215,62 +237,24 @@ html,body{height:100%;overflow:hidden;font-family:'Nunito',sans-serif;overscroll
   box-shadow:0 4px 12px rgba(194,24,91,0.3);
 }
 
-.drawer-backdrop{
-  position:fixed;inset:0;
-  background:rgba(255,255,255,0.01); 
-  z-index:49;opacity:0;pointer-events:none;
-  transition:opacity .4s ease;
-  backdrop-filter:blur(8px);
-  -webkit-backdrop-filter:blur(8px);
-}
-.drawer-backdrop.show{opacity:1;pointer-events:auto}
-
-/* FIX: Removed transform completely to fix swipe glitches. Now using pure height. */
-.event-drawer{
-  position:fixed;bottom:0;left:0;right:0;z-index:50;
-  background:rgba(255,255,255,0.85);
-  backdrop-filter:blur(15px) saturate(180%);
-  -webkit-backdrop-filter:blur(15px) saturate(180%);
-  color:#1a1a1a;
-  border-radius:24px 24px 0 0;
-  border-top:1px solid rgba(255,255,255,0.6);
-  border-left:1px solid rgba(255,255,255,0.4);
-  border-right:1px solid rgba(255,255,255,0.4);
-  box-shadow:0 -4px 24px rgba(0,0,0,0.08), inset 0 1px 0 rgba(255,255,255,0.8);
-  display:flex;flex-direction:column;
-  transition:height .35s cubic-bezier(.4,0,.2,1);
-  height: 48px; 
-  touch-action:none;
-}
-.event-drawer.closed{height: 48px;}
-.event-drawer.dragging{transition:none!important}
-
-.drawer-handle{height:48px;display:flex;align-items:center;justify-content:center;flex-shrink:0;cursor:grab;padding-top:12px;padding-bottom:env(safe-area-inset-bottom,0px);user-select:none;-webkit-user-select:none;position:relative;}
-.drawer-handle-bar {width:60px;height:5px;background:rgba(0,0,0,0.15);border-radius:3px;transition:width .2s ease, opacity .2s ease;}
-.drawer-handle:active .drawer-handle-bar {width:80px;opacity:0.8}
-.drawer-handle:active{cursor:grabbing}
-
-.drawer-body{overflow:hidden;flex:1;overflow-y:auto;-webkit-overflow-scrolling:touch}
-
-.drawer-scroll{padding:8px 20px 32px}
+/* Quick View List Styles */
 .dl-summary{font-family:'Quicksand',sans-serif;font-weight:700;font-size:14px;padding:4px 0 16px;opacity:.8;letter-spacing:1px;text-transform:uppercase;color:#111}
 .dl-group{padding:16px 0 12px;border-bottom:1px solid rgba(0,0,0,0.08);cursor:pointer;transition:background .15s;border-radius:12px;margin:0 -8px;padding-left:16px;padding-right:16px}
 .dl-group:last-child{border-bottom:none}
-.dl-group:active{background:rgba(255,255,255,0.2)}
+.dl-group:active{background:rgba(0,0,0,0.05)}
 .dl-group-head{display:flex;align-items:center;gap:14px;margin-bottom:10px}
 .dl-circle{width:44px;height:44px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:18px;flex-shrink:0;background:rgba(0,0,0,0.8);color:#fff;box-shadow:0 2px 4px rgba(0,0,0,.2);}
 .dl-date-text{font-family:'Quicksand',sans-serif;font-weight:700;font-size:18px;line-height:1.2;color:#111}
-.dl-pills{display:flex;flex-wrap:wrap;gap:8px;padding-left:54px}
+.dl-pills{display:flex;flex-wrap:wrap;gap:8px;padding-left:58px}
 .dl-pill{padding:8px 16px;border-radius:20px;font-size:14px;font-weight:700;color:#fff;box-shadow:0 1px 2px rgba(0,0,0,.1);line-height:1.3}
 .dl-pill.cancelled { background: #d32f2f !important; color: #fff !important; text-decoration: line-through; text-decoration-thickness: 2px; opacity: 1; }
 .dl-empty{text-align:center;padding:40px 16px;font-family:'Quicksand',sans-serif;font-weight:600;font-size:16px;color:#333;opacity:.7}
 
 @media(min-width:420px){
   .app{max-width:480px;margin:0 auto}
-  .event-drawer{max-width:480px;left:50%;transform:translateX(-50%)}
 }
 @media(min-width:520px){
-  .app{max-width:560px}.event-drawer{max-width:560px}
+  .app{max-width:560px}
   .c{min-height:clamp(68px,12vw,84px);padding:10px}
   .c .n{font-size:clamp(16px,2.8vw,20px)}
   .c .b{font-size:clamp(10px,1.6vw,12px);padding:5px 8px}
@@ -278,7 +262,7 @@ html,body{height:100%;overflow:hidden;font-family:'Nunito',sans-serif;overscroll
   .dht{font-size:14px;padding:12px 0}
 }
 @media(min-width:640px){
-  .app{max-width:640px}.event-drawer{max-width:640px}
+  .app{max-width:640px}
   .hdr{padding:20px 24px 16px}.hdr h1{font-size:28px}
   .c{min-height:clamp(80px,11vw,96px);padding:12px;border-radius:16px;gap:6px}
   .c .n{font-size:clamp(18px,2.4vw,22px)}
@@ -289,10 +273,9 @@ html,body{height:100%;overflow:hidden;font-family:'Nunito',sans-serif;overscroll
   .ms{max-width:600px}
   .dl-circle{width:48px;height:48px;font-size:20px;border-radius:14px}
   .dl-date-text{font-size:20px}.dl-pill{font-size:16px;padding:10px 18px}
-  .drawer-scroll{padding:12px 24px 36px}
 }
 @media(min-width:900px){
-  .app{max-width:800px}.event-drawer{max-width:800px}
+  .app{max-width:800px}
   .hdr{padding:24px 24px 20px}.hdr h1{font-size:32px}
   .c{min-height:clamp(96px,10vw,116px);padding:14px;border-radius:18px;gap:7px}
   .c .n{font-size:clamp(20px,2.2vw,24px)}
@@ -313,10 +296,9 @@ html,body{height:100%;overflow:hidden;font-family:'Nunito',sans-serif;overscroll
   .mcl{height:54px;font-size:16px;border-radius:16px;margin-top:12px}
   .dl-circle{width:52px;height:52px;font-size:22px;border-radius:16px}
   .dl-date-text{font-size:22px}.dl-pill{font-size:16px;padding:10px 20px}
-  .drawer-scroll{padding:16px 32px 40px}
 }
 @media(min-width:1200px){
-  .app{max-width:960px}.event-drawer{max-width:960px}
+  .app{max-width:960px}
   .hdr{padding:28px 28px 24px}.hdr h1{font-size:36px}
   .c{min-height:clamp(108px,9vw,128px);padding:16px;border-radius:20px;gap:8px}
   .c .n{font-size:clamp(22px,2vw,26px)}
@@ -337,16 +319,12 @@ html,body{height:100%;overflow:hidden;font-family:'Nunito',sans-serif;overscroll
   .c{min-height:36px!important;padding:2px;gap:1px;border-radius:6px}
   .c .n{font-size:11px}.c .b{font-size:6px;padding:1px 2px;line-height:1.2;border-radius:3px}
   .color-wash{inset:-12px;border-radius:12px}
-  
-  .drawer-handle{height:48px;padding-top:10px}
-  .drawer-handle-bar{width:40px;height:4px;top:10px}
-  .event-drawer{height: 48px; }
-  .event-drawer.closed{height: 48px;}
-  .drawer-scroll{padding:4px 12px 12px}
   .dl-circle{width:28px;height:28px;font-size:12px;border-radius:6px}
   .dl-date-text{font-size:14px}.dl-pills{padding-left:36px}
   .dl-pill{font-size:12px;padding:4px 10px}.dl-summary{font-size:12px;padding:2px 0 8px}
   .dl-group{padding:6px 0 4px}
+  .menu-btn, .quick-view-btn { width: 32px; height: 32px; margin-top: 6px; }
+  .menu-btn svg, .quick-view-btn svg { width: 16px; height: 16px; }
 }
 @media(min-height:441px) and (max-height:580px) and (orientation:landscape){
   .safe-top,.safe-bottom{height:0}
@@ -357,11 +335,6 @@ html,body{height:100%;overflow:hidden;font-family:'Nunito',sans-serif;overscroll
   .c{min-height:48px!important;padding:4px;gap:2px;border-radius:8px}
   .c .n{font-size:13px}.c .b{font-size:7px;padding:2px 3px;line-height:1.2;border-radius:4px}
   .color-wash{inset:-16px;border-radius:16px}
-  
-  .event-drawer{height: 48px; }
-  .event-drawer.closed{height: 48px;}
-  .drawer-handle{height:48px;padding-top:8px}
-  .drawer-scroll{padding:8px 16px 16px}
   .dl-circle{width:32px;height:32px;font-size:14px;border-radius:8px}
   .dl-date-text{font-size:15px}.dl-pills{padding-left:42px}
   .dl-pill{font-size:12px;padding:4px 12px}
@@ -376,7 +349,7 @@ html,body{height:100%;overflow:hidden;font-family:'Nunito',sans-serif;overscroll
 }
 @media(min-width:1200px) and (orientation:landscape){.ft{display:none}}
 @media(prefers-reduced-motion:reduce){
-  .cg,.color-wash,.event-drawer,.drawer-body,.drawer-backdrop, .app {transition:none!important}
+  .cg,.color-wash,.mo .ms, .app, .quick-view-btn {transition:none!important; animation: none!important;}
   *{transition-duration:0s!important;animation-duration:0s!important}
 }
 </style>
@@ -391,6 +364,15 @@ html,body{height:100%;overflow:hidden;font-family:'Nunito',sans-serif;overscroll
       <line x1="3" y1="12" x2="21" y2="12"></line>
       <line x1="3" y1="6" x2="21" y2="6"></line>
       <line x1="3" y1="18" x2="21" y2="18"></line>
+    </svg>
+  </button>
+  
+  <button class="quick-view-btn" id="quickViewBtn" aria-label="Quick View">
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+      <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+      <line x1="16" y1="2" x2="16" y2="6"></line>
+      <line x1="8" y1="2" x2="8" y2="6"></line>
+      <line x1="3" y1="10" x2="21" y2="10"></line>
     </svg>
   </button>
   
@@ -502,6 +484,7 @@ html,body{height:100%;overflow:hidden;font-family:'Nunito',sans-serif;overscroll
   <div class="ms">
     <div class="mh"></div>
     <div class="mt">Menu & Backup</div>
+    <div class="mt" style="font-size: 18px; margin-bottom: 16px;">Backup & Restore</div>
     <button class="backup-btn exp-btn" id="expData">Export Backup Data</button>
     <button class="backup-btn imp-btn" id="impData">Import Backup Data</button>
     <div style="text-align:center; padding: 20px 0; font-family:'Nunito',sans-serif; border-top:1px solid #eee; margin-top:12px;">
@@ -510,6 +493,15 @@ html,body{height:100%;overflow:hidden;font-family:'Nunito',sans-serif;overscroll
       <div style="font-family:'Quicksand',sans-serif; font-size:24px; font-weight:700; color:#c2185b; margin-top:4px;">Lee Williams</div>
     </div>
     <button class="mcl" id="cMCL">Close</button>
+  </div>
+</div>
+
+<div class="mo" id="quickViewMo">
+  <div class="ms">
+    <div class="mh"></div>
+    <div class="mt">Quick View</div>
+    <div id="quickViewScroll" style="padding: 0 4px; max-height: 60vh; overflow-y: auto;"></div>
+    <button class="mcl" id="qVMCL">Close</button>
   </div>
 </div>
 
@@ -524,16 +516,6 @@ html,body{height:100%;overflow:hidden;font-family:'Nunito',sans-serif;overscroll
     </div>
     <div class="j-grid" id="jmpGrid" style="display:grid; grid-template-columns:repeat(3,1fr); gap:12px; margin-bottom:16px;"></div>
     <button class="mcl" id="jmpClose">Close</button>
-  </div>
-</div>
-
-<div class="drawer-backdrop" id="drawerBg"></div>
-<div class="event-drawer closed" id="evDrawer">
-  <div class="drawer-handle" id="drawerHandle">
-    <div class="drawer-handle-bar"></div>
-  </div>
-  <div class="drawer-body" id="drawerBody">
-    <div class="drawer-scroll" id="drawerScroll"></div>
   </div>
 </div>
 
@@ -618,7 +600,6 @@ var DE={
   'b-tue':{l:'Swimming',c:'#ef6c00',g:'linear-gradient(135deg,#ef6c00,#ffa726)'},
   'b-wed':{l:'Swimming',c:'#ef6c00',g:'linear-gradient(135deg,#ef6c00,#ffa726)'},
   'b-wed2':{l:'Cleaning',c:'#fbc02d',g:'linear-gradient(135deg,#fbc02d,#fdd835)'},
-  'b-thu':{l:'Film Night',c:'#7cb342',g:'linear-gradient(135deg,#7cb342,#aed581)'},
   'b-fri':{l:'Work',c:'#00897b',g:'linear-gradient(135deg,#00897b,#26a69a)'}
 };
 
@@ -726,7 +707,6 @@ function gA(m,d){
   if(dw===1) checkDef('b-mon', 1);
   if(dw===2) checkDef('b-tue', 2);
   if(dw===3){ checkDef('b-wed', 3); checkDef('b-wed2', 3); }
-  if(dw===4) checkDef('b-thu', 4);
   if(dw===5) checkDef('b-fri', 5);
 
   var cu=cE[eK(m,d)];if(cu)for(var i=0;i<cu.length;i++) {
@@ -794,7 +774,7 @@ function gT(m){if(m===3)return'easter';if(m===9)return'halloween';if(m===11)retu
 function gS(m){if(m<=1)return'winter';if(m<=4)return'spring';if(m<=7)return'summer';return'autumn'}
 
 var $app,$bgA,$safeTop,$b1,$b2,$b3,$hdr,$hSub,$mLbl,$ftH,$pB,$nB,$dhEls,$gC,$dSvg,$cw,$colorWash,$gridWrap;
-var $evDrawer,$drawerBg,$drawerHandle,$drawerBody,$drawerScroll;
+var $quickViewScroll;
 
 function bGH(m){
   var t=TH[gT(m)],dim=new Date(YR,m+1,0).getDate(),off=(new Date(YR,m,1).getDay()+6)%7,parts=[],i,d,ev,bg,bd,j;
@@ -827,7 +807,7 @@ function bGH(m){
   return parts.join('');
 }
 
-function buildDrawerContent(){
+function buildQuickViewContent(){
   var dim=new Date(YR,cM+1,0).getDate(),parts=[],total=0;
   for(var d=1;d<=dim;d++){
     var ev=gA(cM,d);if(!ev.length)continue;
@@ -853,102 +833,7 @@ function buildDrawerContent(){
   }else{
     parts.unshift('<div class="dl-summary">'+total+' event'+(total>1?'s':'')+' in '+mN[cM]+' '+YR+'</div>');
   }
-  $drawerScroll.innerHTML=parts.join('');
-}
-
-var drawerOpen=false;
-function updateDrawerHeight() {
-  if (!drawerOpen) return;
-  $evDrawer.style.transition = 'none';
-  $evDrawer.style.height = 'auto';
-  var contentH = $evDrawer.offsetHeight; 
-  var handleH = $drawerHandle.offsetHeight;
-  var maxH = window.innerHeight - 130; 
-  var minH = handleH + 20; 
-  var targetH = Math.max(minH, Math.min(contentH, maxH));
-  $evDrawer.style.height = targetH + 'px';
-  requestAnimationFrame(() => {
-    $evDrawer.style.transition = '';
-  });
-}
-
-function openDrawer(){
-  $evDrawer.classList.remove('closed','dragging');
-  $drawerBg.classList.add('show');
-  drawerOpen=true;
-  buildDrawerContent();
-  requestAnimationFrame(() => {
-    updateDrawerHeight();
-  });
-}
-function closeDrawer(){
-  $evDrawer.classList.remove('dragging');
-  $evDrawer.classList.add('closed');
-  $evDrawer.style.height = ''; 
-  $drawerBg.classList.remove('show');
-  drawerOpen=false;
-}
-function toggleDrawer(){
-  if(drawerOpen) closeDrawer(); else openDrawer();
-}
-
-var dragStartY=0,dragging=false,wasDrag=false;
-function onDragStart(y){
-  if(fr)return;
-  dragStartY = y;
-  dragging = true;
-  wasDrag = false;
-  $evDrawer.classList.add('dragging');
-  $evDrawer.style.transition = 'none';
-  if (!drawerOpen) {
-    $evDrawer.classList.remove('closed');
-    $evDrawer.style.height = '48px'; 
-  }
-}
-
-function onDragMove(y){
-  if(!dragging)return;
-  wasDrag = true;
-  var delta = dragStartY - y;
-  var currentHeight = drawerOpen ? $evDrawer.offsetHeight : 48;
-  var newHeight = currentHeight + delta;
-  if (!drawerOpen && delta > 0) {
-    newHeight = 48 + (delta * 1.4); 
-  }
-  var maxH = window.innerHeight - 130;
-  var minH = 48;
-  if (newHeight > maxH) newHeight = maxH;
-  if (newHeight < minH) newHeight = minH;
-  $evDrawer.style.height = newHeight + 'px';
-  var pct = (newHeight - minH) / (maxH - minH);
-  $drawerBg.style.opacity = pct;
-  $drawerBg.style.pointerEvents = pct > 0.1 ? 'auto' : 'none';
-}
-
-function onDragEnd(y){
-  if(!dragging)return;
-  dragging = false;
-  $evDrawer.classList.remove('dragging');
-  $evDrawer.style.transition = '';
-  $drawerBg.style.opacity = '';
-  $drawerBg.style.pointerEvents = '';
-  if(!wasDrag){
-    if (!drawerOpen) {
-      $evDrawer.classList.add('closed');
-      $evDrawer.style.height = '';
-    }
-    return;
-  }
-  var delta = dragStartY - y; 
-  var threshold = 40; 
-  if (delta > threshold && !drawerOpen) {
-    openDrawer(); 
-  } else if (delta < -threshold && drawerOpen) {
-    closeDrawer(); 
-  } else {
-    if (drawerOpen) openDrawer(); else closeDrawer();
-  }
-  setTimeout(function(){ wasDrag = false; }, 150);
+  $quickViewScroll.innerHTML=parts.join('');
 }
 
 function applyTheme(m){
@@ -992,7 +877,6 @@ function gM(dir){
     $gC.style.transition='';
     $colorWash.classList.remove('active');
     $gC.classList.remove('blend-in');
-    if(drawerOpen)buildDrawerContent();
     setTimeout(function(){fr=false},360);
   },340);
 }
@@ -1006,9 +890,7 @@ function initRefs(){
   $gC=document.getElementById('gC');
   $dSvg=document.getElementById('dSvg');$cw=document.getElementById('cw');
   $colorWash=document.getElementById('colorWash');$gridWrap=document.getElementById('gridWrap');
-  $evDrawer=document.getElementById('evDrawer');$drawerBg=document.getElementById('drawerBg');
-  $drawerHandle=document.getElementById('drawerHandle');$drawerBody=document.getElementById('drawerBody');
-  $drawerScroll=document.getElementById('drawerScroll');
+  $quickViewScroll = document.getElementById('quickViewScroll');
 }
 
 function renderJumpMenu(){
@@ -1126,6 +1008,7 @@ function initEvents(){
     document.getElementById('customRepMo').classList.remove('sh');
   });
 
+  // Menu Logic (Hamburger)
   document.getElementById('menuBtn').addEventListener('click', function(){
     document.getElementById('cMo').classList.add('sh');
   });
@@ -1136,6 +1019,28 @@ function initEvents(){
     if(ev.target === this) this.classList.remove('sh');
   });
   
+  // Quick View Modal Events (Top Right Icon)
+  document.getElementById('quickViewBtn').addEventListener('click', function() {
+    buildQuickViewContent();
+    document.getElementById('quickViewMo').classList.add('sh');
+  });
+  document.getElementById('qVMCL').addEventListener('click', function() {
+    document.getElementById('quickViewMo').classList.remove('sh');
+  });
+  document.getElementById('quickViewMo').addEventListener('click', function(ev) {
+    if (ev.target === this) this.classList.remove('sh');
+  });
+  $quickViewScroll.addEventListener('click', function(ev) {
+    var grp = ev.target.closest('.dl-group');
+    if (!grp) return;
+    var d = parseInt(grp.getAttribute('data-d')), m = parseInt(grp.getAttribute('data-m'));
+    if (!isNaN(d) && !isNaN(m)) {
+      document.getElementById('quickViewMo').classList.remove('sh');
+      oM(m, d);
+    }
+  });
+
+  // Backup Logic
   document.getElementById('expData').addEventListener('click', function() {
     var data = JSON.stringify({c: cE, r: rE, d: rD});
     var ta = document.createElement('textarea');
@@ -1196,7 +1101,7 @@ function initEvents(){
           if (o.c) cE = o.c;
           if (o.r) rE = o.r;
           if (o.d) rD = o.d;
-          sC(); sRep(); sR(); rG(); buildDrawerContent();
+          sC(); sRep(); sR(); rG();
           alert("Data imported successfully!");
         } catch (e) {
           alert("Invalid backup data.");
@@ -1208,7 +1113,7 @@ function initEvents(){
     };
   });
 
-  // FIX: Strict single-fire click handlers for jump year to prevent skipping
+  // Jump Menu Events
   document.getElementById('mLbl').addEventListener('click', function(){
     jumpYear = YR;
     renderJumpMenu();
@@ -1240,46 +1145,6 @@ function initEvents(){
   });
   document.getElementById('jumpMo').addEventListener('click', function(ev){
     if(ev.target === this) this.classList.remove('sh');
-  });
-
-  $drawerHandle.addEventListener('click',function(e){
-    if(wasDrag)return;
-    toggleDrawer();
-  });
-  
-  document.addEventListener('touchstart', function(ev) {
-    if (dragging) return; 
-    if (fr) return; 
-    var y = ev.touches[0].clientY;
-    var target = ev.target;
-    var isHandle = target.closest('#drawerHandle');
-    var isBottomEdge = (y > window.innerHeight - 60);
-    if (isHandle || (!drawerOpen && isBottomEdge)) {
-      onDragStart(y);
-    }
-  }, {passive:true});
-  
-  $drawerBg.addEventListener('click',closeDrawer);
-  document.addEventListener('touchmove',function(ev){if(dragging){ev.preventDefault();onDragMove(ev.touches[0].clientY)}},{passive:false});
-  document.addEventListener('touchend',function(ev){if(dragging)onDragEnd(ev.changedTouches[0].clientY)});
-  
-  $drawerHandle.addEventListener('mousedown',function(ev){onDragStart(ev.clientY)});
-  document.addEventListener('mousemove',function(ev){if(dragging)onDragMove(ev.clientY)});
-  document.addEventListener('mouseup',function(ev){if(dragging)onDragEnd(ev.clientY)});
-  
-  $drawerScroll.addEventListener('click',function(ev){
-    var grp=ev.target.closest('.dl-group');
-    if(!grp)return;
-    var d=parseInt(grp.getAttribute('data-d')),m=parseInt(grp.getAttribute('data-m'));
-    if(!isNaN(d)&&!isNaN(m))oM(m,d);
-  });
-
-  window.addEventListener('resize', function() {
-    if (!drawerOpen) {
-      $evDrawer.style.height = ''; 
-    } else {
-      updateDrawerHeight();
-    }
   });
 }
 
@@ -1392,7 +1257,7 @@ function toggleCancelPlan() {
     }
   }
   
-  rML(); rG(); if(drawerOpen) buildDrawerContent();
+  rML(); rG();
   oEdit(editId); 
 }
 
@@ -1416,7 +1281,7 @@ function deleteEntry() {
     }
   }
   
-  rML(); rG(); if(drawerOpen) buildDrawerContent();
+  rML(); rG();
   document.getElementById('mo').classList.remove('sh'); 
 }
 
@@ -1479,7 +1344,7 @@ function updateEntry() {
     }
   }
   
-  rML(); rG(); if(drawerOpen) buildDrawerContent();
+  rML(); rG();
   document.getElementById('mo').classList.remove('sh');
 }
 
@@ -1535,7 +1400,7 @@ function aE(){
   document.getElementById('repCurrent').innerHTML = 'Does not repeat &#9662;';
   document.getElementById('repCurrent').setAttribute('data-rep', 'none');
   
-  rML();rG();if(drawerOpen)buildDrawerContent();
+  rML();rG();
 }
 
 function rG(){$gC.innerHTML=bGH(cM)}
@@ -1559,7 +1424,6 @@ initRefs();
 initEvents(); 
 window.onload = function() {
   applyTheme(cM); 
-  buildDrawerContent();
 };
 </script>
 </body>
