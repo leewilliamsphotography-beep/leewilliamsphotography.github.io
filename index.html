@@ -18,6 +18,7 @@
   --accent: #c2185b;
   --accent-dark: #a0174c;
   --accent-rgb: 194, 24, 91;
+  --texture-color: rgba(0, 0, 0, 0.08);
 }
 
 *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
@@ -70,7 +71,10 @@ html,body{height:100%;overflow:hidden;font-family:'Nunito',sans-serif;overscroll
   display:flex;flex-direction:column;height:100%;height:100dvh;max-width:100%;position:relative;overflow:hidden;
 }
 
+.app.dark { --texture-color: rgba(255, 255, 255, 0.05); }
+
 .bg-anim{position:absolute;inset:0;z-index:0;transition:background .65s ease}
+.bg-texture{position:absolute;inset:0;z-index:0;pointer-events:none;background-color:transparent;background-size:24px 24px;opacity:1;transition:opacity 0.3s ease;}
 .safe-top{height:env(safe-area-inset-top,0px);flex-shrink:0;transition:background .65s ease;z-index:1;position:relative}
 .safe-bottom{height:env(safe-area-inset-bottom,0px);flex-shrink:0;position:relative;z-index:1}
 
@@ -365,7 +369,7 @@ html,body{height:100%;overflow:hidden;font-family:'Nunito',sans-serif;overscroll
 @media(min-height:441px) and (max-height:580px) and (orientation:landscape){ .safe-top,.safe-bottom{height:0} .hdr{padding:6px 14px}.hdr h1{font-size:18px}.hdr .sub{font-size:10px} .nav{padding:4px 10px}.nav button{width:40px;height:40px;font-size:18px}.nav .ml{font-size:16px;padding:4px 12px} .dht{font-size:11px;padding:4px 0} .dh,.grid-wrap{gap:4px;padding:0 8px}.grid-wrap{padding-bottom:4px} .c{min-height:48px!important;padding:4px;gap:2px;border-radius:8px} .c .n{font-size:13px}.c .b{font-size:7px;padding:2px 3px;line-height:1.2;border-radius:4px} .color-wash{inset:-16px;border-radius:16px} .dl-circle{width:32px;height:32px;font-size:14px;border-radius:8px} .dl-date-text{font-size:15px}.dl-pills{padding-left:42px} .dl-pill{font-size:12px;padding:4px 12px} }
 @media(min-height:581px) and (max-height:720px) and (min-width:768px) and (orientation:landscape){ .safe-top,.safe-bottom{height:0} .hdr{padding:8px 16px}.hdr h1{font-size:20px}.hdr .sub{font-size:12px} .nav{padding:6px 12px}.ft{display:none} .c{min-height:64px!important;padding:6px;gap:2px} .c .n{font-size:15px}.c .b{font-size:8px;padding:2px 4px} .dht{font-size:12px;padding:6px 0}.dh,.grid-wrap{gap:6px} }
 @media(min-width:1200px) and (orientation:landscape){.ft{display:none}}
-@media(prefers-reduced-motion:reduce){ .cg,.color-wash,.mo .ms, .app, .quick-view-btn, .c.holiday::before {transition:none!important; animation: none!important;} *{transition-duration:0s!important;animation-duration:0s!important} }
+@media(prefers-reduced-motion:reduce){ .cg,.color-wash,.mo .ms, .app, .quick-view-btn, .c.holiday::before, .bg-texture {transition:none!important; animation: none!important;} *{transition-duration:0s!important;animation-duration:0s!important} }
 </style>
 </head>
 <body>
@@ -383,6 +387,7 @@ html,body{height:100%;overflow:hidden;font-family:'Nunito',sans-serif;overscroll
 <!-- Main App -->
 <div class="app" id="app">
   <div class="bg-anim" id="bgA"></div>
+  <div class="bg-texture" id="bgTexture"></div>
   <div class="safe-top" id="safeTop"></div>
   
   <button class="menu-btn" id="menuBtn" aria-label="Menu">
@@ -535,6 +540,12 @@ html,body{height:100%;overflow:hidden;font-family:'Nunito',sans-serif;overscroll
       <div class="rep-dropdown" id="accentDropdown"></div>
     </div>
     
+    <div class="mt" style="font-size: 18px; margin-bottom: 16px;">Background Texture</div>
+    <div class="rep-select" id="textureSelect" style="margin-bottom: 16px;">
+      <div class="rep-current" id="textureCurrent">Solid &#9662;</div>
+      <div class="rep-dropdown" id="textureDropdown"></div>
+    </div>
+    
     <div class="m-divider"></div>
     
     <div class="mt" style="font-size: 18px; margin-bottom: 16px;">Local Backup & Restore</div>
@@ -649,6 +660,48 @@ function applyAccent() {
   }
 }
 applyAccent();
+
+// --- TEXTURES ---
+// Included lightweight animated options using CSS keyframes
+var textures = {
+  solid: { name: 'Solid', css: 'none', size: 'auto', anim: '' },
+  dots: { name: 'Dots', css: 'radial-gradient(var(--texture-color) 1.5px, transparent 1.5px)', size: '24px 24px', anim: '' },
+  grid: { name: 'Grid', css: 'linear-gradient(var(--texture-color) 1px, transparent 1px), linear-gradient(90deg, var(--texture-color) 1px, transparent 1px)', size: '24px 24px', anim: '' },
+  diagonal: { name: 'Diagonal', css: 'repeating-linear-gradient(45deg, var(--texture-color) 0, var(--texture-color) 1px, transparent 1px, transparent 12px)', size: 'auto', anim: '' },
+  crosshatch: { name: 'Crosshatch', css: 'repeating-linear-gradient(45deg, var(--texture-color) 0, var(--texture-color) 1px, transparent 1px, transparent 10px), repeating-linear-gradient(-45deg, var(--texture-color) 0, var(--texture-color) 1px, transparent 1px, transparent 10px)', size: 'auto', anim: '' },
+  animDots: { name: 'Animated Dots', css: 'radial-gradient(var(--texture-color) 1.5px, transparent 1.5px)', size: '24px 24px', anim: 'bg-anim-move 4s linear infinite' },
+  animGrid: { name: 'Animated Grid', css: 'linear-gradient(var(--texture-color) 1px, transparent 1px), linear-gradient(90deg, var(--texture-color) 1px, transparent 1px)', size: '24px 24px', anim: 'bg-anim-move 5s linear infinite' },
+  animPulse: { name: 'Animated Pulse', css: 'repeating-linear-gradient(45deg, var(--texture-color) 0, var(--texture-color) 1px, transparent 1px, transparent 10px), repeating-linear-gradient(-45deg, var(--texture-color) 0, var(--texture-color) 1px, transparent 1px, transparent 10px)', size: 'auto', anim: 'bg-anim-pulse 4s ease-in-out infinite' }
+};
+
+// Inject keyframes for animations
+var texSt = document.createElement('style');
+texSt.textContent = `
+@keyframes bg-anim-move {
+  0% { background-position: 0 0, 0 0; }
+  100% { background-position: 24px 24px, 24px 24px; }
+}
+@keyframes bg-anim-pulse {
+  0%, 100% { opacity: 0.3; }
+  50% { opacity: 0.8; }
+}`;
+document.head.appendChild(texSt);
+
+var currentTexture = 'solid';
+try { currentTexture = localStorage.getItem('emma-texture') || 'solid'; } catch(e) {}
+
+function applyTexture() {
+  var t = textures[currentTexture] || textures.solid;
+  var el = document.getElementById('bgTexture');
+  if (el) {
+    el.style.backgroundImage = t.css;
+    el.style.backgroundSize = t.size;
+    el.style.animation = t.anim || 'none';
+  }
+  var curr = document.getElementById('textureCurrent');
+  if (curr) curr.innerHTML = t.name + ' &#9662;';
+}
+applyTexture();
 
 var TH={
   winter:{ba:'linear-gradient(135deg,#e3f2fd 0%,#bbdefb 25%,#90caf9 50%,#e1f5fe 75%,#b3e5fc 100%)',hd:'#1565c0',hs:'#e3f2fd',st:'#0d47a1',
@@ -1240,6 +1293,28 @@ function initEvents(){
         applyTheme(cM);
         closeAllDropdowns();
         uploadToCloud();
+      });
+    });
+  }
+
+  // --- TEXTURE DROPDOWN ---
+  var texDrop = document.getElementById('textureDropdown');
+  if (texDrop) {
+    var texHtml = '';
+    Object.keys(textures).forEach(function(key) {
+      texHtml += '<div class="rep-item" data-texture="'+key+'">'+textures[key].name+'</div>';
+    });
+    texDrop.innerHTML = texHtml;
+    
+    setupDropdown('textureCurrent', 'textureDropdown');
+
+    texDrop.querySelectorAll('.rep-item').forEach(function(item) {
+      item.addEventListener('click', function() {
+        var key = this.getAttribute('data-texture');
+        currentTexture = key;
+        try { localStorage.setItem('emma-texture', key); } catch(e) {}
+        applyTexture();
+        closeAllDropdowns();
       });
     });
   }
